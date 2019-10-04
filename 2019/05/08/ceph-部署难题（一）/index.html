@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ceph,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="本章总结了搭建ceph集群过程中遇到的各种问题，以及相应的原理过程">
+<meta name="keywords" content="ceph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph部署难题">
+<meta property="og:url" content="http://yoursite.com/2019/05/08/ceph-部署难题（一）/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="本章总结了搭建ceph集群过程中遇到的各种问题，以及相应的原理过程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-09T01:26:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ceph部署难题">
+<meta name="twitter:description" content="本章总结了搭建ceph集群过程中遇到的各种问题，以及相应的原理过程">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/08/ceph-部署难题（一）/">
+
+
+
+
+
+  <title>ceph部署难题 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/ceph-部署难题（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ceph部署难题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-08T22:16:02+08:00">
+                2019-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ceph/" itemprop="url" rel="index">
+                    <span itemprop="name">Ceph</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/08/ceph-部署难题（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/08/ceph-部署难题（一）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/05/08/ceph-部署难题（一）/" class="leancloud_visitors" data-flag-title="ceph部署难题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  10.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  40
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本章总结了搭建ceph集群过程中遇到的各种问题，以及相应的原理过程</p>
+<a id="more"></a>
+<h3 id="Q1-环境预准备"><a href="#Q1-环境预准备" class="headerlink" title="Q1. 环境预准备**"></a>Q1. 环境预准备**</h3><p>​        绝大多数MON创建的失败都是由于防火墙没有关导致的，亦或是SeLinux没关闭导致的。一定一定一定要关闭每个每个每个节点的防火墙(执行一次就好，没安装报错就忽视)：</p>
+<p><strong>CentOS</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'s/SELINUX=.*/SELINUX=disabled/'</span> /etc/selinux/config</span><br><span class="line">setenforce <span class="number">0</span></span><br><span class="line">systemctl stop firewalld </span><br><span class="line">systemctl disable firewalld</span><br><span class="line"># iptables -F</span><br><span class="line">service iptables stop</span><br></pre></td></tr></table></figure>
+<h3 id="Q2-清理环境"><a href="#Q2-清理环境" class="headerlink" title="Q2. 清理环境"></a><strong>Q2. 清理环境</strong></h3><p>​        MON部署不上的第二大问题就是在旧的节点部署MON，或者在这个节点部署MON失败了，然后重新<code>new</code>再<code>mon create-initial</code>，请查看要部署MON的节点上的<code>/var/lib/ceph/mon/</code>目录下是否为空，如果不为空，说明已经在这个目录部署过MON，再次部署会检测子目录下的<code>done</code>文件，由于有了这个文件，就不会再建立新的MON数据库，并且不会覆盖之，导致了部署时的各种异常，这里就不赘述了，直接给出万能清理大法：</p>
+<p><strong>对于任何需要新部署MON的节点，请到这个节点下执行如下指令，确保环境已经清理干净：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep ceph |awk <span class="string">'&#123;print $2&#125;'</span>|xargs kill <span class="number">-9</span></span><br><span class="line">ps -ef|grep ceph</span><br><span class="line">#确保此时所有ceph进程都已经关闭！！！如果没有关闭，多执行几次。</span><br><span class="line">rm -rf /<span class="keyword">var</span>/lib/ceph/mon<span class="comment">/*</span></span><br><span class="line"><span class="comment">rm -rf /var/lib/ceph/bootstrap-mds/*</span></span><br><span class="line"><span class="comment">rm -rf /var/lib/ceph/bootstrap-osd/*</span></span><br><span class="line"><span class="comment">rm -rf /var/lib/ceph/bootstrap-rgw/*</span></span><br><span class="line"><span class="comment">rm -rf /etc/ceph/*</span></span><br><span class="line"><span class="comment">rm -rf /var/run/ceph/*</span></span><br></pre></td></tr></table></figure>
+<p>请直接复制粘贴，遇到过好些个自己打错打漏删了目录的。</p>
+<h3 id="Q3-部署前最后的确认"><a href="#Q3-部署前最后的确认" class="headerlink" title="Q3. 部署前最后的确认"></a><strong>Q3. 部署前最后的确认</strong></h3><p>这里介绍的都是个案，不过还是需要提一下：</p>
+<ul>
+<li>确保每个节点的<code>hostname</code>都设置正确，并且添加至<code>/etc/hosts</code>文件中，然后同步到所有节点下。克隆出来的虚拟机或者批量建的虚拟机有可能发生此情形。</li>
+<li>确保以下目录在各个节点都存在：</li>
+<li><code>/var/lib/ceph/</code></li>
+<li><code>/var/lib/ceph/mon/</code></li>
+<li><code>/var/lib/ceph/osd/</code></li>
+<li><code>/etc/ceph/</code></li>
+<li><code>/var/run/ceph/</code></li>
+<li>上面的目录，如果Ceph版本大于等于<code>jewel</code>,请确认权限均为<code>ceph:ceph</code>，如果是<code>root:root</code>，请自行<code>chown</code>。</li>
+</ul>
+<h3 id="Q4-安装Ceph"><a href="#Q4-安装Ceph" class="headerlink" title="Q4. 安装Ceph"></a><strong>Q4. 安装Ceph</strong></h3><p>​        官网指导方法是使用<code>ceph-deploy install nodeX</code>,但是因为是国外的源，速度慢得令人发指，所以我们换到阿里的源，并且使用<code>yum install</code>的方式安装，没差啦其实，这样反而还快点，毕竟多个节点一起装。</p>
+<p><strong>很多安装失败的都是因为没有添加epel源请在每个存储节点都执行以下指令，来安装Ceph:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">yum clean all</span><br><span class="line">rm -rf /etc/yum.repos.d<span class="comment">/*.repo</span></span><br><span class="line"><span class="comment">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line"><span class="comment">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></span><br><span class="line"><span class="comment">sed -i '/aliyuncs/d' /etc/yum.repos.d/CentOS-Base.repo</span></span><br><span class="line"><span class="comment">sed -i '/aliyuncs/d' /etc/yum.repos.d/epel.repo</span></span><br><span class="line"><span class="comment">sed -i 's/$releasever/7.2.1511/g' /etc/yum.repos.d/CentOS-Base.repo</span></span><br><span class="line"><span class="comment">echo "</span></span><br><span class="line"><span class="comment">[ceph]</span></span><br><span class="line"><span class="comment">name=ceph</span></span><br><span class="line"><span class="comment">baseurl=http://mirrors.aliyun.com/ceph/rpm-hammer/el7/x86_64/</span></span><br><span class="line"><span class="comment">gpgcheck=0</span></span><br><span class="line"><span class="comment">[ceph-noarch]</span></span><br><span class="line"><span class="comment">name=cephnoarch</span></span><br><span class="line"><span class="comment">baseurl=http://mirrors.aliyun.com/ceph/rpm-hammer/el7/noarch/</span></span><br><span class="line"><span class="comment">gpgcheck=0</span></span><br><span class="line"><span class="comment">" &gt; /etc/yum.repos.d/ceph.repo</span></span><br><span class="line"><span class="comment">yum install ceph ceph-radosgw -y</span></span><br></pre></td></tr></table></figure>
+<p>这里是安装的<code>hammer</code>版本的Ceph，如果需要安装<code>jewel</code>版本的，请执行：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'s/hammer/jewel/'</span> /etc/yum.repos.d/ceph.repo</span><br><span class="line">yum install ceph ceph-radosgw -y</span><br></pre></td></tr></table></figure>
+<p>如果安装了<code>jewel</code>版本的Ceph，想要换回<code>hammer</code>版本的Ceph，可以执行下面的指令：</p>
+<p><strong>卸载Ceph客户端</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa |grep <span class="string">`ceph -v |awk '&#123;print $3&#125;'`</span> |xargs rpm -e --nodeps</span><br></pre></td></tr></table></figure>
+<p><strong>更改ceph.repo里面的Ceph版本</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'s/jewel/hammer/'</span> /etc/yum.repos.d/ceph.repo</span><br><span class="line">yum install ceph ceph-radosgw -y</span><br></pre></td></tr></table></figure>
+<h3 id="Q5-ceph-deploy"><a href="#Q5-ceph-deploy" class="headerlink" title="Q5. ceph-deploy"></a><strong>Q5. ceph-deploy</strong></h3><p>这里我要开启话唠模式：</p>
+<p><strong>① Ceph-deploy 是什么？</strong></p>
+<p>​        Ceph-deploy是Ceph官方给出的用于<strong>部署Ceph</strong>的一个工具，这个工具几乎全部是Python写的脚本，其代码位于<code>/usr/lib/python2.7/site-packages/ceph_deploy</code>目录下(<code>1.5.36</code>版本)。最主要的功能就是用几个简单的指令部署好一个集群，而不是手动部署操碎了心，敲错一个地方就可能失败。所以对于新人来说，或者说以我的经验，接触Ceph少于一个月的，又或者说，集群规模不上PB的，都没有必要手动部署，Ceph-deploy完全足够了。</p>
+<p><strong>② Ceph-deploy怎么装?</strong></p>
+<p>​        这个包在ceph的源里面：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ceph-deploy -y</span><br></pre></td></tr></table></figure>
+<p><strong>③Ceph-deploy装在哪？</strong></p>
+<p>​        既然Ceph-deploy只是个部署Ceph的脚本工具而已，那么这个工具随便装在哪个节点都可以，<strong>并不需要单独为了装这个工具再搞个节点</strong>，我一般习惯放在第一个节点，以后好找部署目录。</p>
+<p><strong>④Ceph-deploy怎么用？</strong></p>
+<p>​        详细的指令暂时不介绍，下面会有，在安装好后，需要在这个节点新建一个目录，用作<code>部署目录</code>，这里是强烈建议建一个单独的目录的，比如我习惯在集群的第一个节点下建一个<code>/root/cluster</code>目录，为了以后好找。<strong>Ceph-deploy的所有的指令都需要在这个目录下执行</strong>。包括<code>new,mon,osd</code>等等一切ceph-deploy的指令都需要在这个部署目录下执行！最后一遍，所有的<code>ceph-deploy</code>的指令都要在部署目录下执行！否则就会报下面的错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ceph_deploy][ERROR ] ConfigError: Cannot load config: [Errno <span class="number">2</span>] No such file or directory: <span class="string">'ceph.conf'</span>; has ceph-deploy <span class="keyword">new</span> been run <span class="keyword">in</span> <span class="keyword">this</span> directory?</span><br></pre></td></tr></table></figure>
+<p><strong>⑤ Ceph-deploy怎么部署集群?</strong></p>
+<p>​        我们暂且把<strong>部署目录</strong>所在的节点叫做<strong>部署节点</strong>。Ceph-deploy通过SSH到各个节点，然后再在各个节点执行本机的Ceph指令来创建MON或者OSD等。所以在部署之前，你需要从<code>部署节点ssh-copy-id</code>到各个集群节点，使其可以免秘钥登陆。</p>
+<p><strong>⑥Ceph-deploy部署的日志在哪里?</strong></p>
+<p>​        就在部署目录下面的<code>ceph-deploy-ceph.log</code>文件，部署过程中产生的所有的日志都会保存在里面，比如你大半年前敲的创建OSD的指令。在哪个目录下执行ceph-deploy指令，就会在这个目录下生成log，如果你跑到别的目录下执行，就会在执行目录里生成log再记下第四点的错。当然，这个LOG最有用的地方还是里面记录的部署指令，你可以通过<code>cat ceph-deploy-ceph.log |grep &quot;Running command&quot;</code>查看到创建一个集群所需的所有指令，这对你手动建立集群或者创建秘钥等等等等有着很大的帮助！！！</p>
+<p><strong>⑦ Ceph-deploy版本</strong></p>
+<p>​        写这段时的最新的版本号为<code>1.5.36</code>，下载链接为ceph-deploy-1.5.36-0.noarch.rpm， 之前的<code>1.5.35</code>里面有点bug在这个版本被修复了，如果使用<code>1.5.25</code>部署遇到了问题，可以更新至这个版本，会绕过一些坑。更新到<code>1.5.36</code>之后，腰也不酸了,退了不疼了，Ceph也能部署上了。</p>
+<h3 id="Q6-ceph-deploy-new-做了什么"><a href="#Q6-ceph-deploy-new-做了什么" class="headerlink" title="Q6. ceph-deploy new 做了什么"></a><strong>Q6. ceph-deploy new 做了什么</strong></h3><p>​        <strong>进入部署目录</strong>，执行<code>ceph-deploy new node1 node2 node3</code>，会生成两个文件（第三个是<code>ceph-deploy-ceph.log</code>，忽视之）:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@blog cluster]# ls</span><br><span class="line">ceph.conf  ceph-deploy-ceph.log  ceph.mon.keyring</span><br></pre></td></tr></table></figure>
+<p>​        <code>new</code>后面跟的是你即将部署MON的节点的<code>hostname</code>，推荐三个就够了，需要是奇数个MON节点。不要因为只有两个节点就搞两个MON，两个节点请用一个MON，因为两个MON挂掉一个，集群也就挂了，和一个MON挂掉一个效果是一样的。生成的<code>ceph.conf</code>默认情况下长成这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@blog cluster]# cat ceph.conf </span><br><span class="line">[global]</span><br><span class="line">fsid = <span class="number">13</span>b5d863<span class="number">-75</span>aa<span class="number">-479</span>d<span class="number">-84</span>ba<span class="number">-9e5</span>edd881ec9</span><br><span class="line">mon_initial_members = blog</span><br><span class="line">mon_host = <span class="number">1.2</span><span class="number">.3</span><span class="number">.4</span></span><br><span class="line">auth_cluster_required = cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br></pre></td></tr></table></figure>
+<p>​        会调用<code>uuidgen</code>生成一个<code>fsid</code>，用作集群的唯一ID，再将<code>new</code>后面的主机加入到<code>mon_initial_members</code>和<code>mon_host</code>里面，剩下的三行大家都是一样的，默认开启CephX认证。下面有一节会专门介绍这个，需要注意的是，<strong>部署的时候，千万不要动这三行</strong> 下面会有一节介绍之。还有一个文件<code>ceph.mon.keyring</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@blog cluster]# cat ceph.mon.keyring </span><br><span class="line">[mon.]</span><br><span class="line">key = AQB1yWRYAAAAABAAhMoAcadfCdy9VtAaY79+Sw==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure>
+<p>​        除了<code>key</code>的内容不一样，剩下的都会是一样的。因为是开启了CephX认证了，所以MON直接的通讯是需要一个秘钥的，<code>key</code>的内容就是秘钥。是不是对Ceph里面的明文认证感到吃惊，有总比没有强。如果，你再次执行<code>new</code>，会生成新的<code>ceph.conf</code>和新的<code>ceph.mon.keyring</code>，并将之前的这两个文件给覆盖掉，新旧文件唯一不同的就是<code>fsid</code>和<code>key</code>的内容，但是对Ceph来说，这就是两个集群了。这里说一下我个人非常非常非常反感的一个问题，有的朋友喜欢在<code>/etc/ceph/</code>目录下面执行ceph-deploy的命令，这么做和在<strong>部署目录</strong>下面做一般是没有差别的，因为这两个目录下面都有<code>ceph.conf</code>和<code>ceph.client.admin.keyring</code>，但是我还是强烈推荐创建独立的<strong>部署目录</strong>，因为<code>/etc/ceph</code>目录是Ceph节点的运行目录，为了体现各自的功能性，也为了安全性，<strong>请不要在</strong><code>**/etc/ceph**</code><strong>目录下部署集群！！！</strong></p>
+<h3 id="Q7-为ceph-deploy添加参数"><a href="#Q7-为ceph-deploy添加参数" class="headerlink" title="Q7. 为ceph-deploy添加参数"></a><strong>Q7. 为ceph-deploy添加参数</strong></h3><p>​        Ceph-deploy的log还是很有看头的，查看<code>ceph-deploy new blog</code>(blog是我的一台主机)的log：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@blog cluster]# ceph-deploy new blog</span><br><span class="line">[ceph_deploy.conf][DEBUG ] found configuration file at: <span class="regexp">/root/</span>.cephdeploy.conf</span><br><span class="line">[ceph_deploy.cli][INFO  ] Invoked (<span class="number">1.5</span><span class="number">.36</span>): <span class="regexp">/usr/</span>bin/ceph-deploy <span class="keyword">new</span> blog</span><br><span class="line">[ceph_deploy.cli][INFO  ] ceph-deploy options:</span><br><span class="line">[ceph_deploy.cli][INFO  ]  username                      : None</span><br><span class="line">[ceph_deploy.cli][INFO  ]  func                          : <span class="xml"><span class="tag">&lt;<span class="name">function</span> <span class="attr">new</span> <span class="attr">at</span> <span class="attr">0x288e2a8</span>&gt;</span></span></span><br><span class="line"><span class="xml">[ceph_deploy.cli][INFO  ]  verbose                       : False</span></span><br><span class="line"><span class="xml">[ceph_deploy.cli][INFO  ]  overwrite_conf                : False</span></span><br><span class="line"><span class="xml">[ceph_deploy.cli][INFO  ]  quiet                         : False</span></span><br><span class="line">[ceph_deploy.cli][INFO  ]  cd_conf                       : &lt;ceph_deploy.conf.cephdeploy.Conf instance at 0x28eccf8&gt;</span><br><span class="line">[ceph_deploy.cli][INFO  ]  cluster                       : ceph</span><br><span class="line">[ceph_deploy.cli][INFO  ]  ssh_copykey                   : True</span><br><span class="line">[ceph_deploy.cli][INFO  ]  mon                           : ['blog']</span><br><span class="line">[ceph_deploy.cli][INFO  ]  public_network                : None</span><br><span class="line">[ceph_deploy.cli][INFO  ]  ceph_conf                     : None</span><br><span class="line">[ceph_deploy.cli][INFO  ]  cluster_network               : None</span><br><span class="line">[ceph_deploy.cli][INFO  ]  default_release               : False</span><br><span class="line">[ceph_deploy.cli][INFO  ]   fsid                          : None</span><br><span class="line">[ceph_deploy.new][DEBUG ] Creating new cluster named ceph</span><br></pre></td></tr></table></figure>
+<p>​        可以看到有很多的参数被列出来了，比如：<code>mon : [&#39;blog&#39;]</code>，也有很多参数是False或者None， 这些参数能否被设置呢? 因为这里我们可以看到有<code>fsid : None</code> 这个参数，难道集群的<code>fsid</code>可以被指定吗？抱着这些疑惑，我就去看完了ceph-deploy的所有代码，答案是：可以设置。所有上面的参数都可以使用参数的形式进行设置，只需要在前面加上两个<code>--</code>，比如对于<code>fsid</code>可以执行：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy  <span class="keyword">new</span> blog --fsid xx-xx-xx-xxxx</span><br></pre></td></tr></table></figure>
+<p>​        如果想要查看每个执行可指定的参数，可以<code>-h</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@blog cluster]# ceph-deploy new -h</span><br><span class="line">usage: ceph-deploy <span class="keyword">new</span> [-h] [--no-ssh-copykey] [--fsid FSID]</span><br><span class="line">                      [--cluster-network CLUSTER_NETWORK]</span><br><span class="line">                      [--public-network PUBLIC_NETWORK]</span><br><span class="line">                      MON [MON ...]</span><br><span class="line">...</span><br><span class="line">optional <span class="built_in">arguments</span>:</span><br><span class="line">  -h, --help            show <span class="keyword">this</span> help message and exit</span><br><span class="line">  --no-ssh-copykey      <span class="keyword">do</span> not attempt to copy SSH keys</span><br><span class="line">  --fsid FSID           provide an alternate FSID <span class="keyword">for</span> ceph.conf generation</span><br><span class="line">  --cluster-network CLUSTER_NETWORK</span><br><span class="line">                        specify the (internal) cluster network</span><br><span class="line">  --public-network PUBLIC_NETWORK</span><br><span class="line">                        specify the public network <span class="keyword">for</span> a cluster</span><br></pre></td></tr></table></figure>
+<p>​        这里就可以看到可以指定<code>--cluster-network</code>，<code>--public-network</code>，等等，如果<code>optional arguments</code>里面没有介绍这个参数，可以直接使用<code>--xxarg</code>的方式指定，比如<code>--overwrite-conf</code>，<code>--verbose</code>等等，能不能设置这些参数，自己动手试一下就知道了。需要注意的是，参数的位置根据指令而异，比如<code>--overwrite-conf</code>参数是跟在<code>ceph-deploy</code>后面的，而<code>--public-network</code>是跟在<code>new</code>后面的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy --overwrite-conf --verbose <span class="keyword">new</span> blog --fsid a-a-a-a</span><br><span class="line">[root@blog cluster]# cat ceph.conf |grep fsid</span><br><span class="line">fsid = a-a-a-a</span><br></pre></td></tr></table></figure>
+<h3 id="Q8-Public-VS-Cluster"><a href="#Q8-Public-VS-Cluster" class="headerlink" title="Q8. Public VS Cluster"></a><strong>Q8. Public VS Cluster</strong></h3><p>​        如果非要在刚刚生成的ceph.conf里面添加什么的话，那么可能就要加public_network或者cluster_network了。那么这两个配置项有什么用呢？这里简单得介绍下Ceph的Public(外网或者叫公网或者前端网)和Cluster(内网或者叫集群网或者叫后端网)这两个网络，在Ceph中，存在以下三种主要的网络通讯关系：</p>
+<ul>
+<li>client-&gt; mon =&gt;public : 也就是客户端获取集群状态，或者叫客户端与MON通讯走的网络，是走的外网。</li>
+<li>client-&gt; osd =&gt; public : 也就是客户端向OSD直接写入数据走的也是外网。</li>
+<li>osd<-> osd =&gt; cluster ：也就是OSD之间的数据克隆，恢复走的是内网，客户端写第一份数据时通过外网写，对于三副本剩下的两个副本OSD之间通过内网完成数据复制。当OSD挂掉之后产生的recover,走的也是内网。</-></li>
+</ul>
+<p>通常，我们会将外网配置为千兆网，而内网配置成万兆网，这是有一定原因的：</p>
+<ul>
+<li>客户端可能由成百上千的计算节点组成，外网配成万兆成本太高。</li>
+<li>存储节点一般只有几个到几十个节点，配置了万兆内网可以大大加快故障恢复速度，而且剩余的两副本写速度会大大加快，万兆网的性价比极高。举个例子，集群坏掉一个OSD千兆需要一小时，那么万兆网只需要五六分钟，一定程度上增加了集群的安全性。</li>
+</ul>
+<p>借用官网的这张图来说明集群的网络走势：再假设你的节点有两个网段172.23.0.1和3.3.4.1，还记得我们上一节<code>ceph-deploy new</code>的时候是可以指定<code>public_network</code>和<code>cluster_network</code>的吗！如果不指定这两个参数，那么ceph-deploy怎么知道用哪个IP作为这个节点的<code>mon_host</code>的IP呢，其实他是随便选的，如果它选了172网段但是你想使用3.3网段作为这个节点的<code>mon_host</code>的IP，那么只需要指定<code>--public-network 172.23.0.0/24</code> 就可以了，其中的<code>/24</code>就相当于一个掩码，表示前面的IP的前24位，也就是<code>172.23.0.XXX</code>，只要你的主机上有一个处于这个范围内的IP，那么就会选择这个IP作为公网IP。类似的，<code>/16</code>表示范围：<code>172.23.XXX.XXX</code>。 如果想指定内网IP，那么只要指定<code>--cluster-network 3.3.4.1/24</code>就可以了。</p>
+<p>​        <strong>一般情况下，会在new生成的ceph.conf文件里加入public_network配置项以指定公网IP。当然你的MON主机上需要有至少一个IP在公网范围内。</strong>除了在生成的<code>ceph.conf</code>文件中加入公网IP的方式，我们还可以使用参数的方式来指定公网IP：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph-1 cluster]# ceph-deploy new ceph-1 --public-network 172.23.0.0/24</span><br><span class="line">[ceph_deploy.cli][INFO  ] Invoked (<span class="number">1.5</span><span class="number">.36</span>): <span class="regexp">/usr/</span>bin/ceph-deploy <span class="keyword">new</span> ceph<span class="number">-1</span> --public-network <span class="number">172.23</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span></span><br><span class="line">[ceph_deploy.cli][INFO  ] ceph-deploy options:</span><br><span class="line">...</span><br><span class="line">[ceph_deploy.cli][INFO  ]  public_network                : <span class="number">172.23</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span></span><br><span class="line">...</span><br><span class="line">[ceph<span class="number">-1</span>][DEBUG ] IP addresses found: [u<span class="string">'172.23.0.101'</span>, u<span class="string">'10.0.2.15'</span>]</span><br><span class="line">[ceph_deploy.new][DEBUG ] Resolving host ceph<span class="number">-1</span></span><br><span class="line">[ceph_deploy.new][DEBUG ] Monitor ceph<span class="number">-1</span> at <span class="number">172.23</span><span class="number">.0</span><span class="number">.101</span></span><br><span class="line">[ceph_deploy.new][DEBUG ] Monitor initial members are [<span class="string">'ceph-1'</span>]</span><br><span class="line">[ceph_deploy.new][DEBUG ] Monitor addrs are [u<span class="string">'172.23.0.101'</span>]</span><br><span class="line">[ceph_deploy.new][DEBUG ] Writing monitor keyring to ceph.mon.keyring...</span><br><span class="line">[ceph_deploy.new][DEBUG ] Writing initial config to ceph.conf...</span><br><span class="line">[root@ceph-1 cluster]# cat ceph.conf </span><br><span class="line">[global]</span><br><span class="line">fsid = d2a2bccc-b215<span class="number">-4</span>f3e<span class="number">-922</span>b-cf6019068e76</span><br><span class="line">public_network = <span class="number">172.23</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span></span><br><span class="line">mon_initial_members = ceph<span class="number">-1</span></span><br><span class="line">mon_host = <span class="number">172.23</span><span class="number">.0</span><span class="number">.101</span></span><br><span class="line">auth_cluster_required = cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br></pre></td></tr></table></figure>
+<p>​        查看部署log可以发现参数配置已经生效，而这个节点有两个IP，<code>public_nwtwork</code>这个参数限定了公网IP的搜索范围，生成的ceph.conf文件内也包含了<code>public_network</code>这个参数。</p>
+<h3 id="Q9-参数是下划线还是空格分隔"><a href="#Q9-参数是下划线还是空格分隔" class="headerlink" title="Q9. 参数是下划线还是空格分隔"></a><strong>Q9. 参数是下划线还是空格分隔</strong></h3><p>​        这里只是简单的提一下这个小困惑，对于以下的两个参数书写方式，哪种会有问题呢：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public_network = <span class="number">172.23</span><span class="number">.0</span><span class="number">.1</span>/<span class="number">24</span></span><br><span class="line">public network = <span class="number">172.23</span><span class="number">.0</span><span class="number">.1</span>/<span class="number">24</span></span><br><span class="line">osd_journal_size = <span class="number">128</span></span><br><span class="line">osd journal size = <span class="number">128</span></span><br></pre></td></tr></table></figure>
+<p>​        这两种参数的书写方式其实都是正确的，说到底是因为底层调用的是Python的<code>argparse</code>模块。这两种方式都是等效的，所以不需要担心。</p>
+<h3 id="Q10-ceph-deploy-mon-create-initial如何一次性通过"><a href="#Q10-ceph-deploy-mon-create-initial如何一次性通过" class="headerlink" title="Q10. ceph-deploy mon create-initial如何一次性通过"></a><strong>Q10. ceph-deploy mon create-initial如何一次性通过</strong></h3><p>​        这一步坑哭了多少迫切加入Ceph世界的新人，看到的最多的就是5s，10s，10s, 15s，20s。。。然后报了错。再执行，再报错。所以这里给出以下的预检清单，如果被报错失败所烦恼，请认真执行各个子项，尤其是失败后要执行清理环境：</p>
+<ol>
+<li>请确保所有节点都安装了Ceph。</li>
+<li>请确保所有节点的防火墙等都关闭了。参考<strong>环境预准备</strong>一节</li>
+<li>请前往各个MON节点清理干净，不论你是否相信这个节点是干净的。参考<strong>清理环境</strong>一节。</li>
+<li>请确保各个MON节点下存在以下目录，并且对于Jewel版本及之后的请确保目录权限为<code>ceph:ceph</code>。参考<strong>部署前最后的确认</strong>一节。</li>
+<li>请在<code>ceph-deploy new</code>生成的<code>ceph.conf</code>内添加<code>public_network</code>配置项，参考<strong>Public VS Cluster</strong>一节。</li>
+</ol>
+<p>这些总结来之不易，我帮过上百个人解决过部署问题和集群故障。我相信在<strong>认真确认</strong>过之后是肯定可以通过的(反正前三点如果有问题一般是不会建好MON的，为什么不认真确认下呢)，我遇到过绝大多数都是因为防火墙没关，或者手动删除了一些目录，或者没有修改权限导致的问题。</p>
+<p>​        相对来说，新环境只要关了防火墙就可以一次性通过，旧环境或者失败的环境只要清理环境就可以通过了。</p>
+<p><strong>Q11. mon create-initial 做了什么</strong></p>
+<p>简单介绍下流程：</p>
+<ul>
+<li><p>ceph-deploy读取配置文件中的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mon_initial_members</span><br></pre></td></tr></table></figure>
+<p>的各个主机，然后依次SSH前往各个主机：</p>
+<ol>
+<li>将<strong>部署目录</strong>下的ceph.conf推送到新节点的<code>/etc/ceph/</code>目录下。</li>
+<li>创建<code>/var/lib/ceph/mon/$cluster-$hostname/</code>目录。</li>
+<li>检查MON目录下是否有<code>done</code>文件，如果有则直接跳到第6步。</li>
+<li>将<code>ceph.mon.keyring</code>拷贝到新节点，并利用该秘钥在MON目录下建立MON数据库。</li>
+<li>在MON目录下建立done文件，防止重新建立MON。</li>
+<li>启动MON进程。</li>
+<li>查看<code>/var/run/ceph/$cluster-mon.$hostname.asok</code>SOCKET文件，这个是由MON进程启动后生成的，输出MON状态。</li>
+</ol>
+</li>
+<li><p>在所有的MON都建立好后，再次前往各个主机，查看所有主机是否运行并且到达法定人群(quorum)。如果有没到到的，直接结束报错。如果都到达了，执行下一步。</p>
+</li>
+<li><p>调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auth get-or-create</span><br></pre></td></tr></table></figure>
+<p>方法创建(如果不存在)或者拉取(已经存在)MON节点上的以下几个keyring到</p>
+<p>部署目录</p>
+<p>中：</p>
+<ul>
+<li><code>ceph.bootstrap-mds.keyring</code></li>
+<li><code>ceph.bootstrap-osd.keyring</code></li>
+<li><code>ceph.bootstrap-rgw.keyring</code></li>
+<li><code>ceph.client.admin.keyring</code></li>
+</ul>
+</li>
+<li><p>指令结束。</p>
+</li>
+</ul>
+<h3 id="Q12-mon-create-initial-为什么会失败"><a href="#Q12-mon-create-initial-为什么会失败" class="headerlink" title="Q12. mon create-initial 为什么会失败"></a><strong>Q12. mon create-initial 为什么会失败</strong></h3><p>​        我不喜欢讲怎么做，我愿意花很大的篇幅介绍为什么会造成各种各样的问题，如果知道了原因，你自然知道该怎么做，所以才会理解Ceph，而不是机械的去敲指令。</p>
+<p>综合上面的所有小节，我来总结下这一步失败的基本上所有可能的原因：</p>
+<ul>
+<li>所谓MON的quorum，相当于多个MON形成的一个群体，它们之间需要通过网络发送数据包来通讯达成某种协议，如果打开了防火墙，会阻断数据交流。所以不能构成群体，一直等待(5s-&gt;10s-&gt;10s-&gt;15s-&gt;20s)其他MON的数据包，既然被阻断了这样的等待是没有意义的，等了30s还没有正常，就可以直接<code>ctrl+z</code>去检查了。</li>
+<li>我在配置文件里面添加了<code>pubilc_network</code>，但是有个主机的所有IP都不在公网IP段内，那么这个MON是建不好的，因为没有IP用作MON使用，<code>public_network</code>相当于一个<strong>过滤器</strong>。</li>
+<li>搭好了一台虚拟机后，直接克隆了两台，没有修改主机名，导致socket文件路径名识别错误，报了异常，不过这很少发生。</li>
+<li>如果在旧的MON节点上再次部署新的MON，再又没有清理环境，之前的MON数据库会保留着<code>done</code>文件，MON数据库里面还是记录着之前fsid，keyring等等，和新集群是两套完全不同的，所以这个节点的MON自然到达不了MON群体。</li>
+<li>即使你单单删除了<code>/var/lib/ceph/mon</code>下的东西，而没有清理那些keyring，也有可能会因为收集了旧集群的秘钥而发生稀奇古怪的问题。</li>
+<li>对于Jewel，你一不小心删除了<code>/var/lib/ceph/mon</code>目录，或者其他的OSD目录或者<code>/var/run/ceph</code>目录，然后又重建了目录，依然部署不上，是因为Jewel的所有Ceph指定都是运行在<code>ceph:ceph</code>用户下的，自然不能在root权限目录下建立任何文件，修改权限即可。</li>
+<li>Ceph生成MON数据库是依照主机的<code>hostname</code>来命名至目录<code>/var/lib/ceph/mon/${cluster}-${hostname}</code>的，而检测SOCKET文件则是用<code>ceph.conf</code>里面的<code>mon_initial_members</code>里面的名字来检测的 ，如果<code>mon_initial_members</code>里面的名字和真是的主机名不一致，就会报错。</li>
+</ul>
+<p>​      一旦你运行了<code>ceph-deploy mon create-initial</code>指令，并且失败了，有极大的可能性已经在某些节点建立好了MON的数据库，再次执行可能会因为旧的环境导致再次失败，所以如果失败了，执行一下第二节中的<code>清理环境</code>即可。清理完毕后，再执行<code>ceph-deploy mon create-initial</code>。</p>
+<h3 id="Q13-ceph-s-的全称以及报错原因"><a href="#Q13-ceph-s-的全称以及报错原因" class="headerlink" title="Q13. ceph -s 的全称以及报错原因**"></a>Q13. ceph -s 的全称以及报错原因**</h3><p>​        开开心心过了<code>mon create-initial</code>，这个时候执行<code>ceph -s</code>，如果你恰好在monitor节点执行，那就会显示正常的信息，但是如果你在别的节点执行<code>ceph -s</code>，很有可能会报下面的错，但是有的节点又不会，所以这里花一点篇幅介绍<code>ceph -s</code>到底是怎么工作的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@root cluster]# ceph -s</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-17</span> <span class="number">13</span>:<span class="number">47</span>:<span class="number">34.190226</span> <span class="number">7</span>f446ccde700 <span class="number">-1</span> auth: unable to find a keyring on /etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin: (<span class="number">2</span>) No such file or directory</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-17</span> <span class="number">13</span>:<span class="number">47</span>:<span class="number">34.190393</span> <span class="number">7</span>f446ccde700 <span class="number">-1</span> monclient(hunting): ERROR: missing keyring, cannot use cephx <span class="keyword">for</span> authentication</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-17</span> <span class="number">13</span>:<span class="number">47</span>:<span class="number">34.190443</span> <span class="number">7</span>f446ccde700  <span class="number">0</span> librados: client.admin initialization error (<span class="number">2</span>) No such file or directory</span><br></pre></td></tr></table></figure>
+<p>​        首先，如果你要执行<code>ceph</code>开头的任何指令，你当然要安装好Ceph客户端！（<code>yum install ceph</code>）而<code>ceph -s</code>的全称是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ceph \</span><br><span class="line">--name client.admin \</span><br><span class="line">--keyring /etc/ceph/ceph.client.admin.keyring \</span><br><span class="line">--conf /etc/ceph/ceph.conf</span><br><span class="line">--cluster ceph \</span><br><span class="line">-s</span><br></pre></td></tr></table></figure>
+<p>​        上面两个参数很好理解，Ceph内部自身使用<code>CephX</code>进行认证，和普通的认证没什么区别，同样需要用户名和密码进行认证，那么这里默认的用户名就叫做<code>client.admin</code>，而默认的秘钥保存位置就位于以下几个位置任一：</p>
+<ul>
+<li>/etc/ceph/ceph.client.admin.keyring</li>
+<li>/etc/ceph/ceph.keyring</li>
+<li>/etc/ceph/keyring</li>
+<li>/etc/ceph/keyring.bin</li>
+</ul>
+<p>一般我们选择第一个，因为秘钥的命名规则采用<code>/etc/ceph/$cluster.$name.keyring</code>也就是集群名加上用户名再加上keyring的后缀组成。所以在我们执行<code>ceph -s</code>的时候，默认使用的是<code>client.admin</code>用户，同时会去那四个默认位置搜索该用户的秘钥，如果和集群保存的认证信息一致，那么就会显示出集群的状态。如果在那四个位置下面无法找到秘钥文件，就会报上面的<code>unable to find a keyring</code>这样的错误，解决方法后面再说。如果这个位置下面的秘钥文件保存了错误的秘钥值，就会报下面的错误：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-17</span> <span class="number">15</span>:<span class="number">59</span>:<span class="number">07.625018</span> <span class="number">7</span>f8757577700  <span class="number">0</span> librados: client.admin authentication error (<span class="number">1</span>) Operation not permitted</span><br><span class="line"><span class="built_in">Error</span> connecting to cluster: PermissionError</span><br></pre></td></tr></table></figure>
+<p>​        翻译过来很简单，就是认证不通过，就好比你使用了错误的密码，去登陆系统不通过一样。这可能是由于这个节点保存了旧的集群的秘钥信息导致的。</p>
+<p>​        那么正确的秘钥信息保存在哪里呢？还记得部署目录吗，在<code>mon create-initial</code>正确通过后，就会自动收集所有的秘钥，并保存在部署目录下面，眼疾手快的把部署目录的<code>ceph.client.admin.keyring</code>拷贝到<code>/etc/ceph</code>下面就会发现<code>ceph -s</code>正常显示了，不过，这不是<strong>授权</strong>的正确的姿势。</p>
+<p>如果我们想要给一个节点admin权限，也就是执行所有Ceph指令的权限，我们可以前往部署目录，然后调用下面的指令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy admin xxNode</span><br></pre></td></tr></table></figure>
+<p>​        这样就会把部署目录下的<code>ceph.client.admin.keyring</code>和<code>ceph.conf</code>拷贝到xxNode的<code>/etc/ceph</code>目录下，并覆盖掉原先的秘钥文件，虽然实际上也就是scp了这两个文件，但是管理Ceph遵循一定的规则是一个很好的习惯。所以，想要得到<code>ceph -s</code>的正确输出，你需要确认在<code>/etc/ceph</code>目录下有<code>ceph.conf</code>和<code>ceph.client.admin.keyring</code>这两个文件，并且和集群认证信息相同即可。如果认证失败，可以前往部署目录<strong>授权</strong>该节点。</p>
+<h3 id="Q14-ceph-s-卡住了"><a href="#Q14-ceph-s-卡住了" class="headerlink" title="Q14. ceph -s 卡住了"></a><strong>Q14. ceph -s 卡住了</strong></h3><p>简单介绍下<code>ceph -s</code>的流程:</p>
+<ul>
+<li>每当你敲下一个Ceph指令时，相当于建立了一个Ceph的客户端进程去连接集群。</li>
+<li>连接集群需要知道MON的IP地址，这个地址从<code>/etc/ceph/ceph.conf</code>里面的<code>mon_host</code>读取。</li>
+<li>有了IP客户端就拿着自己用户名和秘钥向MON进行认证，认证通过执行指令返回输出。</li>
+</ul>
+<p>如果你只有一个MON，然后这个MON挂掉了，那么执行指令会返回：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@blog ceph]# ceph -s</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-19</span> <span class="number">17</span>:<span class="number">49</span>:<span class="number">45.437748</span> <span class="number">7</span>f02f44e1700  <span class="number">0</span> -- :<span class="regexp">/1314350745 &gt;&gt; 139.224.0.251:6789/</span><span class="number">0</span> pipe(<span class="number">0x7f02f0063e80</span> sd=<span class="number">3</span> :<span class="number">0</span> s=<span class="number">1</span> pgs=<span class="number">0</span> cs=<span class="number">0</span> l=<span class="number">1</span> c=<span class="number">0x7f02f005c4f0</span>).fault</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-19</span> <span class="number">17</span>:<span class="number">49</span>:<span class="number">48.442946</span> <span class="number">7</span>f02f43e0700  <span class="number">0</span> -- :<span class="regexp">/1314350745 &gt;&gt; 139.224.0.251:6789/</span><span class="number">0</span> pipe(<span class="number">0x7f02e4000c80</span> sd=<span class="number">3</span> :<span class="number">0</span> s=<span class="number">1</span> pgs=<span class="number">0</span> cs=<span class="number">0</span> l=<span class="number">1</span> c=<span class="number">0x7f02e4001f90</span>).fault</span><br></pre></td></tr></table></figure>
+<p><strong>Tips: MON的端口号为6789，所以一般看到IP:6789时，就可以判断这个IP的MON可能挂了，或者MON的防火墙开开了。</strong>上面的报错还好处理， 前往MON节点，检查<code>ceph-mon</code>进程是否正常运行，正确启动MON进程就可以了。</p>
+<p>​        如果你有两个MON，挂了一个，指令会返回和上面一样的信息，所以，两个MON只能坏一个，一般MON个数都是<strong>奇数个</strong>。如果你有三个MON，挂了一个，那么会返回下面信息，集群还是会有输出的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@st001 ~]# ceph -s</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-19</span> <span class="number">17</span>:<span class="number">59</span>:<span class="number">40.753370</span> <span class="number">7</span>f72ac31c700  <span class="number">0</span> -- :<span class="regexp">/4173548806 &gt;&gt; 10.8.0.101:6789/</span><span class="number">0</span> pipe(<span class="number">0x7f72a805e9d0</span> sd=<span class="number">3</span> :<span class="number">0</span> s=<span class="number">1</span> pgs=<span class="number">0</span> cs=<span class="number">0</span> l=<span class="number">1</span> c=<span class="number">0x7f72a805fce0</span>).fault</span><br><span class="line"><span class="number">2017</span><span class="number">-01</span><span class="number">-19</span> <span class="number">17</span>:<span class="number">59</span>:<span class="number">49.754198</span> <span class="number">7</span>f72ac21b700  <span class="number">0</span> -- <span class="number">10.8</span><span class="number">.0</span><span class="number">.101</span>:<span class="number">0</span>/<span class="number">4173548806</span> &gt;&gt; <span class="number">10.8</span><span class="number">.0</span><span class="number">.101</span>:<span class="number">6789</span>/<span class="number">0</span> pipe(<span class="number">0x7f729c000b90</span> sd=<span class="number">4</span> :<span class="number">0</span> s=<span class="number">1</span> pgs=<span class="number">0</span> cs=<span class="number">0</span> l=<span class="number">1</span> c=<span class="number">0x7f729c0041e0</span>).fault</span><br><span class="line">    cluster <span class="number">810</span>eaecb<span class="number">-2</span>b15<span class="number">-4</span>a97<span class="number">-84</span>ad<span class="number">-7340e6</span>cbe969</span><br><span class="line">    health HEALTH_WARN</span><br><span class="line">            <span class="number">1</span> mons down, quorum <span class="number">1</span>,<span class="number">2</span> st002,st003</span><br><span class="line">    monmap e1: <span class="number">3</span> mons at &#123;st001=<span class="number">10.8</span><span class="number">.0</span><span class="number">.101</span>:<span class="number">6789</span>/<span class="number">0</span>,st002=<span class="number">10.8</span><span class="number">.0</span><span class="number">.102</span>:<span class="number">6789</span>/<span class="number">0</span>,st003=<span class="number">10.8</span><span class="number">.0</span><span class="number">.103</span>:<span class="number">6789</span>/<span class="number">0</span>&#125;</span><br><span class="line">            election epoch <span class="number">18</span>, quorum <span class="number">1</span>,<span class="number">2</span> st002,st003</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>​        客户端会去连挂掉的MON，如果过一秒钟左右连不上，就会连接剩下的MON，剩下的还有两个在运行，就连到了运行中的MON，一切输出照旧，就是多了那个连不上的MON报错输出。</p>
+<p>​        而<code>ceph -s</code>卡住有一种可能是：对于有三个MON的集群，挂掉了两个MON之后 ，手动去<code>/etc/ceph/ceph.conf</code>里面把挂掉的MON的IP给删除了， 只留下一个，这时候<code>ceph -s</code>的指令就会一直卡在那里，查看MON的log可以发现，那个活着的MON一直处于<code>probing</code>状态，这样的MON是不会给客户端返回信息的，所以会卡在那里。有一点需要知道的是，MON的删除比较复杂，不能仅仅通过修改配置文件里面的IP值修改MON，所以，这里正确的做法就是，将删除的IP加回去，然后<code>ceph -s</code>就会报出6789之类的错误，然后再去对应的IP的MON去启动MON服务。</p>
+<p>​        那么一个集群能坏多少MON呢 ，简单的计算法法就是：</p>
+<p>​        <strong>(mon个数 -1 )/ 2 取整数位</strong></p>
+<p>​        也就是说三个能坏一个，两个和一个不能坏，四个坏一个，五个坏两个等等等。当你坏的MON个数大于可以坏的个数，那么所有的指令是不能返回的。</p>
+<h3 id="Q15-Monitor-clock-skew-detected"><a href="#Q15-Monitor-clock-skew-detected" class="headerlink" title="Q15. Monitor clock skew detected"></a><strong>Q15. Monitor clock skew detected</strong></h3><p>​        如果你部署了多个monitor，比如三个MON，而这三个MON的时间不是严格相同的，那么就会报这个错，而Ceph需要MON节点之间的时间差在0.05秒之内，所以一般会选择配置一个内部的NTP server。剩余节点指向该Server节点。</p>
+<p>​        千万一定不要小看了时间对其这个问题，如果各个节点时间不对其的话，有可能会导致某些OSD无法启动，而校准后，OSD立马就启动成功了，亦或导致OSD异常挂掉等等一系列的奇怪现象，十分不利于故障排查。</p>
+<p>​        然而，简单的增加<code>mon_clock_drift_allowed</code>的时间偏移大小，是治标不治本的方法，并且OSD节点的时间偏移并不会报告在<code>ceph -s</code>里面，所以根本的节点方法还是配置NTP，具体方法请参考我之前写的配置NTP一段，这里就不重复了。</p>
+<h3 id="Q16-CephX是什么，以及CephX的开启与关闭"><a href="#Q16-CephX是什么，以及CephX的开启与关闭" class="headerlink" title="Q16. CephX是什么，以及CephX的开启与关闭"></a><strong>Q16. CephX是什么，以及CephX的开启与关闭</strong></h3><p>在默认生成的<code>ceph.conf</code>里面有三行包含CephX的配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auth_cluster_required = cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br></pre></td></tr></table></figure>
+<p>Ceph提供认证功能，想要连接集群，是需要提供用户名和密码的，这三个配置的值只有两种：</p>
+<ul>
+<li><code>cephx</code>: 开启CephX，即需要提供用户名和密码才能连接集群。</li>
+<li><code>none</code>: 关闭CephX，即不需要提供，任何人都可以连接集群。</li>
+</ul>
+<p><strong>注意</strong>：如果关闭了CephX，那么任何一个客户端只要拥有了MON的IP和集群的fsid，就可以连接到集群中，然后执行所有的Ceph的指令，这是相当危险的，所以对于一个非局域网的集群，是需要开启的。</p>
+<p>之所以写这一节，是因为见过好几个在部署集群时就关闭了CephX而遇到了奇怪的现象的情形，他们一般的操作步骤是：</p>
+<ol>
+<li><code>ceph-deploy new node1 node2 node3</code></li>
+<li>将生成的<code>ceph.conf</code>中的三个<code>cephx</code>改成了<code>none</code></li>
+<li><code>ceph-deploy mon create-initial</code> 这一步报错如下:</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[ceph_deploy.mon][INFO  ] mon.blog monitor has reached quorum!</span><br><span class="line">[ceph_deploy.mon][INFO  ] all initial monitors are running and have formed quorum</span><br><span class="line">[ceph_deploy.mon][INFO  ] Running gatherkeys...</span><br><span class="line">.......</span><br><span class="line">[blog][DEBUG ] fetch remote file</span><br><span class="line">[ceph_deploy.gatherkeys][WARNIN] No mon key found <span class="keyword">in</span> host: blog</span><br><span class="line">[ceph_deploy.gatherkeys][ERROR ] Failed to connect to host:blog</span><br><span class="line">[ceph_deploy.gatherkeys][INFO  ] Destroy temp directory /tmp/tmpyGDe4r</span><br><span class="line">[ceph_deploy][ERROR ] RuntimeError: Failed to connect any mon</span><br></pre></td></tr></table></figure>
+<p>​        先介绍下这里报错的原因，在Ceph中，除了需要使用Ceph的普通用户之外，Ceph的基本组件：MON，OSD，MDS再到RGW等都可以看做一个用户，而在使用<code>ceph-deploy</code>部署的时候，会默认为这些用户生成秘钥文件，在<code>ceph-deploy new</code>的时候，除了生成了<code>ceph.conf</code>，还生成了<code>ceph.mon.keyring</code>，顾名思义这个就是为MON用户生成的秘钥文件。查看该文件的内容可以看到如下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mon.]</span><br><span class="line">key = AQCUXIRYAAAAABAAOi6Cxnvm+zFzd5gi+hrt+A==</span><br><span class="line">caps mon = allow *</span><br></pre></td></tr></table></figure>
+<p>一个秘钥文件一般由三部分组成：</p>
+<ul>
+<li><code>[mon.]</code> ： 也就是用户名，在方括号里面的就是用户名，这里为<code>mon.</code>，注意是有个<strong>点号</strong>的。</li>
+<li><code>key = AQCUXIRYAAAAABAAOi6Cxnvm+zFzd5gi+hrt+A==</code> : 顾名思义，这就是<code>mon.</code>用户的密码。</li>
+<li><code>caps</code> ： 后面的就是权限，这里可以简单理解成，该用户可以对所有的MON进行所有操作。</li>
+</ul>
+<p>也就是说，Ceph中的Monitor也会像一个用户一样，拥有自己的用户名和秘钥以及操作MON的权限。简单理解了CephX之后，我们再来看上面修改了<code>none</code>之后报的错。</p>
+<p>​        在<code>ceph-deploy mon create-initial</code>执行的时候，它会去读取<code>ceph.conf</code>里面的<code>auth_cluster_required</code>配置，当被修改为<code>none</code>之后， 就不会在创建MON的时候，为其生成对应的<code>keyring</code>，但是有一点要注意的是，尽管没有为MON生成秘钥文件，但是，MON是正确生成的，这时候执行<code>ceph -s</code>是可以得到集群状态的，说明MON已经正确建立。但是在所有的MON建立成功之后，<code>mon create-initial</code>指令内部会执行<code>gatherkeys</code>指令，这个指令会首先去MON的目录下面查找<code>/var/lib/ceph/mon/ceph-$HOSTNAME/keyring</code>文件，由于关闭了CephX，在创建MON的时候不会为其生成该文件，所以<code>gatherkeys</code>指令报错：<code>No mon key found in host: blog</code>。这里只要清理下MON环境然后开启CephX重新部署MON就可以通过了。所以在我们<strong>部署集群</strong>的时候，<strong>强烈建议开启CephX</strong>，这样除了可以正确通过<code>mon create-initial</code>，还可以在后续的添加OSD时，为每个OSD生成对应的秘钥。在<strong>集群部署完毕后</strong>，可以关闭CephX认证，具体方法如下：</p>
+<ul>
+<li>修改部署目录内<code>ceph.conf</code>的<code>cephx-&gt;none</code>,将配置推送到所有节点。</li>
+<li>重启所有的MON和OSD。如果只重启MON，过一段时间(几个小时)，所有的OSD就会挂掉。。。</li>
+</ul>
+<p>在<code>ceph-deploy mon create-initial</code>正确通过之后，我们可以在部署目录下面看到多出了几个文件，都是以<code>keyring</code>结尾：</p>
+<ul>
+<li><code>ceph.client.admin.keyring</code>： 这个是超级用户<code>client.admin</code>的秘钥文件，查看其对应的权限，可以发现全部都是<code>allow *</code>，所以有了这个秘钥之后，相当于有了Linux系统的<code>root</code>用户，可以为所欲为了。</li>
+<li><code>ceph.bootstrap-osd.keyring</code>: 类似的还有两个<code>mds</code>和<code>rgw</code>，<code>bootstrap</code>的意思是引导，查看其权限<code>mon = &quot;allow profile bootstrap-osd&quot;</code>，简单解释就是，这个用户可以用于创建OSD(or MDS or RGW)用户。也就是说，后续的OSD的用户的生成是由该用户引导生成的。</li>
+</ul>
+<p>最后再说一点，对于秘钥文件，其实我们只需要提供<code>key= xxxxxxxx</code>和用户名<code>[xxx]</code>就好了，不需要提供权限部分，因为权限已经在Ceph集群中保存了，秘钥文件说了不算的。具体权限可以通过<code>ceph auth list</code>来查看。</p>
+<h3 id="Q17-–overwrite-conf参数"><a href="#Q17-–overwrite-conf参数" class="headerlink" title="Q17. –overwrite-conf参数"></a><strong>Q17. –overwrite-conf参数</strong></h3><p>这是个经常会遇到的问题，修改配置文件内的某些参数后，再执行<code>ceph-deploy</code>指令，会报如下的错误：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[blog][DEBUG ] write cluster configuration to /etc/ceph/&#123;cluster&#125;.conf</span><br><span class="line">[ceph_deploy.mon][ERROR ] RuntimeError: config file /etc/ceph/ceph.conf exists <span class="keyword">with</span> different content; use --overwrite-conf to overwrite</span><br><span class="line">[ceph_deploy][ERROR ] GenericError: Failed to create <span class="number">1</span> monitors</span><br></pre></td></tr></table></figure>
+<p>​        报错信息提示得很明确，部署目录内的<code>ceph.conf</code>和集群的配置文件<code>/etc/ceph/ceph.conf</code>内容不一致，使用<code>--overwrite-conf</code>参数来覆盖集群的配置文件，也就是用部署目录的<code>ceph.conf</code>覆盖之。使用<code>ceph-deploy --overwrite-conf xxxCMD</code>来达到这一效果，当然，你也可以直接<code>cp</code>覆盖之。但是这不是一个好习惯。</p>
+<p>正确的修改集群配置文件的姿势应该是：</p>
+<ul>
+<li>修改<strong>部署目录下的<code>ceph.conf</code></strong>。</li>
+<li><code>ceph-deploy --overwrite-conf config push NodeA NodeB ... NodeZ</code>将部署目录下的配置文件推送到各个节点。</li>
+<li><strong>强烈建议使用上面的方法</strong></li>
+</ul>
+<p>有的朋友可能喜欢直接去某个节点下的<code>/etc/ceph/ceph.conf</code>去改配置文件，这样有很多坏处：</p>
+<ul>
+<li>过了一周你可能忘了你改过这个节点的配置文件。</li>
+<li>这个节点的配置和集群其他节点的配置不一样，会带来一些安全隐患。</li>
+<li>如果再来一个不知情的同事，他使用了正确的姿势推送配置文件，你改过的参数很容易被覆盖掉。</li>
+</ul>
+<p>所以，从一开始，大家都使用同样的方式去修改集群的配置，是一个很好的习惯，对集群对同事有利无害。</p>
+<p>​        如果你觉得可以接受这种推送配置的方式，但是又不喜欢每次都敲<code>--overwrite-conf</code>这么长的参数，你可以修改<code>~/.cephdeploy.conf</code>这个文件，增加一行<code>overwrite_conf = true</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># ceph-deploy configuration file</span><br><span class="line">[ceph-deploy-global]</span><br><span class="line"># Overrides for some of ceph-deploy's global flags, like verbosity or cluster</span><br><span class="line"># name</span><br><span class="line">overwrite_conf = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>​        打开文件你就会发现，这个是<code>ceph-deploy</code>的配置文件，里面的配置项是对<code>ceph-deploy</code>生效的，在加了那一行之后，我们再去执行<code>ceph-deploy</code>的任何指令，都会默认带上了<code>--overwrite-conf</code>参数，这样就可以不打这个参数还能覆盖节点的配置文件。好处是少打了一些参数，坏处是你可能会不知不觉就覆盖了配置文件，各中利弊自行取舍。</p>
+<p>​        <code>~/.cephdeploy.conf</code>这个文件的用处是很大的，可以为不同的<code>ceph-deploy xxxCMD</code>添加参数，刚刚添加在<code>[ceph-deploy-global]</code>下的参数对全局都会生效，如果你希望只对<code>xxxCMD</code>比如<code>new</code>，<code>osd</code>，<code>mon</code>指定对应的参数，可以添加<code>[ceph-deploy-xxxCMD]</code>域，同时在对应的域下添加对应的参数。</p>
+<p>​        比如给<code>ceph-deploy osd 添加参数--zap-disk</code>，可以在<code>~/.cephdeploy.conf</code>中添加：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ceph-deploy-osd]</span><br><span class="line">zap_disk = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="Q18-PG卡在creating状态"><a href="#Q18-PG卡在creating状态" class="headerlink" title="Q18. PG卡在creating状态"></a><strong>Q18. PG卡在creating状态</strong></h3><p>​        这时候，Monitor已经建好了，可以执行<code>ceph -s</code>的指令了，然而我们看到集群的健康状态却是：<code>health HEALTH_ERR</code>。之所以是ERROR状态，是因为目前还没有建立OSD，PG处于creating状态，在建好了OSD之后，自然会解决这一问题。然而我要说的重点是<code>creating</code>这个状态的几个产生原因。</p>
+<p>​        <code>creating</code>字面意思很好理解，正在创建，那么怎么理解PG正在创建呢？ 用最简单的方式解释PG就是： <strong>PG等于目录</strong>。如果我们使用磁盘做OSD的话，那么这个OSD上的PG就相当于，在这个磁盘上建立的目录。那么现在的问题就可以简化成，我们尚未添加任何磁盘，那么需要落盘的目录无处可建，所以就会长时间处于<code>creating</code>状态。在添加了一些OSD后，PG就可以建立了。</p>
+<p>​        还有一种可能的原因是，刚入门的同学在配置文件中加了<code>osd_crush_update_on_start = false</code> 参数，这个参数的具体意义会有专门的小节介绍，这个参数的默认值是<code>true</code>，在使用这个参数后不论创建多少OSD，PG都依旧卡在<code>creating</code>状态。原因是所添加的OSD均不在默认的<code>root=default</code>根节点下。CRUSH在<code>default</code>下无法找到OSD，所以效果就和没有创建OSD一样，再解释就过于深入了，这里只简单介绍下解决方法：</p>
+<ul>
+<li>将部署目录里的<code>ceph.conf</code>的<code>osd_crush_update_on_start = false</code>去掉，或者将false改为true。</li>
+<li>将配置文件推送到各个节点。</li>
+<li>重启所有的OSD。</li>
+</ul>
+<p>这样OSD在启动时，就会自动加到对应的主机名下的host下方，并将主机名加到<code>default</code>下方。这样CRUSH就可以找到OSD了。当然，对于新入门的同学，一点建议就是，不知道意义的参数都不用加上，Ceph有自己一套默认参数，而这些参数不用修改就可以正常运行集群。如果添加了某些参数，最好知道其作用再使用。</p>
+<h3 id="Q19-osd-crush-update-on-start-参数的使用和注意点"><a href="#Q19-osd-crush-update-on-start-参数的使用和注意点" class="headerlink" title="Q19. osd_crush_update_on_start 参数的使用和注意点"></a><strong>Q19. osd_crush_update_on_start 参数的使用和注意点</strong></h3><p>​        这是一个很有趣的参数，使用得当会省去很多事情，使用不当可能会造成灾难(亲身体验)。这个参数在<code>ceph --show-config</code>中并不能查询到，所以这并不是Ceph进程的一个配置项。实际上，这个配置相当于一个启动配置项。也就是说在OSD启动的时候会加载这个参数。由于Jewel将OSD的启动方式做了修改，所以针对Hammer及其之前和Jewel两种启动方式，分别在下面的两个文件使用到了这个参数，实际上，加载的方式还是一样的，只是启动文件有所变化：</p>
+<ul>
+<li>Hammer 及其之前 : <code>0.94.9 -&gt; /etc/init.d/ceph -&gt; line 370 -&gt; get_conf update_crush &quot;&quot; &quot;osd crush update on start&quot;</code></li>
+<li>Jewel : <code>10.2.3 -&gt;/usr/lib/ceph/ceph-osd-prestart.sh -&gt; line 23 -&gt; update=&quot;$(ceph-conf --cluster=${cluster:-ceph} --name=osd.$id --lookup osd_crush_update_on_start || :)&quot;</code></li>
+</ul>
+<p>在OSD启动的时候，都会去配置文件中读取<code>osd_crush_update_on_start</code>。然后启动脚本根据是否存在以及配置值来决定是否将该OSD按照一定的方式(CRUSH位置，OSD的ID，OSD的weight)将这个OSD添加到CRUSH中。</p>
+<p>​        简单点说，如果这个值为false，那么OSD在启动的时候不会去修改你的CRUSH树，也就是说OSD不会自动填加到对应的主机名下再自己添加到<code>root=default</code>下。</p>
+<p>​        如果这个值为true，或者不添加该配置项(也就是说，默认为true)，OSD在启动时(任何一次启动)都会将自己添加到CRUSH树下。默认的位置为：<code>/usr/bin/ceph-crush-location -&gt; line 86 -&gt; host=$(hostname -s) root=default</code>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ceph/" rel="tag"><i class="fa fa-tag"></i> ceph</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/08/hexo搭建流程/" rel="next" title="Hexo搭建博客教程">
+                <i class="fa fa-chevron-left"></i> Hexo搭建博客教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/25/c++虚继承和虚基类/" rel="prev" title="c++虚继承和虚基类">
+                c++虚继承和虚基类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-环境预准备"><span class="nav-number">1.</span> <span class="nav-text">Q1. 环境预准备**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-清理环境"><span class="nav-number">2.</span> <span class="nav-text">Q2. 清理环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-部署前最后的确认"><span class="nav-number">3.</span> <span class="nav-text">Q3. 部署前最后的确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q4-安装Ceph"><span class="nav-number">4.</span> <span class="nav-text">Q4. 安装Ceph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q5-ceph-deploy"><span class="nav-number">5.</span> <span class="nav-text">Q5. ceph-deploy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q6-ceph-deploy-new-做了什么"><span class="nav-number">6.</span> <span class="nav-text">Q6. ceph-deploy new 做了什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q7-为ceph-deploy添加参数"><span class="nav-number">7.</span> <span class="nav-text">Q7. 为ceph-deploy添加参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q8-Public-VS-Cluster"><span class="nav-number">8.</span> <span class="nav-text">Q8. Public VS Cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q9-参数是下划线还是空格分隔"><span class="nav-number">9.</span> <span class="nav-text">Q9. 参数是下划线还是空格分隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q10-ceph-deploy-mon-create-initial如何一次性通过"><span class="nav-number">10.</span> <span class="nav-text">Q10. ceph-deploy mon create-initial如何一次性通过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q12-mon-create-initial-为什么会失败"><span class="nav-number">11.</span> <span class="nav-text">Q12. mon create-initial 为什么会失败</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q13-ceph-s-的全称以及报错原因"><span class="nav-number">12.</span> <span class="nav-text">Q13. ceph -s 的全称以及报错原因**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q14-ceph-s-卡住了"><span class="nav-number">13.</span> <span class="nav-text">Q14. ceph -s 卡住了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q15-Monitor-clock-skew-detected"><span class="nav-number">14.</span> <span class="nav-text">Q15. Monitor clock skew detected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q16-CephX是什么，以及CephX的开启与关闭"><span class="nav-number">15.</span> <span class="nav-text">Q16. CephX是什么，以及CephX的开启与关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q17-–overwrite-conf参数"><span class="nav-number">16.</span> <span class="nav-text">Q17. –overwrite-conf参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q18-PG卡在creating状态"><span class="nav-number">17.</span> <span class="nav-text">Q18. PG卡在creating状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q19-osd-crush-update-on-start-参数的使用和注意点"><span class="nav-number">18.</span> <span class="nav-text">Q19. osd_crush_update_on_start 参数的使用和注意点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
