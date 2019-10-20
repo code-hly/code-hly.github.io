@@ -88,13 +88,13 @@
 
 
 
-<meta name="description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。​">
+<meta name="description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。">
 <meta name="keywords" content="c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++虚继承下的内存模型">
 <meta property="og:url" content="http://yoursite.com/2019/05/25/C++虚继承下的内存模型/index.html">
 <meta property="og:site_name" content="龙场驿站">
-<meta property="og:description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。​">
+<meta property="og:description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-161019164406212.jpg">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1509151624041K.jpg">
@@ -107,10 +107,10 @@
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-150915201003P8.jpg">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1509151S441J0.jpg">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-15091520341C51.jpg">
-<meta property="og:updated_time" content="2019-10-20T12:46:22.000Z">
+<meta property="og:updated_time" content="2019-10-20T12:51:12.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++虚继承下的内存模型">
-<meta name="twitter:description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。​">
+<meta name="twitter:description" content="简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。">
 <meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-161019164406212.jpg">
 
 
@@ -458,8 +458,8 @@
       
 
       
-        <p>  简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。<br>​</p>
-<a id="more"></a>
+        <pre><code>简单的面向对象，只有单继承或多继承的情况下，内存模型很好理解，编译器实现起来也容易，C++ 的效率和 C 的效率不相上下。一旦和 virtual 关键字扯上关系，使用到虚继承或虚函数，内存模型就变得混乱起来，各种编译器的实现也不一致，让人抓狂。
+</code></pre><a id="more"></a>
 <h2 id="虚继承下的内存模型"><a href="#虚继承下的内存模型" class="headerlink" title="虚继承下的内存模型"></a>虚继承下的内存模型</h2><p>​        这是因为 C++ 标准仅对 C++ 的实现做了框架‘性的概述，并没有规定细节如何实现，所以不同厂商的编译器在具体实现方案上会有所差异。<br>​<br>​        对于普通继承，基类子对象始终位于派生类对象的前面（也即基类成员变量始终在派生类成员变量的前面），而且不管继承层次有多深，它相对于派生类对象顶部的偏移量是固定的。请看下面的例子： </p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> m_a1;</span><br><span class="line">    <span class="keyword">int</span> m_a2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span> <span class="keyword">public</span> A&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> b1;</span><br><span class="line">    <span class="keyword">int</span> b2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span> <span class="keyword">public</span> B&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> c1;</span><br><span class="line">    <span class="keyword">int</span> c2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>:</span> <span class="keyword">public</span> C&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> d1;</span><br><span class="line">    <span class="keyword">int</span> d2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    A obj_a;</span><br><span class="line">    B obj_b;</span><br><span class="line">    C obj_c;</span><br><span class="line">    D obj_d;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​        <code>obj_a</code>、<code>obj_b</code>、<code>obj_c</code>、<code>obj_d</code> 的内存模型如下所示： </p>
