@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/07/Ceph-bluestore/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/07/ceph-12部署/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -322,7 +322,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/07/Ceph-bluestore/" itemprop="url">ceph存储引擎之bluestore</a></h1>
+                <a class="post-title-link" href="/2019/05/07/ceph-12部署/" itemprop="url">ceph-deploy部署ceph12集群</a></h1>
         
 
         <div class="post-meta">
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/05/07/Ceph-bluestore/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/07/Ceph-bluestore/" itemprop="commentCount"></span>
+                <a href="/2019/05/07/ceph-12部署/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/07/ceph-12部署/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,7 @@
 
           
           
-             <span id="/2019/05/07/Ceph-bluestore/" class="leancloud_visitors" data-flag-title="ceph存储引擎之bluestore">
+             <span id="/2019/05/07/ceph-12部署/" class="leancloud_visitors" data-flag-title="ceph-deploy部署ceph12集群">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3k
+                  7.1k
                 </span>
               
 
@@ -426,7 +426,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10
+                  36
                 </span>
               
             </div>
@@ -448,10 +448,11 @@
 
       
         
-          <p>​        ceph后端支持多种存储引擎，以插件式的方式来进行管理使用，目前支持filestore，kvstore，memstore以及最新的bluestore，本文介绍的是bluestore的存储方法。</p>
+          <h1 id="1-环境"><a href="#1-环境" class="headerlink" title="1. 环境"></a>1. 环境</h1><h2 id="1-1-硬件"><a href="#1-1-硬件" class="headerlink" title="1.1 硬件"></a>1.1 硬件</h2><p>4台 Linux虚拟机： server0, server1, server2, server3<br> 每台有两块磁盘 ： /dev/vdb, /dev/vdc<br> 每台有两块网卡 ：eth0, ens9</p>
+<h2 id="1-2-软件"><a href="#1-2-软件" class="headerlink" title="1.2 软件"></a>1.2 软件</h2><p>linux版本： CentOS 7.2.1511<br> 内核版本 ：  3.10.0-327.el7.x86_64<br> ceph版本：  12.2.12<br> ceph-deploy版本： 2.0.0</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/07/Ceph-bluestore/" rel="contents">
+            <a class="btn" href="/2019/05/07/ceph-12部署/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
