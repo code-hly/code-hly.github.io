@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shell,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="重定向​    Linux Shell重定向分为两种，一种输入重定向，一种是输出重定向；从字面上理解，输入输出重定向就是「改变输入与输出的方向」的意思。 其实输入输出方向就是数据的流动方向：  输入方向就是数据从哪里流向程序。数据默认从键盘流向程序，如果改变了它的方向，数据就从其它地方流入，这就是输入重定向。 输出方向就是数据从程序流向哪里。数据默认从程序流向显示器，如果改变了它的方向，数据就流向">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell重定向">
+<meta property="og:url" content="http://yoursite.com/2018/05/11/shell10-重定向/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="重定向​    Linux Shell重定向分为两种，一种输入重定向，一种是输出重定向；从字面上理解，输入输出重定向就是「改变输入与输出的方向」的意思。 其实输入输出方向就是数据的流动方向：  输入方向就是数据从哪里流向程序。数据默认从键盘流向程序，如果改变了它的方向，数据就从其它地方流入，这就是输入重定向。 输出方向就是数据从程序流向哪里。数据默认从程序流向显示器，如果改变了它的方向，数据就流向">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4101H45S13.gif">
+<meta property="og:updated_time" content="2020-06-30T09:30:49.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell重定向">
+<meta name="twitter:description" content="重定向​    Linux Shell重定向分为两种，一种输入重定向，一种是输出重定向；从字面上理解，输入输出重定向就是「改变输入与输出的方向」的意思。 其实输入输出方向就是数据的流动方向：  输入方向就是数据从哪里流向程序。数据默认从键盘流向程序，如果改变了它的方向，数据就从其它地方流入，这就是输入重定向。 输出方向就是数据从程序流向哪里。数据默认从程序流向显示器，如果改变了它的方向，数据就流向">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4101H45S13.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/11/shell10-重定向/">
+
+
+
+
+
+  <title>shell重定向 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/11/shell10-重定向/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell重定向</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T21:13:00+08:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/11/shell10-重定向/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/11/shell10-重定向/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/11/shell10-重定向/" class="leancloud_visitors" data-flag-title="shell重定向">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  31
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>​    <code>Linux Shell</code>重定向分为两种，一种输入重定向，一种是输出重定向；从字面上理解，输入输出重定向就是「改变输入与输出的方向」的意思。</p>
+<p>其实输入输出方向就是数据的流动方向：</p>
+<ul>
+<li>输入方向就是数据从哪里流向程序。数据默认从键盘流向程序，如果改变了它的方向，数据就从其它地方流入，这就是输入重定向。</li>
+<li>输出方向就是数据从程序流向哪里。数据默认从程序流向显示器，如果改变了它的方向，数据就流向其它地方，这就是输出重定向。</li>
+</ul>
+<a id="more"></a>
+<h3 id="硬件设备和文件描述符"><a href="#硬件设备和文件描述符" class="headerlink" title="硬件设备和文件描述符"></a>硬件设备和文件描述符</h3><p>​    计算机的硬件设备有很多，常见的输入设备有键盘、鼠标、麦克风、手写板等，输出设备有显示器、投影仪、打印机等。<strong>不过，在<code>Linux</code>中，标准输入设备指的是键盘，标准输出设备指的是显示器。</strong></p>
+<p>​    <code>Linux</code>中一切皆文件，包括标准输入设备（键盘）和标准输出设备（显示器）在内的所有计算机硬件都是文件。</p>
+<p> 为了表示和区分已经打开的文件，<code>Linux</code>会给每个文件分配一个<code>ID</code>，这个<code>ID</code>就是一个整数，被称为文件描述符（<code>File Descriptor</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>文件描述符</th>
+<th>文件名</th>
+<th>类型</th>
+<th>硬件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>stdin</code></td>
+<td>标准输入文件</td>
+<td>键盘</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>stdout</code></td>
+<td>标准输出文件</td>
+<td>显示器</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>stderr</code></td>
+<td>标准错误输出文件</td>
+<td>显示器</td>
+</tr>
+</tbody>
+</table>
+<p>​    <code>Linux</code>程序在执行任何形式的<code>I/O</code>操作时，都是在读取或者写入一个文件描述符。一个文件描述符只是一个和打开的文件相关联的整数，它的背后可能是一个硬盘上的普通文件、<code>FIFO</code>、管道、终端、键盘、显示器，甚至是一个网络连接。</p>
+<p>​    <code>stdin</code>、<code>stdout</code>、<code>stderr</code>默认都是打开的，在重定向的过程中，<code>0</code>、<code>1</code>、<code>2</code>这三个文件描述符可以直接使用。</p>
+<h3 id="Shell输出重定向"><a href="#Shell输出重定向" class="headerlink" title="Shell输出重定向"></a><code>Shell</code>输出重定向</h3><p>​    输出重定向是指命令的结果不再输出到显示器上，而是输出到其它地方，一般是文件中。这样做的最大好处就是把命令的结果保存起来，当我们需要的时候可以随时查询。<code>Bash</code>支持的输出重定向符号如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>类 型</th>
+<th>符 号</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标准输出重定向</td>
+<td><code>command &gt;file</code></td>
+<td>以覆盖的方式，把<code>command</code>的正确输出结果输出到<code>file</code>文件中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;&gt;file</code></td>
+<td>以追加的方式，把<code>command</code>的正确输出结果输出到<code>file</code>文件中。</td>
+</tr>
+<tr>
+<td>标准错误输出重定向</td>
+<td><code>command 2&gt;file</code></td>
+<td>以覆盖的方式，把<code>command</code>的错误信息输出到<code>file</code>文件中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command 2&gt;&gt;file</code></td>
+<td>以追加的方式，把<code>command</code>的错误信息输出到<code>file</code>文件中。</td>
+</tr>
+<tr>
+<td>正确输出和错误信息同时保存</td>
+<td><code>command &gt;file 2&gt;&amp;1</code></td>
+<td>以覆盖的方式，把正确输出和错误信息同时保存到同一个文件（<code>file</code>）中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;&gt;file 2&gt;&amp;1</code></td>
+<td>以追加的方式，把正确输出和错误信息同时保存到同一个文件（<code>file</code>）中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;file1 2&gt;file2</code></td>
+<td>以覆盖的方式，把正确的输出结果输出到<code>file1</code>文件中，把错误信息输出到<code>file2</code>文件中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;&gt;file1 2&gt;&gt;file2</code></td>
+<td>以追加的方式，把正确的输出结果输出到<code>file1</code>文件中，把错误信息输出到<code>file2</code>文件中。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;file 2&gt;file</code></td>
+<td>【<strong>不推荐</strong>】这两种写法会导致<code>file</code>被打开两次，引起资源竞争，所以<code>stdout</code>和<code>stderr</code>会互相覆盖。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>command &gt;&gt;file 2&gt;&gt;file</code></td>
+<td>【<strong>不推荐</strong>】这两种写法会导致 <code>file</code>被打开两次，引起资源竞争，所以<code>stdout</code>和<code>stderr</code>会互相覆盖。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>在输出重定向中，<code>&gt;</code>代表的是覆盖，<code>&gt;&gt;</code>代表的是追加。</strong></p>
+</blockquote>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>输出重定向的完整写法其实是<code>fd&gt;file</code>或者<code>fd&gt;&gt;file</code>，其中<code>fd</code>表示文件描述符，如果不写，默认为<code>1</code>，也就是标准输出文件。</p>
+</blockquote>
+<p>​    <strong>当是输出重定向时，文件描述符为<code>1</code>，一般都省略不写，<code>command &gt;file</code>等同于<code>command 1&gt;file</code>。当文件描述符为大于 1 的值时，比如 2，就必须写上。</strong></p>
+<p>​    需要重点说明的是，<strong><code>fd</code>和<code>&gt;</code>之间不能有空格，否则 Shell 会解析失败；<code>&gt;</code>和<code>file</code>之间的空格可有可无。</strong>为了保持一致，我习惯在<code>&gt;</code>两边都不加空格。</p>
+<p>​    下面的语句是一个反面教材：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "c.biancheng.net" 1 &gt;log.txt</span><br></pre></td></tr></table></figure>
+<p>注意<code>1</code>和<code>&gt;</code>之间的空格。<code>echo</code>命令的输出结果是<code>c.biancheng.net</code>，我们的初衷是将输出结果重定向到 <code>log.txt</code>，但是当你打开<code>log.txt</code>文件后，发现文件的内容为<code>c.biancheng.net 1</code>，这就是多余的空格导致的解析错误。也就是说，<code>Shell</code>将该条语句理解成了下面的形式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "c.biancheng.net" 1 1&gt;log.txt</span><br></pre></td></tr></table></figure>
+<h4 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a>输出重定向</h4><p><strong>【实例1】将<code>echo</code>命令的输出结果以追加的方式写入到<code>demo.txt</code>文件中。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">for str in "C语言中文网" "http://c.biancheng.net/" "成立7年了" "日IP数万"</span><br><span class="line">do</span><br><span class="line">    echo $str &gt;&gt;demo.txt  #将输入结果以追加的方式重定向到文件</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>运行以上脚本，使用<code>cat demo.txt</code>查看文件内容，显示如下：<br><code>C语言中文网</code><br><code>http://c.biancheng.net/</code><br><code>成立7年了</code><br><code>日IP数万</code></p>
+<p><strong>【实例2】将<code>ls -l</code>命令的输出结果重定向到文件中。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -l  #先预览一下输出结果</span><br><span class="line">总用量 16</span><br><span class="line">drwxr-xr-x. 2 root     root      21 7月   1 2016 abc</span><br><span class="line">-rw-r--r--. 1 mozhiyan mozhiyan 399 3月  11 17:12 demo.sh</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan  67 3月  22 17:16 demo.txt</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan 278 3月  16 17:17 main.c</span><br><span class="line">-rwxr-xr-x. 1 mozhiyan mozhiyan 187 3月  22 17:16 test.sh</span><br><span class="line">[c.biancheng.net]$ ls -l &gt;demo.txt  #重定向</span><br><span class="line">[c.biancheng.net]$ cat demo.txt  #查看文件内容</span><br><span class="line">总用量 12</span><br><span class="line">drwxr-xr-x. 2 root     root      21 7月   1 2016 abc</span><br><span class="line">-rw-r--r--. 1 mozhiyan mozhiyan 399 3月  11 17:12 demo.sh</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan   0 3月  22 17:21 demo.txt</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan 278 3月  16 17:17 main.c</span><br><span class="line">-rwxr-xr-x. 1 mozhiyan mozhiyan 187 3月  22 17:16 test.sh</span><br></pre></td></tr></table></figure>
+<h4 id="错误输出重定向"><a href="#错误输出重定向" class="headerlink" title="错误输出重定向"></a>错误输出重定向</h4><p><strong>命令正确执行是没有错误信息的，我们必须刻意地让命令执行出错</strong>，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls java  #先预览一下错误信息</span><br><span class="line">ls: 无法访问java: 没有那个文件或目录</span><br><span class="line">[c.biancheng.net]$ ls java 2&gt;err.log  #重定向</span><br><span class="line">[c.biancheng.net]$ cat err.log  #查看文件</span><br><span class="line">ls: 无法访问java: 没有那个文件或目录</span><br></pre></td></tr></table></figure>
+<h4 id="正确输出和错误信息同时保存"><a href="#正确输出和错误信息同时保存" class="headerlink" title="正确输出和错误信息同时保存"></a>正确输出和错误信息同时保存</h4><p><strong>【实例1】把正确结果和错误信息都保存到一个文件中</strong>，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -l &gt;out.log 2&gt;&amp;1</span><br><span class="line">[c.biancheng.net]$ ls java &gt;&gt;out.log 2&gt;&amp;1</span><br><span class="line">[c.biancheng.net]$ cat out.log</span><br><span class="line">总用量 12</span><br><span class="line">drwxr-xr-x. 2 root     root      21 7月   1 2016 abc</span><br><span class="line">-rw-r--r--. 1 mozhiyan mozhiyan 399 3月  11 17:12 demo.sh</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan 278 3月  16 17:17 main.c</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan   0 3月  22 17:39 out.log</span><br><span class="line">-rwxr-xr-x. 1 mozhiyan mozhiyan 187 3月  22 17:16 test.sh</span><br><span class="line">ls: 无法访问java: 没有那个文件或目录</span><br></pre></td></tr></table></figure>
+<p><code>out.log</code>的最后一行是错误信息，其它行都是正确的输出结果。</p>
+<p>【实例2】把<strong>正确结果和错误信息分开保存到不同的文件中</strong>，也即写成下面的形式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -l &gt;&gt;out.log 2&gt;&gt;err.log</span><br></pre></td></tr></table></figure>
+<p>这样一来，正确的输出结果会写入到<code>out.log</code>，而错误的信息则会写入到<code>err.log</code>。</p>
+<h4 id="dev-null文件"><a href="#dev-null文件" class="headerlink" title="/dev/null文件"></a><code>/dev/null</code>文件</h4><p>如果你既不想把命令的输出结果保存到文件，也不想把命令的输出结果显示到屏幕上，干扰命令的执行，那么可以把命令的所有结果重定向到<code>/dev/null</code>文件中。如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$  ls -l &amp;&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<p>大家可以把<code>/dev/null</code>当成<code>Linux</code>系统的垃圾箱，任何放入垃圾箱的数据都会被丢弃，不能恢复。</p>
+<h3 id="Shell输入重定向"><a href="#Shell输入重定向" class="headerlink" title="Shell输入重定向"></a><code>Shell</code>输入重定向</h3><p>输入重定向就是改变输入的方向，不再使用键盘作为命令输入的来源，而是使用文件作为命令的输入。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command &lt;file</code></td>
+<td>将<code>file</code>文件中的内容作为<code>command</code>的输入。</td>
+</tr>
+<tr>
+<td><code>command &lt;&lt;END</code></td>
+<td>从标准输入（键盘）中读取数据，直到遇见分界符<code>END</code>才停止（分界符可以是任意的字符串，用户自己定义）。</td>
+</tr>
+<tr>
+<td><code>command &lt;file1 &gt;file2</code></td>
+<td>将<code>file1</code>作为<code>command</code>的输入，并将<code>command</code>的处理结果输出到<code>file2</code>。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>输入重定向的完整写法其实是<code>fd&lt;file</code>，其中<code>fd</code>表示文件描述符，如果不写，默认为<code>0</code>，也就是标准输入文件。</p>
+</blockquote>
+<p>​    <strong>当是输入重定向时，文件描述符为<code>0</code>，一般都省略不写，<code>command &lt;file</code>等同于<code>command 0&lt;file</code>。</strong></p>
+<h4 id="输入重定向"><a href="#输入重定向" class="headerlink" title="输入重定向"></a>输入重定向</h4><p><strong>【示例1】统计文档中有多少行文字。</strong></p>
+<p><code>Linux wc</code>命令可以用来对文本进行统计，包括单词个数、行数、字节数，它的用法如下：</p>
+<p><code>wc [选项] [文件名]</code></p>
+<p>其中，<code>-c</code>选项统计字节数，<code>-w</code>选项统计单词数，<code>-l</code>选项统计行数。</p>
+<p>统计<code>readme.txt</code>文件中有多少行文本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat readme.txt  #预览一下文件内容</span><br><span class="line">C语言中文网</span><br><span class="line">http://c.biancheng.net/</span><br><span class="line">成立7年了</span><br><span class="line">日IP数万</span><br><span class="line">[c.biancheng.net]$ wc -l &lt;readme.txt  #输入重定向</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】逐行读取文件内容。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">while read str; do</span><br><span class="line">    echo $str</span><br><span class="line">done &lt;readme.txt</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>C语言中文网</code><br><code>http://c.biancheng.net/</code><br><code>成立7年了</code><br><code>日IP数万</code></p>
+<p><strong>【实例3】统计用户在终端输入的文本的行数。</strong></p>
+<p>​    此处我们使用输入重定向符号<code>&lt;&lt;</code>，这个符号的作用是使用特定的分界符作为命令输入的结束标志，而不使用 <code>Ctrl+D</code>键。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ wc -l &lt;&lt;END</span><br><span class="line"><span class="meta">&gt;</span> 123</span><br><span class="line"><span class="meta">&gt;</span> 789</span><br><span class="line"><span class="meta">&gt;</span> abc</span><br><span class="line"><span class="meta">&gt;</span> xyz</span><br><span class="line"><span class="meta">&gt;</span> END</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p><code>wc</code>命令会一直等待用输入，直到遇见分界符<code>END</code>才结束读取。</p>
+<p><strong><code>&lt;&lt;</code>之后的分界符可以自由定义，只要再碰到相同的分界符，两个分界符之间的内容将作为命令的输入。</strong></p>
+<h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><p>​    一个<code>Linux</code>进程启动后，会在内核空间中创建一个<code>PCB</code>控制块，<code>PCB</code>内部有一个文件描述符表（<code>File descriptor table</code>），记录着当前进程所有可用的文件描述符，也即当前进程所有打开的文件。</p>
+<p>除了文件描述符表，系统还需要维护另外两张表：</p>
+<ul>
+<li><strong>打开文件表</strong>（<code>Open file table</code>）</li>
+<li><strong><code>i-node</code>表</strong>（<code>i-node table</code>）</li>
+</ul>
+<p>文件描述符表每个进程都有一个，打开文件表和<code>i-node</code>表整个系统只有一个，它们三者之间的关系如下图所示。</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4101H45S13.gif" alt></p>
+<p>​    从本质上讲，这三种表都是结构体数组，<code>0</code>、<code>1</code>、<code>2</code>、<code>73</code>、<code>1976</code>等都是数组下标。表头只是注释，数组本身是没有的。实线箭头表示指针的指向，虚线箭头是注释。</p>
+<p>​    <strong>从上图看文件描述符只是一个数组下标</strong></p>
+<p> 通过文件描述符，可以找到文件指针，从而进入打开文件表。该表存储了以下信息：</p>
+<ul>
+<li>文件偏移量，也就是文件内部指针偏移量。调用<code>read()</code>或者<code>write()</code>函数时，文件偏移量会自动更新，当然也可以使用<code>lseek()</code>直接修改。</li>
+<li>状态标志，比如只读模式、读写模式、追加模式、覆盖模式等。</li>
+<li><code>i-node</code>表指针。</li>
+</ul>
+<p> 然而，要想真正读写文件，还得通过打开文件表的<code>i-node</code>指针进入<code>i-node</code>表，该表包含了诸如以下的信息：</p>
+<ul>
+<li>文件类型，例如常规文件、套接字或<code>FIFO</code>。</li>
+<li>文件大小。</li>
+<li>时间戳，比如创建时间、更新时间。</li>
+<li>文件锁。</li>
+</ul>
+<p> 对上图的进一步说明：</p>
+<ul>
+<li>在进程<code>A</code>中，文件描述符<code>1</code>和<code>20</code>都指向了同一个打开文件表项，标号为<code>23</code>（指向了打开文件表中下标为<code>23</code>的数组元素），这可能是通过调用<code>dup()</code>、<code>dup2()</code>、<code>fcntl()</code>或者对同一个文件多次调用了<code>open()</code>函数形成的。</li>
+<li>进程<code>A</code>的文件描述符<code>2</code>和进程<code>B</code>的文件描述符<code>2</code>都指向了同一个文件，这可能是在调用<code>fork()</code>后出现的（即进程<code>A</code>、<code>B</code>是父子进程关系），或者是不同的进程独自去调用<code>open()</code>函数打开了同一个文件，此时进程内部的描述符正好分配到与其他进程打开该文件的描述符一样。</li>
+<li>进程<code>A</code>的描述符<code>0</code>和进程<code>B</code>的描述符<code>3</code>分别指向不同的打开文件表项，但这些表项均指向<code>i-node</code>表的同一个条目（标号为<code>1976</code>）；换言之，它们指向了同一个文件。发生这种情况是因为每个进程各自对同一个文件发起了<code>open()</code>调用。同一个进程两次打开同一个文件，也会发生类似情况。 </li>
+</ul>
+<p> 有了以上对文件描述符的认知，我们很容易理解以下情形：</p>
+<ul>
+<li><strong>同一个进程的不同文件描述符可以指向同一个文件；</strong></li>
+<li><strong>不同进程可以拥有相同的文件描述符；</strong></li>
+<li><strong>不同进程的同一个文件描述符可以指向不同的文件</strong>（一般也是这样，除了<code>0</code>、<code>1</code>、<code>2</code>这三个特殊的文件）；</li>
+<li><strong>不同进程的不同文件描述符也可以指向同一个文件。</strong></li>
+</ul>
+<h3 id="重定向本质"><a href="#重定向本质" class="headerlink" title="重定向本质"></a>重定向本质</h3><p>​    本章我们探索<code>Shell</code>是如何借助文件描述符实现重定向的。</p>
+<p>​    <code>Linux</code>系统每次读写文件的时候，都从文件描述符下手，通过文件描述符找到文件指针，然后进入打开文件表和<code>i-node</code>表，这两个表里面才真正保存了与打开文件相关的各种信息。</p>
+<p>​    如果我们改变了文件指针的指向，那就可以改变文件描述符对应的真实文件。比如文件描述符<code>1</code>本来对应显示器，但是我们偷偷将文件指针指向了<code>log.txt</code>文件，那么文件描述符<code>1</code>也就和<code>log.txt</code>对应起来了。</p>
+<p>​    <code>Linux</code>系统提供的函数可以修改文件指针，比如<code>dup()</code>、<code>dup2()</code>；<code>Shell</code>也能修改文件指针，输入输出重定向就是这么干的。</p>
+<p>​    <strong>因此，可以知道输入输出重定向就是通过修改文件指针实现的。</strong>更准确地说，发生重定向时，<code>Linux</code>会用文件描述符表（一个结构体数组）中的一个元素给另一个元素赋值，或者用一个结构体变量给数组元素赋值，整体上的资源开销相当低。</p>
+<p>​    发生重定向的时候，文件描述符并没有改变，改变的是文件描述符对应的文件指针。对于标准输出，<code>Linux</code>系统始终向文件描述符<code>1</code>中输出内容，而不管它的文件指针指向哪里；只要我们修改了文件指针，就能向任意文件中输出内容。</p>
+<p> 以下面的语句为例来说明：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ echo "c.biancheng.net" 1&gt;log.txt</span><br></pre></td></tr></table></figure>
+<p>​    文件描述符表本质上是一个结构体数组，假设这个结构体的名字叫做<code>FD</code>。发生重定向时，<code>Linux</code>系统首先会打开<code>log.txt</code>文件，并把各种信息添加到<code>i-node</code>表和文件打开表，然后再创建一个<code>FD</code>变量（通过这个变量其实就能读写文件了），并用这个变量给下标为<code>1</code>的数组元素赋值，覆盖原来的内容，这样就改变了文件指针的指向，完成了重定向。</p>
+<h4 id="Shell-对文件描述符的操作"><a href="#Shell-对文件描述符的操作" class="headerlink" title="Shell 对文件描述符的操作"></a>Shell 对文件描述符的操作</h4><p>前面提到，<strong><code>&gt;</code>是输出重定向符号，<code>&lt;</code>是输入重定向符号</strong>；更准确地说，它们应该叫做<strong>文件描述符操作符</strong>。<code>&gt;</code>和<code>&lt;</code>通过修改文件描述符改变了文件指针的指向，所以能够实现重定向的功能。</p>
+<p> 除了<code>&gt;</code>和<code>&lt;</code>，<code>Shell</code>还是支持<code>&lt;&gt;</code>，它的效果是前面两者的总和。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>用法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输出</td>
+<td><code>n&gt;filename</code></td>
+<td>以输出的方式打开文件<code>filename</code>，并绑定到文件描述符<code>n</code>。<code>n</code>可以不写，默认为<code>1</code>，也即标准输出文件。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>n&gt;&amp;m</code></td>
+<td>用文件描述符<code>m</code>修改文件描述符<code>n</code>，或者说用文件描述符<code>m</code>的内容覆盖文件描述符<code>n</code>，结果就是<code>n</code>和 <code>m</code>都代表了同一个文件，因为<code>n</code>和<code>m</code>的文件指针都指向了同一个文件。因为使用的是<code>&gt;</code>，所以<code>n</code>和<code>m</code>只能用作命令的输出文件。<code>n</code>可以不写，默认为<code>1</code>。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>n&gt;&amp;-</code></td>
+<td>关闭文件描述符<code>n</code>及其代表的文件。<code>n</code>可以不写，默认为<code>1</code>。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>&amp;&gt;filename</code></td>
+<td>将正确输出结果和错误信息全部重定向到<code>filename</code>。</td>
+</tr>
+<tr>
+<td>输入</td>
+<td><code>n&lt;filename</code></td>
+<td>以输入的方式打开文件<code>filename</code>，并绑定到文件描述符<code>n</code>。<code>n</code>可以不写，默认为<code>0</code>，也即标准输入文件。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>n&lt;&amp;m</code></td>
+<td>类似于<code>n&gt;&amp;m</code>，但是因为使用的是<code>&lt;</code>，所以<code>n</code>和<code>m</code>只能用作命令的输入文件。<code>n</code>可以不写，默认为<code>0</code>。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>n&lt;&amp;-</code></td>
+<td>关闭文件描述符<code>n</code>及其代表的文件。<code>n</code>可以不写，默认为<code>0</code>。</td>
+</tr>
+<tr>
+<td>输入和输出</td>
+<td><code>n&lt;&gt;filename</code></td>
+<td>同时以输入和输出的方式打开文件<code>filename</code>，并绑定到文件描述符<code>n</code>，相当于 <code>n&gt;filename</code>和<code>n&lt;filename</code>的总和。<code>n</code>可以不写，默认为<code>0</code>。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>【实例1】前面的文章中提到了下面这种用法：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command &gt;file 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>​    它省略了文件描述符<code>1</code>，所以等价于：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command 1&gt;file 2&gt;&amp;1</span><br></pre></td></tr></table></figure></p>
+<p>​    这个语句可以分成两步：先执行<code>1&gt;file</code>，让文件描述符<code>1</code>指向<code>file</code>；再执行<code>2&gt;&amp;1</code>，用文件描述符<code>1</code>修改文件描述符<code>2</code>，让<code>2</code>和<code>1</code>的内容一样。最终<code>1</code>和<code>2</code>都指向了同一个文件，也就是<code>file</code>。所以不管是向<code>1</code>还是向<code>2</code>中输出内容，最终都输出到<code>file</code>文件中。</p>
+<p>​    这里需要注意执行顺序，<strong>多个操作符在一起会从左往右依次执行</strong>。对于上面的语句，就是先执行<code>1&gt;file</code>，再执行<code>2&gt;&amp;1</code>；如果写作下面的形式，那就南辕北辙了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command 2&gt;&amp;1 1&gt;file</span><br></pre></td></tr></table></figure></p>
+<p><code>Shell</code>会先执行<code>2&gt;&amp;1</code>，这样<code>1</code>和<code>2</code>都指向了标准错误输出文件，也即显示器；接着执行<code>1&gt;file</code>，这样 1 就指向了<code>file</code>文件，但是<code>2</code>依然指向显示器。最终的结果是，正确的输出结果输出到了<code>file</code>文件，错误信息却还是输出到显示器。</p>
+<p><strong>【实例2】一个比较奇葩的重定向写法。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ echo "C语言中文网" 10&gt;log.txt &gt;&amp;10</span><br></pre></td></tr></table></figure>
+<p>先执行<code>10&gt;log.txt</code>，打开<code>log.txt</code>，并给它分配文件描述符<code>10</code>；接着执行<code>&gt;&amp;10</code>，用文件描述符<code>10</code>来修改文件描述符<code>1</code>（对于<code>&gt;</code>，省略不写的话默认为<code>1</code>），让<code>1</code>和<code>10</code>都指向<code>log.txt</code>文件，最终的结果是向<code>log.txt</code>文件中输出内容。</p>
+<p> 这条语句其实等价于<code>echo &quot;C语言中文网&quot; &gt;log.txt</code>，我之所以写得这么绕，是为了让大家理解各种操作符的用法。</p>
+<p> 文件描述符 10 只用了一次，我们在末尾最好将它关闭，这是一个好习惯。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ echo "C语言中文网" 10&gt;log.txt &gt;&amp;10 10&gt;&amp;-</span><br></pre></td></tr></table></figure>
+<h3 id="永久性地重定向"><a href="#永久性地重定向" class="headerlink" title="永久性地重定向"></a>永久性地重定向</h3><p>​    <code>exec</code>是<code>Shell</code>内置命令，它有两种用法，一种是执行<code>Shell</code>命令，一种是操作文件描述符。</p>
+<p>​    <strong>使用<code>exec</code>命令可以永久性地重定向，后续命令的输入输出方向也被确定了，直到再次遇到<code>exec</code>命令才会改变重定向的方向；换句话说，一次重定向，永久有效。</strong></p>
+<p> 请看下面的例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ echo "c.biancheng.net" &gt; log.txt</span><br><span class="line">[mozhiyan@localhost ~]$ echo "C语言中文网"</span><br><span class="line">C语言中文网</span><br><span class="line">[mozhiyan@localhost ~]$ cat log.txt</span><br><span class="line">c.biancheng.net</span><br></pre></td></tr></table></figure>
+<p>​    第一个<code>echo</code>命令使用了重定向，将内容输出到<code>log.txt</code>文件；第二个<code>echo</code>命令没有再次使用重定向，内容就直接输出到显示器上了。很明显，重定向只对第一个<code>echo</code>有效，对第二个<code>echo</code>无效。</p>
+<p>​    有些脚本文件的输出内容很多，我们不希望直接输出到显示器上，或者我们需要把输出内容备份到文件中，方便以后检索，按照以前的思路，必须在每个命令后面都使用一次重定向，写起来非常麻烦。如果以后想修改重定向的方向，那工作量也是不小的。</p>
+<p>​    <code>exec</code>命令就是为解决这种困境而生的，它可以让重定向对当前<code>Shell</code>进程中的所有命令有效，它的用法为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec 文件描述符操作</span><br></pre></td></tr></table></figure>
+<p>在上章节讲到的所有对文件描述符的操作方式<code>exec</code>都支持，请看下面的例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ echo "重定向未发生"</span><br><span class="line">重定向未发生</span><br><span class="line">[mozhiyan@localhost ~]$ exec &gt;log.txt</span><br><span class="line">[mozhiyan@localhost ~]$ echo "c.biancheng.net"</span><br><span class="line">[mozhiyan@localhost ~]$ echo "C语言中文网"</span><br><span class="line">[mozhiyan@localhost ~]$ exec &gt;&amp;2</span><br><span class="line">[mozhiyan@localhost ~]$ echo "重定向已恢复"</span><br><span class="line">重定向已恢复</span><br><span class="line">[mozhiyan@localhost ~]$ cat log.txt</span><br><span class="line">c.biancheng.net</span><br><span class="line">C语言中文网</span><br></pre></td></tr></table></figure>
+<p>对代码的说明：</p>
+<ul>
+<li><code>exec &gt;log.txt</code>将当前<code>Shell</code>进程的所有标准输出重定向到<code>log.txt</code>文件，它等价于<code>exec 1&gt;log.txt</code>。</li>
+<li>后面的两个<code>echo</code>命令都没有在显示器上输出，而是输出到了<code>log.txt</code>文件。</li>
+<li><code>exec &gt;&amp;2</code>用来恢复重定向，让标准输出重新回到显示器，它等价于<code>exec 1&gt;&amp;2</code>。<code>2</code>是标准错误输出的文件描述符，它也是输出到显示器，并且没有遭到破坏，我们用<code>2</code>来覆盖<code>1</code>，就能修复<code>1</code>，让<code>1</code>重新指向显示器。</li>
+<li>接下来的<code>echo</code>命令将结果输出到显示器上，证明<code>exec &gt;&amp;2</code>奏效了。</li>
+<li>最后我们用<code>cat</code>命令来查看<code>log.txt</code>文件的内容，发现就是中间两个<code>echo</code>命令的输出。</li>
+</ul>
+<h3 id="重定向的恢复"><a href="#重定向的恢复" class="headerlink" title="重定向的恢复"></a>重定向的恢复</h3><p>​    类似<code>echo &quot;1234&quot; &gt;log.txt</code>这样的重定向只是临时的，当前命名执行完毕后会自动恢复到显示器，我们不用担心。但是诸如<code>exec &gt;log.txt</code>这种使用<code>exec</code>命令的重定向都是持久的，如果我们想再次回到显示器，就必须手动恢复。</p>
+<p>​    以输出重定向为例，手动恢复的方法有两种：</p>
+<ul>
+<li><code>/dev/tty</code>文件代表的就是显示器，将标准输出重定向到<code>/dev/tty</code>即可，也就是<code>exec &gt;/dev/tty</code>。</li>
+<li>如果还有别的文件描述符指向了显示器，那么也可以别的文件描述符来恢复标号为<code>1</code>的文件描述符，例如 <code>exec &gt;&amp;2</code>。注意，如果文件描述符<code>2</code>也被重定向了，那么这种方式就无效了。</li>
+</ul>
+<p> 下面的例子演示了输入重定向的恢复：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">exec 6&lt;&amp;0  #先将0号文件描述符保存</span><br><span class="line">exec &lt;nums.txt  #输入重定向</span><br><span class="line"></span><br><span class="line">sum=0</span><br><span class="line">while read n; do</span><br><span class="line">    ((sum += n))</span><br><span class="line">done</span><br><span class="line">echo "sum=$sum"</span><br><span class="line"></span><br><span class="line">exec 0&lt;&amp;6 6&lt;&amp;-  #恢复输入重定向，并关闭文件描述符6</span><br><span class="line"></span><br><span class="line">read -p "请输入名字、网址和年龄：" name url age</span><br><span class="line">echo "$name已经$age岁了，它的网址是 $url"</span><br></pre></td></tr></table></figure>
+<p>将代码保存到<code>test.txt</code>，并执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ cat nums.txt</span><br><span class="line">80</span><br><span class="line">33</span><br><span class="line">129</span><br><span class="line">71</span><br><span class="line">100</span><br><span class="line">222</span><br><span class="line">8</span><br><span class="line">[mozhiyan@localhost ~]$ bash ./test.sh</span><br><span class="line">sum=643</span><br><span class="line">请输入名字、网址和年龄：C语言中文网 http://c.biancheng.net 7</span><br><span class="line">C语言中文网已经7岁了，它的网址是 http://c.biancheng.net</span><br></pre></td></tr></table></figure>
+<h2 id="代码块重定向"><a href="#代码块重定向" class="headerlink" title="代码块重定向"></a>代码块重定向</h2><p>​    所谓代码块，就是由多条语句组成的一个整体；<code>for</code>、<code>while</code>、<code>until</code>循环，或者<code>if...else</code>、<code>case...in</code>选择结构，或者由<code>{ }</code>包围的命令都可以称为代码块。</p>
+<p>​    <strong>将重定向命令放在代码块的结尾处，就可以对代码块中的所有命令实施重定向。</strong></p>
+<p><strong>【实例1】使用 while 循环不断读取<code>nums.txt</code>中的数字，计算它们的总和。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">sum=0</span><br><span class="line">while read n; do</span><br><span class="line">    ((sum += n))</span><br><span class="line">done &lt;nums.txt  #输入重定向</span><br><span class="line">echo "sum=$sum"</span><br></pre></td></tr></table></figure>
+<p>将代码保存到<code>test.sh</code>并运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat nums.txt</span><br><span class="line">80</span><br><span class="line">33</span><br><span class="line">129</span><br><span class="line">71</span><br><span class="line">100</span><br><span class="line">222</span><br><span class="line">8</span><br><span class="line">[c.biancheng.net]$ . ./test.sh</span><br><span class="line">sum=643</span><br></pre></td></tr></table></figure>
+<p> 对上面的代码进行改进，记录<code>while</code>的读取过程，并将输出结果重定向到<code>log.txt</code>文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">sum=0</span><br><span class="line">while read n; do</span><br><span class="line">    ((sum += n))</span><br><span class="line">    echo "this number: $n"</span><br><span class="line">done &lt;nums.txt &gt;log.txt  #同时使用输入输出重定向</span><br><span class="line">echo "sum=$sum"</span><br></pre></td></tr></table></figure>
+<p>将代码保存到<code>test.sh</code>并运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ . ./test.sh</span><br><span class="line">sum=643</span><br><span class="line">[c.biancheng.net]$ cat log.txt</span><br><span class="line">this number: 80</span><br><span class="line">this number: 33</span><br><span class="line">this number: 129</span><br><span class="line">this number: 71</span><br><span class="line">this number: 100</span><br><span class="line">this number: 222</span><br><span class="line">this number: 8</span><br></pre></td></tr></table></figure>
+<p> <strong>【实例2】对<code>{}</code>包围的代码使用重定向。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    echo "C语言中文网";</span><br><span class="line">    echo "http://c.biancheng.net";</span><br><span class="line">    echo "7"</span><br><span class="line">&#125; &gt;log.txt  #输出重定向</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    read name;</span><br><span class="line">    read url;</span><br><span class="line">    read age</span><br><span class="line">&#125; &lt;log.txt  #输入重定向</span><br><span class="line"></span><br><span class="line">echo "$name已经$age岁了，它的网址是 $url"</span><br></pre></td></tr></table></figure>
+<p>将代码保存到 <code>test.sh</code>并运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ . ./test.sh</span><br><span class="line">C语言中文网已经7岁了，它的网址是 http://c.biancheng.net</span><br><span class="line">[c.biancheng.net]$ cat log.txt</span><br><span class="line">C语言中文网</span><br><span class="line">http://c.biancheng.net</span><br><span class="line">7</span><br></pre></td></tr></table></figure>
+<h2 id="内嵌文档-Here-Document"><a href="#内嵌文档-Here-Document" class="headerlink" title="内嵌文档(Here Document)"></a>内嵌文档(Here Document)</h2><p>​    <code>Shell</code>还有一种特殊形式的重定向叫做<code>“Here Document”</code>，目前没有统一的翻译，你可以将它理解为“嵌入文档”“内嵌文档”“立即文档”。</p>
+<p>​    <strong>所谓文档，就是命令需要处理的数据或者字符串；所谓嵌入，就是把数据和代码放在一起，而不是分开存放（比如将数据放在一个单独的文件中）</strong>。有时候命令需要处理的数据量很小，将它放在一个单独的文件中有点“大动干戈”，不如直接放在代码中来得方便。</p>
+<p>​    <code>Here Document</code>的基本用法为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">command &lt;&lt;END</span><br><span class="line">   document</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>​    <code>command</code>是<code>Shell</code>命令，<code>&lt;&lt;END</code>是开始标志，<code>END</code>是结束标志，<code>document</code>是输入的文档（也就是一行一行的字符串）。</p>
+<p>​    <strong>这种写法告诉<code>Shell</code>把<code>document</code>部分作为命令需要处理的数据，直到遇见终止符<code>END</code>为止（终止符<code>END</code>不会被读取）。</strong></p>
+<p>​    <strong>注意，终止符<code>END</code>必须独占一行，并且要定顶格写。</strong></p>
+<p>​    <strong>分界符（终止符）可以是任意的字符串，由用户自己定义，比如 END、MARKER 等。分界符可以出现在正常的数据流中，只要它不是顶格写的独立的一行，就不会被作为结束标志。</strong></p>
+<p><strong>【实例1】cat 命令一般是从文件中读取内容，并将内容输出到显示器上，借助 Here Document，cat 命令可以从键盘上读取内容。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ cat &lt;&lt;END</span><br><span class="line"><span class="meta">&gt;</span> Shell教程</span><br><span class="line"><span class="meta">&gt;</span> http://c.biancheng.net/shell/</span><br><span class="line"><span class="meta">&gt;</span> 已经进行了三次改版</span><br><span class="line"><span class="meta">&gt;</span> END</span><br><span class="line">Shell教程</span><br><span class="line">http://c.biancheng.net/shell/</span><br><span class="line">已经进行了三次改版</span><br></pre></td></tr></table></figure>
+<p><code>&lt;</code>是第二层命令提示符。</p>
+<p> 正文中也可以出现结束标志<code>END</code>，只要它不是独立的一行，并且不顶格写，就没问题。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ cat &lt;&lt;END</span><br><span class="line"><span class="meta">&gt;</span> END可以出现在行首</span><br><span class="line"><span class="meta">&gt;</span> 出现在行尾的END</span><br><span class="line"><span class="meta">&gt;</span> 出现在中间的END也是允许的</span><br><span class="line"><span class="meta">&gt;</span> END</span><br><span class="line">END可以出现在行首</span><br><span class="line">出现在行尾的END</span><br><span class="line">出现在中间的END也是允许的</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】在脚本文件中使用<code>Here Document</code>，并将<code>document</code>中的内容转换为大写。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"><span class="meta">#</span>在脚本文件中使用立即文档</span><br><span class="line"></span><br><span class="line">tr a-z A-Z &lt;&lt;END</span><br><span class="line">one two three</span><br><span class="line">Here Document</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>将代码保存到<code>test.sh</code>并运行，结果为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ONE TWO THREE</span><br><span class="line">HERE DOCUMENT</span><br></pre></td></tr></table></figure>
+<h3 id="忽略命令替换"><a href="#忽略命令替换" class="headerlink" title="忽略命令替换"></a>忽略命令替换</h3><p>默认情况下，正文中出现的变量和命令也会被求值或运行，<code>Shell</code>会先将它们替换以后再交给<code>command</code>，请看下面的例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ name=C语言中文网</span><br><span class="line">[mozhiyan@localhost ~]$ url=http://c.biancheng.net</span><br><span class="line">[mozhiyan@localhost ~]$ age=7</span><br><span class="line">[mozhiyan@localhost ~]$ cat &lt;&lt;END</span><br><span class="line"><span class="meta">&gt;</span> $&#123;name&#125;已经$&#123;age&#125;岁了，它的网址是 $&#123;url&#125;</span><br><span class="line"><span class="meta">&gt;</span> END</span><br><span class="line">C语言中文网已经7岁了，它的网址是 http://c.biancheng.net</span><br></pre></td></tr></table></figure>
+<p> 你<strong>可以将分界符用单引号或者双引号包围起来使<code>Shell</code>替换失效</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ name=C语言中文网</span><br><span class="line">[mozhiyan@localhost ~]$ url=http://c.biancheng.net</span><br><span class="line">[mozhiyan@localhost ~]$ age=7</span><br><span class="line">[mozhiyan@localhost ~]$ cat &lt;&lt;'END'  #使用单引号包围</span><br><span class="line"><span class="meta">&gt;</span> $&#123;name&#125;已经$&#123;age&#125;岁了，它的网址是 $&#123;url&#125;</span><br><span class="line"><span class="meta">&gt;</span> END</span><br><span class="line"><span class="meta">$</span>&#123;name&#125;已经$&#123;age&#125;岁了，它的网址是 $&#123;url&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="忽略制表符"><a href="#忽略制表符" class="headerlink" title="忽略制表符"></a>忽略制表符</h3><p>默认情况下，行首的制表符也被当做正文的一部分。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;END</span><br><span class="line">    Shell教程</span><br><span class="line">    http://c.biancheng.net/shell/</span><br><span class="line">    已经进行了三次改版</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>将代码保存到 test.sh 并运行，结果如下：</p>
+<p>​        <code>Shell教程</code><br>​        <code>http://c.biancheng.net/shell/</code><br>​        <code>已经进行了三次改版</code></p>
+<p> 这里的制表符仅仅是为了格式对齐，我们并不希望它作为正文的一部分，为了达到这个目的，你可以在<code>&lt;&lt;</code>和<code>END</code>之间增加<code>-</code>，请看下面的代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>增加了减号-</span><br><span class="line">cat &lt;&lt;-END</span><br><span class="line">    Shell教程</span><br><span class="line">    http://c.biancheng.net/shell/</span><br><span class="line">    已经进行了三次改版</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>这次的运行结果为：<br><code>Shell教程</code><br><code>http://c.biancheng.net/shell/</code><br><code>已经进行了三次改版</code></p>
+<blockquote>
+<p>如果你尝试在脚本嵌入一小块多行数据，使用<code>Here Document</code>是很有用的，而嵌入很大的数据块是一个不好的习惯。你应该保持你的逻辑（你的代码）和你的输入（你的数据）分离，最好是在不同的文件中，除非是输入一个很小的数据集。</p>
+</blockquote>
+<p><strong><code>Here Document</code>最常用的功能还是向用户显示命令或者脚本的用法信息</strong>，例如类似下面的函数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">usage()&#123;</span><br><span class="line">    cat &lt;&lt;-END</span><br><span class="line">        usage: command [-x] [-v] [-z] [file ...]</span><br><span class="line">        A short explanation of the operation goes here.</span><br><span class="line">        It might be a few lines long, but shouldn't be excessive.</span><br><span class="line">END</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="内嵌字符串-Here-String"><a href="#内嵌字符串-Here-String" class="headerlink" title="内嵌字符串(Here String)"></a>内嵌字符串(<code>Here String</code>)</h2><p>​    <code>Here String</code>是<code>Here Document</code>的一个变种，它的用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command &lt;&lt;&lt; string</span><br></pre></td></tr></table></figure>
+<p>​    <code>command</code>是 <code>Shell</code>命令，<code>string</code>是字符串（它只是一个普通的字符串，并没有什么特别之处）。</p>
+<p>​     这种写法告诉<code>Shell</code>把<code>string</code>部分作为命令需要处理的数据。例如，将小写字符串转换为大写：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt; one</span><br><span class="line">ONE</span><br></pre></td></tr></table></figure>
+<p>​    <code>Here String</code>对于这种发送较短的数据到进程是非常方便的，它比<code>Here Document</code>更加简洁。</p>
+<h3 id="双引号和单引号"><a href="#双引号和单引号" class="headerlink" title="双引号和单引号"></a>双引号和单引号</h3><p>​    一个单词不需要使用引号包围，但<strong>如果<code>string</code>中带有空格，则必须使用双引号或者单引号包围</strong>，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt; "one two three"</span><br><span class="line">ONE TWO THREE</span><br></pre></td></tr></table></figure>
+<p>​    <strong>双引号和单引号是有区别的，双引号会解析其中的变量（当然不写引号也会解析），单引号不会。</strong></p>
+<p>请看下面的代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ var=two</span><br><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt;"one $var there"</span><br><span class="line">ONE TWO THERE</span><br><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt;'one $var there'</span><br><span class="line">ONE $VAR THERE</span><br><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt;one$&#123;var&#125;there</span><br><span class="line">ONETWOTHERE</span><br></pre></td></tr></table></figure>
+<p> 有了引号的包围，<code>Here String</code>还可以接收多行字符串作为命令的输入，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ tr a-z A-Z &lt;&lt;&lt;"one two there</span><br><span class="line"><span class="meta">&gt;</span> four five six</span><br><span class="line"><span class="meta">&gt;</span> seven eight"</span><br><span class="line">ONE TWO THERE</span><br><span class="line">FOUR FIVE SIX</span><br><span class="line">SEVEN EIGHT</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/09/shell9-函数/" rel="next" title="shell函数">
+                <i class="fa fa-chevron-left"></i> shell函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/12/shell11-多命令组合/" rel="prev" title="shell多命令组合">
+                shell多命令组合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">1.</span> <span class="nav-text">重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件设备和文件描述符"><span class="nav-number">1.1.</span> <span class="nav-text">硬件设备和文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell输出重定向"><span class="nav-number">1.2.</span> <span class="nav-text">Shell输出重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输出重定向"><span class="nav-number">1.2.1.</span> <span class="nav-text">输出重定向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误输出重定向"><span class="nav-number">1.2.2.</span> <span class="nav-text">错误输出重定向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正确输出和错误信息同时保存"><span class="nav-number">1.2.3.</span> <span class="nav-text">正确输出和错误信息同时保存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dev-null文件"><span class="nav-number">1.2.4.</span> <span class="nav-text">/dev/null文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell输入重定向"><span class="nav-number">1.3.</span> <span class="nav-text">Shell输入重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入重定向"><span class="nav-number">1.3.1.</span> <span class="nav-text">输入重定向</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符"><span class="nav-number">1.4.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向本质"><span class="nav-number">1.5.</span> <span class="nav-text">重定向本质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell-对文件描述符的操作"><span class="nav-number">1.5.1.</span> <span class="nav-text">Shell 对文件描述符的操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永久性地重定向"><span class="nav-number">1.6.</span> <span class="nav-text">永久性地重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向的恢复"><span class="nav-number">1.7.</span> <span class="nav-text">重定向的恢复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码块重定向"><span class="nav-number">2.</span> <span class="nav-text">代码块重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内嵌文档-Here-Document"><span class="nav-number">3.</span> <span class="nav-text">内嵌文档(Here Document)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略命令替换"><span class="nav-number">3.1.</span> <span class="nav-text">忽略命令替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略制表符"><span class="nav-number">3.2.</span> <span class="nav-text">忽略制表符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内嵌字符串-Here-String"><span class="nav-number">4.</span> <span class="nav-text">内嵌字符串(Here String)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双引号和单引号"><span class="nav-number">4.1.</span> <span class="nav-text">双引号和单引号</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -88,22 +88,22 @@
 
 
 
-<meta name="description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到  coding 上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
+<meta name="description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到coding上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
 <meta name="keywords" content="hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo双站点部署github和coding">
 <meta property="og:url" content="http://yoursite.com/2019/05/08/hexo双站点部署/index.html">
 <meta property="og:site_name" content="龙场驿站">
-<meta property="og:description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到  coding 上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
+<meta property="og:description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到coding上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182436.png">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182512.png">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508183145.png">
 <meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508183721.png">
-<meta property="og:updated_time" content="2019-05-09T01:27:16.000Z">
+<meta property="og:updated_time" content="2020-06-30T03:10:26.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo双站点部署github和coding">
-<meta name="twitter:description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到  coding 上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
+<meta name="twitter:description" content="​        这是搭建博客系列的第二篇，至于为什么要托管到coding上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。">
 <meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182436.png">
 
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  452
+                  451
                 </span>
               
 
@@ -451,33 +451,33 @@
       
 
       
-        <p>​        这是搭建博客系列的第二篇，至于为什么要托管到  coding 上，原因大家也应该能猜到，就是github访问速度偏慢，体验不是很好。</p>
+        <p>​        这是搭建博客系列的第二篇，至于为什么要托管到<code>coding</code>上，原因大家也应该能猜到，就是<code>github</code>访问速度偏慢，体验不是很好。</p>
 <a id="more"></a>
-<h3 id="注册-coding-net-账号并创建项目"><a href="#注册-coding-net-账号并创建项目" class="headerlink" title="注册 coding.net 账号并创建项目"></a>注册 coding.net 账号并创建项目</h3><p>项目名最好跟用户名一样<br><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182436.png" alt></p>
-<h3 id="设置-coding-SSH-KEY"><a href="#设置-coding-SSH-KEY" class="headerlink" title="设置 coding SSH KEY"></a>设置 coding SSH KEY</h3><p>这个就用当时设置github的一样就行了<br><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182512.png" alt></p>
+<h3 id="注册coding-net账号并创建项目"><a href="#注册coding-net账号并创建项目" class="headerlink" title="注册coding.net账号并创建项目"></a>注册<code>coding.net</code>账号并创建项目</h3><p>项目名最好跟用户名一样<br><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182436.png" alt></p>
+<h3 id="设置coding-SSH-KEY"><a href="#设置coding-SSH-KEY" class="headerlink" title="设置coding SSH KEY"></a>设置<code>coding SSH KEY</code></h3><p>这个就用当时设置<code>github</code>的一样就行了<br><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508182512.png" alt></p>
 <h3 id="config-yml配置"><a href="#config-yml配置" class="headerlink" title="_config.yml配置"></a><code>_config.yml</code>配置</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: </span><br><span class="line">        github: git@github.com:code-hly/code-hly.github.io.git,master</span><br><span class="line">        coding: git@git.coding.net:huliaoyuan/huliaoyuan.git,master</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>替换你的项目名，注意空格，我这儿用的是ssh，而不是https</p>
+<p>替换你的项目名，注意空格，我这儿用的是<code>ssh</code>，而不是<code>https</code></p>
 </blockquote>
-<h3 id="部署项目到-coding上"><a href="#部署项目到-coding上" class="headerlink" title="部署项目到 coding上"></a>部署项目到 coding上</h3><ul>
-<li><p>进入 myblog 根目录下，先敲如下命令。为了使用hexo d来部署到git上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<h3 id="部署项目到coding上"><a href="#部署项目到coding上" class="headerlink" title="部署项目到coding上"></a>部署项目到<code>coding</code>上</h3><ul>
+<li><p>进入<code>myblog</code>根目录下，先敲如下命令。为了使用<code>hexo d</code>来部署到<code>git</code>上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <ul>
-<li><p>使用部署命令就能把博客同步到 coding 上面</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy -g</span><br></pre></td></tr></table></figure>
+<li><p>使用部署命令就能把博客同步到<code>coding</code>上面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy -g</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="pages服务方式部署"><a href="#pages服务方式部署" class="headerlink" title="pages服务方式部署"></a>pages服务方式部署</h3><p>​        部署博客方式有两种，第一种就是pages服务的方式，也推荐这种方式，因为可以绑定域名，而第二种演示的方式必须升级会员才能绑定自定义域名。pages方式也很简单就是在<code>source/</code>需要创建一个空白文件，至于原因，是因为<code>coding.net</code>需要这个文件来作为以静态文件部署的标志。就是说看到这个<code>Staticfile</code>就知道按照静态文件来发布。</p>
+<h3 id="pages服务方式部署"><a href="#pages服务方式部署" class="headerlink" title="pages服务方式部署"></a><code>pages</code>服务方式部署</h3><p>​        部署博客方式有两种，第一种就是<code>pages</code>服务的方式，也推荐这种方式，因为可以绑定域名，而第二种演示的方式必须升级会员才能绑定自定义域名。<code>pages</code>方式也很简单就是在<code>source/</code>需要创建一个空白文件，至于原因，是因为<code>coding.net</code>需要这个文件来作为以静态文件部署的标志。就是说看到这个<code>Staticfile</code>就知道按照静态文件来发布。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd source/</span><br><span class="line">touch Staticfile  #名字必须是Staticfile</span><br></pre></td></tr></table></figure>
 <h3 id="个人域名绑定"><a href="#个人域名绑定" class="headerlink" title="个人域名绑定"></a>个人域名绑定</h3><p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508183145.png" alt></p>
 <blockquote>
 <p>注意<code>github</code>绑定需要在 <code>myblog/source</code>目录下建一 <code>CNAME</code> 文件，并写上你购买的域名，域名我是在阿里万网买的</p>
-<p>我当时按照别人的做法写的默认和海外，这样发现只能访问 coding 上的博客而不能访问 <code>github</code> 上的博客了</p>
+<p>我当时按照别人的做法写的默认和海外，这样发现只能访问<code>coding</code>上的博客而不能访问 <code>github</code> 上的博客了</p>
 </blockquote>
-<h3 id="coding-绑定私有域名"><a href="#coding-绑定私有域名" class="headerlink" title="coding 绑定私有域名"></a>coding 绑定私有域名</h3><p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508183721.png" alt></p>
-<h3 id="发布博客新文章后直接部署到-github-和-coding"><a href="#发布博客新文章后直接部署到-github-和-coding" class="headerlink" title="发布博客新文章后直接部署到 github 和 coding"></a>发布博客新文章后直接部署到 github 和 coding</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
+<h3 id="coding绑定私有域名"><a href="#coding绑定私有域名" class="headerlink" title="coding绑定私有域名"></a><code>coding</code>绑定私有域名</h3><p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/QQ截图20190508183721.png" alt></p>
+<h3 id="发布博客新文章后直接部署到github和coding"><a href="#发布博客新文章后直接部署到github和coding" class="headerlink" title="发布博客新文章后直接部署到github和coding"></a>发布博客新文章后直接部署到<code>github</code>和<code>coding</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -507,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/08/hexo腾讯云cos部署/" rel="next" title="hexo腾讯云COS部署+Markdown图床">
-                <i class="fa fa-chevron-left"></i> hexo腾讯云COS部署+Markdown图床
+              <a href="/2019/05/08/hexo搭建流程/" rel="next" title="Hexo搭建博客教程">
+                <i class="fa fa-chevron-left"></i> Hexo搭建博客教程
               </a>
             
           </div>
@@ -517,8 +517,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/08/hexo搭建流程/" rel="prev" title="Hexo搭建博客教程">
-                Hexo搭建博客教程 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/05/08/ceph-部署难题（一）/" rel="prev" title="ceph部署难题">
+                ceph部署难题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -601,7 +601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -612,7 +612,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -623,7 +623,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -663,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册-coding-net-账号并创建项目"><span class="nav-number">1.</span> <span class="nav-text">注册 coding.net 账号并创建项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-coding-SSH-KEY"><span class="nav-number">2.</span> <span class="nav-text">设置 coding SSH KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config-yml配置"><span class="nav-number">3.</span> <span class="nav-text">_config.yml配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署项目到-coding上"><span class="nav-number">4.</span> <span class="nav-text">部署项目到 coding上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pages服务方式部署"><span class="nav-number">5.</span> <span class="nav-text">pages服务方式部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人域名绑定"><span class="nav-number">6.</span> <span class="nav-text">个人域名绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#coding-绑定私有域名"><span class="nav-number">7.</span> <span class="nav-text">coding 绑定私有域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布博客新文章后直接部署到-github-和-coding"><span class="nav-number">8.</span> <span class="nav-text">发布博客新文章后直接部署到 github 和 coding</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册coding-net账号并创建项目"><span class="nav-number">1.</span> <span class="nav-text">注册coding.net账号并创建项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置coding-SSH-KEY"><span class="nav-number">2.</span> <span class="nav-text">设置coding SSH KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config-yml配置"><span class="nav-number">3.</span> <span class="nav-text">_config.yml配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署项目到coding上"><span class="nav-number">4.</span> <span class="nav-text">部署项目到coding上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pages服务方式部署"><span class="nav-number">5.</span> <span class="nav-text">pages服务方式部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人域名绑定"><span class="nav-number">6.</span> <span class="nav-text">个人域名绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#coding绑定私有域名"><span class="nav-number">7.</span> <span class="nav-text">coding绑定私有域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布博客新文章后直接部署到github和coding"><span class="nav-number">8.</span> <span class="nav-text">发布博客新文章后直接部署到github和coding</span></a></li></ol></div>
             
 
           </div>
@@ -688,7 +688,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

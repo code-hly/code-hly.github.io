@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shell,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="组命令​    所谓组命令，就是将多个命令划分为一组，或者看成一个整体。 ​    Shell组命令的写法有两种： { command1; command2; command3; ... }(command1; command2; command3;... )">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell多命令组合">
+<meta property="og:url" content="http://yoursite.com/2018/05/12/shell11-多命令组合/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="组命令​    所谓组命令，就是将多个命令划分为一组，或者看成一个整体。 ​    Shell组命令的写法有两种： { command1; command2; command3; ... }(command1; command2; command3;... )">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4161052294c.gif">
+<meta property="og:updated_time" content="2020-06-30T09:31:09.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell多命令组合">
+<meta name="twitter:description" content="组命令​    所谓组命令，就是将多个命令划分为一组，或者看成一个整体。 ​    Shell组命令的写法有两种： { command1; command2; command3; ... }(command1; command2; command3;... )">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4161052294c.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/12/shell11-多命令组合/">
+
+
+
+
+
+  <title>shell多命令组合 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/shell11-多命令组合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell多命令组合</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T19:40:00+08:00">
+                2018-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/12/shell11-多命令组合/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/12/shell11-多命令组合/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/12/shell11-多命令组合/" class="leancloud_visitors" data-flag-title="shell多命令组合">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  24
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="组命令"><a href="#组命令" class="headerlink" title="组命令"></a>组命令</h2><p>​    <strong>所谓组命令，就是将多个命令划分为一组，或者看成一个整体。</strong></p>
+<p>​    <code>Shell</code>组命令的写法有两种：</p>
+<p><code>{ command1; command2; command3; ... }</code><br><code>(command1; command2; command3;... )</code></p>
+<a id="more"></a>
+<p>​    两种写法的区别在于：<strong>由花括号<code>{}</code>包围起来的组命名在当前 Shell 进程中执行，而由小括号<code>()</code>包围起来的组命令会创建一个子 Shell，所有命令都在子 Shell 中执行。</strong></p>
+<p>​    对于第一种写法，<strong>花括号和命令之间必须有一个空格，并且最后一个命令必须用一个分号或者一个换行符结束。</strong></p>
+<p>​    组命令可以将多条命令的输出结果合并在一起，在使用重定向和管道时会特别方便。</p>
+<p>​    例如，下面的代码将多个命令的输出重定向到<code>out.txt</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls -l &gt; out.txt  #&gt;表示覆盖</span><br><span class="line">echo "http://c.biancheng.net/shell/" &gt;&gt; out.txt  #&gt;&gt;表示追加</span><br><span class="line">cat readme.txt &gt;&gt; out.txt</span><br></pre></td></tr></table></figure>
+<p>​    本段代码共使用了三次重定向。</p>
+<p>​    借助组命令，我们可以将以上三条命令合并在一起，简化成一次重定向：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; ls -l; echo "http://c.biancheng.net/shell/"; cat readme.txt; &#125; &gt; out.txt</span><br></pre></td></tr></table></figure></p>
+<p>​    或者写作：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ls -l; echo "http://c.biancheng.net/shell/"; cat readme.txt) &gt; out.txt</span><br></pre></td></tr></table></figure></p>
+<p>​    使用组命令技术，我们节省了一些打字时间。</p>
+<p>​    类似的道理，我们也可以将组命令和管道结合起来：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; ls -l; echo "http://c.biancheng.net/shell/"; cat readme.txt; &#125; | lpr</span><br></pre></td></tr></table></figure></p>
+<p>​    这里我们把三个命令的输出结果合并在一起，并把它们用管道输送给命令<code>lpr</code>的输入，以便产生一个打印报告。</p>
+<h3 id="两种组命令形式的对比"><a href="#两种组命令形式的对比" class="headerlink" title="两种组命令形式的对比"></a>两种组命令形式的对比</h3><p>​    虽然两种<code>Shell</code>组命令形式看起来相似，它们都能用在重定向中合并输出结果，但两者之间有一个很重要的不同：<strong>由<code>{}</code>包围的组命令在当前<code>Shell</code>进程中执行，由<code>()</code>包围的组命令会创建一个子<code>Shell</code>，所有命令都会在这个子<code>Shell</code>中执行。</strong></p>
+<p>​    在子<code>Shell</code>中执行意味着，运行环境被复制给了一个新的<code>shell</code>进程，当这个子<code>Shell</code>退出时，新的进程也会被销毁，环境副本也会消失，所以在子<code>Shell</code>环境中的任何更改都会消失（包括给变量赋值）。因此，在大多数情况下，除非脚本要求一个子<code>Shell</code>，否则使用<code>{}</code>比使用<code>()</code>更受欢迎，并且<code>{}</code>的进行速度更快，占用的内存更少。</p>
+<h2 id="进程替换"><a href="#进程替换" class="headerlink" title="进程替换"></a>进程替换</h2><p>​    进程替换和命令替换非常相似。<strong>命令替换是把一个命令的输出结果赋值给另一个变量</strong>，例如<code>dir_files</code>=`ls -l`或<code>date_time=$(date)</code>；而<strong>进程替换则是把一个命令的输出结果传递给另一个（组）命令</strong>。</p>
+<p>​    为了说明进程替换的必要性，我们先来看一个使用管道的例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo "http://c.biancheng.net/shell/" | read</span><br><span class="line">echo $REPLY</span><br></pre></td></tr></table></figure>
+<p>​    以上代码输出结果总是为空，因为<code>echo</code>命令在父<code>Shell</code>中执行，而<code>read</code>命令在子<code>Shell</code>中执行，当<code>read</code>执行结束时，子<code>Shell</code>被销毁，<code>REPLY</code>变量也就消失了。管道中的命令总是在子<code>Shell</code>中执行的，任何给变量赋值的命令都会遭遇到这个问题。</p>
+<blockquote>
+<p>使用 read 读取数据时，如果没有提供变量名，那么读取到的数据将存放到环境变量 REPLY 中。</p>
+</blockquote>
+<p>​    <code>Shell</code>进程替换有两种写法：</p>
+<p>​    一种用来产生标准输出，借助输入重定向，它的输出结果可以作为另一个命令的输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;(commands)</span><br></pre></td></tr></table></figure>
+<p>​    另一种用来接受标准输入，借助输出重定向，它可以接收另一个命令的输出结果：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>(commands)</span><br></pre></td></tr></table></figure></p>
+<p>commands 是一组命令列表，多个命令之间以分号<code>;</code>分隔。注意，<code>&lt;</code>或<code>&gt;</code>与圆括号之间是没有空格的。</p>
+<p> 例如，为了解决上面遇到的问题，我们可以像下面这样使用进程替换：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">read &lt; &lt;(echo "http://c.biancheng.net/shell/")</span><br><span class="line">echo $REPLY</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><code>http://c.biancheng.net/shell/</code></p>
+<p>​    整体上来看，<code>Shell</code>把<code>echo &quot;http://c.biancheng.net/shell/&quot;</code>的输出结果作为<code>read</code>的输入。<code>&lt;()</code>用来捕获<code>echo</code>命令的输出结果，<code>&lt;</code>用来将该结果重定向到<code>read</code>。</p>
+<blockquote>
+<p><strong>注意，两个<code>&lt;</code>之间是有空格的，第一个<code>&lt;</code>表示输入重定向，第二个<code>&lt;</code>和<code>()</code>连在一起表示进程替换。</strong></p>
+</blockquote>
+<p>​    本例中的<code>read</code>命令和第二个<code>echo</code>命令都在当前<code>Shell</code>进程中运行，读取的数据也会保存到当前进程的 <code>REPLY</code>变量，大家都在一个进程中，所以使用<code>echo</code>能够成功输出。</p>
+<p>​    而在前面的例子中我们使用了管道，<code>echo</code>命令在父进程中运行，<code>read</code>命令在子进程中运行，读取的数据也保存在子进程的<code>REPLY</code>变量中，<code>echo</code>命令和<code>REPLY</code>变量不在一个进程中，而子进程的环境变量对父进程是不可见的，所以读取失败。</p>
+<p>​    再来看一个进程替换用作「接受标准输入」的例子：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "C语言中文网" &gt; &gt;(read; echo "你好，$REPLY")</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><code>你好，C语言中文网</code></p>
+<p> 因为使用了重定向，<code>read</code>命令从<code>echo &quot;C语言中文网&quot;</code>的输出结果中读取数据。</p>
+<h3 id="进程替换的本质"><a href="#进程替换的本质" class="headerlink" title="进程替换的本质"></a>进程替换的本质</h3><p>为了能够在不同进程之间传递数据，实际上进程替换会跟系统中的文件关联起来，这个文件的名字为<code>/dev/fd/n</code>（n 是一个整数）。该文件会作为参数传递给<code>()</code>中的命令，<code>()</code>中的命令对该文件是读取还是写入取决于进程替换格式是<code>&lt;</code>还是<code>&gt;</code>：</p>
+<ul>
+<li>如果是<code>&gt;()</code>，那么该文件会给<code>()</code>中的命令提供输入；借助输出重定向，要输入的内容可以从其它命令而来。</li>
+<li>如果是<code>&lt;()</code>，那么该文件会接收<code>()</code>中命令的输出结果；借助输入重定向，可以将该文件的内容作为其它命令的输入。</li>
+</ul>
+<p>使用<code>echo</code> 命令可以查看进程替换对应的文件名：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ echo &gt;(true)</span><br><span class="line">/dev/fd/63</span><br><span class="line">[c.biancheng.net]$ echo &lt;(true)</span><br><span class="line">/dev/fd/63</span><br><span class="line">[c.biancheng.net]$ echo &gt;(true) &lt;(true)</span><br><span class="line">/dev/fd/63 /dev/fd/62</span><br></pre></td></tr></table></figure>
+<p>​    <code>/dev/fd/</code>目录下有很多序号文件，进程替换一般用的是<code>63</code>号文件，该文件是系统内部文件，我们一般查看不到。</p>
+<p>​    我们通过下面的语句进行实例分析：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "shellscript" &gt; &gt;(read; echo "hello, $REPLY")</span><br></pre></td></tr></table></figure></p>
+<p>​    第一个<code>&gt;</code>表示输出重定向，它把第一个<code>echo</code>命令的输出结果重定向到<code>/dev/fd/63</code>文件中。</p>
+<p>​    <code>&gt;()</code>中的第一个命令是<code>read</code>，它需要从标准输入中读取数据，此时就用<code>/dev/fd/63</code>作为输入文件，把该文件的内容交给<code></code> read <code>命令，接着使用</code> echo <code>命令输出</code> read `读取到的内容。</p>
+<p>​    可以看到，<code>/dev/fd/63</code>文件起到了数据中转或者数据桥梁的作用，借助重定向，它将<code>&gt;()</code>内部的命令和外部的命令联系起来，使得数据能够在这些命令之间流通。</p>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>​    <code>Shell</code>可以将两个或者多个命令（程序或者进程）连接到一起，把一个命令的输出作为下一个命令的输入，以这种方式连接的两个或者多个命令就形成了<strong>管道（pipe）</strong>。</p>
+<p>​    <strong><code>Linux</code>管道使用竖线<code>|</code>连接多个命令，这被称为管道符。</strong><code>Linux</code>管道的具体语法格式如下：</p>
+<p><code>command1 | command2</code><br><code>command1 | command2 [ | commandN... ]</code></p>
+<p>​    当在两个命令之间设置管道时，管道符<code>|</code>左边命令的输出就变成了右边命令的输入。只要第一个命令向标准输出写入，而第二个命令是从标准输入读取，那么这两个命令就可以形成一个管道。大部分的<code>Linux</code>命令都可以用来形成管道。</p>
+<blockquote>
+<p>这里需要注意，<code>command1</code>必须有正确输出，而 <code>command2</code>必须可以处理<code>command2</code>的输出结果；而且 <code>command2</code>只能处理<code>command1</code>的正确输出结果，不能处理<code>command1</code> 的错误信息。</p>
+</blockquote>
+<h3 id="为何使用管道"><a href="#为何使用管道" class="headerlink" title="为何使用管道"></a>为何使用管道</h3><p>我们先看下面一组命令，使用<code>mysqldump</code>（一个数据库备份程序）来备份一个叫做<code>wiki</code>的数据库：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u root -p '123456' wiki &gt; /tmp/wikidb.backup</span><br><span class="line">gzip -9 /tmp/wikidb.backup</span><br><span class="line">scp /tmp/wikidb.backup username@remote_ip:/backup/mysql/</span><br></pre></td></tr></table></figure></p>
+<p>上述这组命令主要做了如下任务：</p>
+<ul>
+<li><code>mysqldump</code>命令用于将名为<code>wike</code>的数据库备份到文件<code>/tmp/wikidb.backup</code>；其中<code>-u</code>和<code>-p</code>选项分别指出数据库的用户名和密码。</li>
+<li><code>gzip</code>命令用于压缩较大的数据库文件以节省磁盘空间；其中<code>-9</code>表示最慢的压缩速度最好的压缩效果。</li>
+<li><code>scp</code>命令（<code>secure copy</code>，安全拷贝）用于将数据库备份文件复制到<code>IP</code>地址为<code>remote_ip</code>的备份服务器的<code>/backup/mysql/</code>目录下。其中<code>username</code>是登录远程服务器的用户名，命令执行后需要输入密码。</li>
+</ul>
+<p>上述三个命令依次执行。然而，如果使用管道的话，你就可以将<code>mysqldump</code>、<code>gzip</code>、<code>ssh</code>命令相连接，这样就避免了创建临时文件<code>/tmp/wikidb.backup</code>，而且可以同时执行这些命令并达到相同的效果。</p>
+<p> 使用管道后的命令如下所示：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u root -p '123456' wiki | gzip -9 | ssh username@remote_ip "cat &gt; /backup/wikidb.gz"</span><br></pre></td></tr></table></figure></p>
+<p>这些使用了管道的命令有如下特点：</p>
+<ul>
+<li>命令的语法紧凑并且使用简单。</li>
+<li>通过使用管道，将三个命令串联到一起就完成了远程<code>mysql</code>备份的复杂任务。</li>
+<li>从管道输出的标准错误会混合到一起。</li>
+</ul>
+<p> 上述命令的数据流如下图所示：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z4161052294c.gif" alt></p>
+<h3 id="重定向和管道的区别"><a href="#重定向和管道的区别" class="headerlink" title="重定向和管道的区别"></a>重定向和管道的区别</h3><p>​    管道改变了数据输入输出的方向，也有重定向的作用。那么，管道和重定向之间到底有什么不同呢？</p>
+<p>​    简单地说，重定向操作符<code>&gt;</code>将命令与文件连接起来，用文件来接收命令的输出；</p>
+<p>​    而管道符|将命令与命令连接起来，用第二个命令来接收第一个命令的输出。如下所示：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">command &gt; file</span><br><span class="line">command1 | command1</span><br></pre></td></tr></table></figure></p>
+<p>有些读者在学习管道时会尝试如下的命令，我们来看一下会发生什么：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 &gt; command2</span><br></pre></td></tr></table></figure></p>
+<p>答案是，有时尝试的结果将会很糟糕。这是一个实际的例子，一个<code>Linux</code>系统管理员以超级用户（<code>root</code>用户）的身份执行了如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/bin</span><br><span class="line">ls &gt; less</span><br></pre></td></tr></table></figure>
+<p>第一条命令将当前目录切换到了大多数程序所存放的目录，第二条命令是告诉<code>Shell</code>用<code>ls</code>命令的输出重写文件<code>less</code>。因为<code>/usr/bin</code>目录已经包含了名称为<code>less</code>（<code>less</code>程序）的文件，第二条命令用<code>ls</code>输出的文本重写了<code>less</code>程序，因此破坏了文件系统中的<code>less</code>程序。</p>
+<p> 这是使用重定向操作符错误重写文件的一个教训，所以在使用它时要谨慎。</p>
+<h3 id="管道实例"><a href="#管道实例" class="headerlink" title="管道实例"></a>管道实例</h3><p><strong>【实例1】将<code>ls</code>命令的输出发送到<code>grep</code>命令</strong>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls | grep log.txt</span><br><span class="line">log.txt</span><br></pre></td></tr></table></figure>
+<p>上述命令是查看文件<code>log.txt</code>是否存在于当前目录下。</p>
+<p> 我们可以在命令的后面使用选项，例如使用<code>-al</code>选项：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -al | grep log.txt</span><br><span class="line">-rw-rw-r--.  1 mozhiyan mozhiyan    0 4月  15 17:26 log.txt</span><br></pre></td></tr></table></figure>
+<p>管道符<code>|</code>与两侧的命令之间也可以不存在空格，例如将上述命令写作<code>ls -al|grep log.txt</code>；然而我还是推荐在管道符<code>|</code>和两侧的命令之间使用空格，以增加代码的可读性。</p>
+<p> 我们也可以重定向管道的输出到一个文件，比如将上述管道命令的输出结果发送到文件<code>output.txt</code>中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -al | grep log.txt &gt;output.txt</span><br><span class="line">[c.biancheng.net]$ cat output.txt</span><br><span class="line">-rw-rw-r--.  1 mozhiyan mozhiyan    0 4月  15 17:26 log.txt</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】使用管道将<code>cat</code>命令的输出作为<code>less</code>命令的输入</strong>，这样就可以将<code>cat</code>命令的输出每次按照一个屏幕的长度显示，这对于查看长度大于一个屏幕的文件内容很有帮助。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/message | less</span><br></pre></td></tr></table></figure>
+<p><strong>【实例3】查看指定程序的进程运行状态，并将输出重定向到文件中。</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ps aux | grep httpd &gt; /tmp/ps.output</span><br><span class="line">[c.biancheng.net]$ cat /tem/ps.output</span><br><span class="line">mozhiyan  <span class="number">4101</span>     <span class="number">13776</span>  <span class="number">0</span>   <span class="number">10</span>:<span class="number">11</span> pts/<span class="number">3</span>  <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep httpd</span><br><span class="line">root      <span class="number">4578</span>     <span class="number">1</span>      <span class="number">0</span>   Dec09 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19984</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19985</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19986</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19987</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19988</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19989</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19990</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br><span class="line">apache    <span class="number">19991</span>    <span class="number">4578</span>   <span class="number">0</span>   Dec29 ?      <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/httpd</span><br></pre></td></tr></table></figure>
+<p><strong>【实例4】显示按用户名排序后的当前登录系统的用户的信息。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ who | sort</span><br><span class="line">mozhiyan :0           2019-04-16 12:55 (:0)</span><br><span class="line">mozhiyan pts/0        2019-04-16 13:16 (:0)</span><br></pre></td></tr></table></figure>
+<p>​    <code>who</code>命令的输出将作为<code>sort</code>命令的输入，所以这两个命令通过管道连接后会显示按照用户名排序的已登录用户的信息。</p>
+<p><strong>【实例5】统计系统中当前登录的用户数。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ who | wc -l</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<h3 id="管道与输入重定向"><a href="#管道与输入重定向" class="headerlink" title="管道与输入重定向"></a>管道与输入重定向</h3><p><strong>输入重定向操作符<code>&lt;</code>可以在管道中使用，以用来从文件中获取输入</strong>，其语法类似下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">command1 &lt; input.txt | command2</span><br><span class="line">command1 &lt; input.txt | command2 -option | command3</span><br></pre></td></tr></table></figure>
+<p> 例如，使用 tr 命令从<code>os.txt</code>文件中获取输入，然后通过管道将输出发送给<code>sort</code>或<code>uniq</code>等命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat os.txt</span><br><span class="line">redhat</span><br><span class="line">suse</span><br><span class="line">centos</span><br><span class="line">ubuntu</span><br><span class="line">solaris</span><br><span class="line">hp-ux</span><br><span class="line">fedora</span><br><span class="line">centos</span><br><span class="line">redhat</span><br><span class="line">hp-ux</span><br><span class="line">[c.biancheng.net]$ tr a-z A-Z &lt;os.txt | sort</span><br><span class="line">CENTOS</span><br><span class="line">CENTOS</span><br><span class="line">FEDORA</span><br><span class="line">HP-UX</span><br><span class="line">HP-UX</span><br><span class="line">REDHAT</span><br><span class="line">REDHAT</span><br><span class="line">SOLARIS</span><br><span class="line">SUSE</span><br><span class="line">UBUNTU</span><br><span class="line">[c.biancheng.net]$ tr a-z A-Z &lt;os.txt | sort | uniq</span><br><span class="line">CENTOS</span><br><span class="line">FEDORA</span><br><span class="line">HP-UX</span><br><span class="line">REDHAT</span><br><span class="line">SOLARIS</span><br><span class="line">SUSE</span><br><span class="line">UBUNTU</span><br></pre></td></tr></table></figure>
+<h3 id="管道与输出重定向"><a href="#管道与输出重定向" class="headerlink" title="管道与输出重定向"></a>管道与输出重定向</h3><p><strong>你也可以使用重定向操作符<code>&gt;</code>或<code>&gt;&gt;</code>将管道中的最后一个命令的标准输出进行重定向</strong>，其语法如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">command1 | command2 | ... | commandN &gt; output.txt</span><br><span class="line">command1 &lt; input.txt | command2 | ... | commandN &gt; output.txt</span><br></pre></td></tr></table></figure>
+<p><strong>【实例1】使用<code>mount</code>命令显示当前挂载的文件系统的信息，并使用<code>column</code>命令格式化列的输出，最后将输出结果保存到一个文件中。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ mount | column -t &gt;mounted.txt</span><br><span class="line">[c.biancheng.net]$ cat mounted.txt</span><br><span class="line">proc         on  /proc                  type  proc        (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">sysfs        on  /sys                   type  sysfs       (rw,nosuid,nodev,noexec,relatime,seclabel)</span><br><span class="line">devtmpfs     on  /dev                   type  devtmpfs    (rw,nosuid,seclabel,size=496136k,nr_inodes=124034,mode=755)</span><br><span class="line">securityfs   on  /sys/kernel/security   type  securityfs  (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">tmpfs        on  /dev/shm               type  tmpfs       (rw,nosuid,nodev,seclabel)</span><br><span class="line">devpts       on  /dev/pts               type  devpts      (rw,nosuid,noexec,relatime,seclabel,gid=5,mode=620,ptmxmode=000)</span><br><span class="line">tmpfs        on  /run                   type  tmpfs       (rw,nosuid,nodev,seclabel,mode=755)</span><br><span class="line">tmpfs        on  /sys/fs/cgroup         type  tmpfs       (rw,nosuid,nodev,noexec,seclabel,mode=755)</span><br><span class="line"><span class="meta">#</span>####此处省略部分内容#####</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】使用<code>tr</code>命令将<code>os.txt</code>文件中的内容转化为大写，并使用<code>sort</code>命令将内容排序，使用<code>uniq</code>命令去除重复的行，最后将输出重定向到文件<code>ox.txt.new</code>。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat os.txt</span><br><span class="line">redhat</span><br><span class="line">suse</span><br><span class="line">centos</span><br><span class="line">ubuntu</span><br><span class="line">solaris</span><br><span class="line">hp-ux</span><br><span class="line">fedora</span><br><span class="line">centos</span><br><span class="line">redhat</span><br><span class="line">hp-ux</span><br><span class="line">[c.biancheng.net]$ tr a-z A-Z &lt;os.txt | sort | uniq &gt;os.txt.new</span><br><span class="line">[c.biancheng.net]$ cat os.txt.new</span><br><span class="line">CENTOS</span><br><span class="line">FEDORA</span><br><span class="line">HP-UX</span><br><span class="line">REDHAT</span><br><span class="line">SOLARIS</span><br><span class="line">SUSE</span><br><span class="line">UBUNTU</span><br></pre></td></tr></table></figure>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>​    我们己经知道，将几个命令通过管道符组合在一起就形成一个管道。通常，通过这种方式使用的命令就被称为过滤器。过滤器会获取输入，通过某种方式修改其内容，然后将其输出。</p>
+<p>​    简单地说，过滤器可以概括为以下两点：</p>
+<ul>
+<li>如果一个<code>Linux</code>命令是从标准输入接收它的输入数据，并在标准输出上产生它的输出数据（结果），那么这个命令就被称为过滤器。</li>
+<li>过滤器通常与<code>Linux</code>管道一起使用。</li>
+</ul>
+<p>常用的被作为过滤器使用的命令如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>awk</code></td>
+<td>用于文本处理的解释性程序设计语言，通常被作为数据提取和报告的工具。</td>
+</tr>
+<tr>
+<td><code>cut</code></td>
+<td>用于将每个输入文件（如果没有指定文件则为标准输入）的每行的指定部分输出到标准输出。</td>
+</tr>
+<tr>
+<td><code>grep</code></td>
+<td>用于搜索一个或多个文件中匹配指定模式的行。</td>
+</tr>
+<tr>
+<td><code>tar</code></td>
+<td>用于归档文件的应用程序。</td>
+</tr>
+<tr>
+<td><code>head</code></td>
+<td>用于读取文件的开头部分（默认是<code>10</code>行）。如果没有指定文件，则从标准输入读取。</td>
+</tr>
+<tr>
+<td><code>paste</code></td>
+<td>用于合并文件的行。</td>
+</tr>
+<tr>
+<td><code>sed</code></td>
+<td>用于过滤和转换文本的流编辑器。</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>用于对文本文件的行进行排序。</td>
+</tr>
+<tr>
+<td><code>split</code></td>
+<td>用于将文件分割成块。</td>
+</tr>
+<tr>
+<td><code>strings</code></td>
+<td>用于打印文件中可打印的字符串。</td>
+</tr>
+<tr>
+<td><code>tac</code></td>
+<td>与 cat 命令的功能相反，用于倒序地显示文件或连接文件。</td>
+</tr>
+<tr>
+<td><code>tail</code></td>
+<td>用于显示文件的结尾部分。</td>
+</tr>
+<tr>
+<td><code>tee</code></td>
+<td>用于从标准输入读取内容并写入到标准输出和文件。</td>
+</tr>
+<tr>
+<td><code>tr</code></td>
+<td>用于转换或删除字符。</td>
+</tr>
+<tr>
+<td><code>uniq</code></td>
+<td>用于报告或忽略重复的行。</td>
+</tr>
+<tr>
+<td><code>wc</code></td>
+<td>用于打印文件中的总行数、单词数或字节数。</td>
+</tr>
+</tbody>
+</table>
+<p> 接下来，我们通过几个实例来演示一下过滤器的使用。</p>
+<h3 id="在管道中使用awk命令"><a href="#在管道中使用awk命令" class="headerlink" title="在管道中使用awk命令"></a>在管道中使用<code>awk</code>命令</h3><p>​    我们通过几个简单的实例来了解一下<code>awk</code>命令在管道中的使用。</p>
+<p><strong>【实例1】查看系统中的所有的账号名称，并按名称的字母顺序排序。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ awk -F: '&#123;print $1&#125;' /etc/passwd | sort</span><br><span class="line">adm</span><br><span class="line">apache</span><br><span class="line">avahi</span><br><span class="line">avahi-autoipd</span><br><span class="line">bin</span><br><span class="line">daemon</span><br><span class="line">dbus</span><br><span class="line">ftp</span><br><span class="line">games</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>​    在上例中，使用冒号<code>:</code>作为列分隔符，将文件<code>/etc/passwd</code>的内容分为了多列，并打印了第一列的信息（即用户名），然后将输出通过管道发送到了<code>sort</code>命令。</p>
+<p><strong>【实例2】列出当前账号最常使用的<code>10</code>个命令。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ history | awk '&#123;print $2&#125;' | sort | uniq -c | sort -rn | head</span><br><span class="line">140 echo</span><br><span class="line"> 75 man</span><br><span class="line"> 71 cat</span><br><span class="line"> 63 su</span><br><span class="line"> 53 ls</span><br><span class="line"> 50 vi</span><br><span class="line"> 47 cd</span><br><span class="line"> 40 date</span><br><span class="line"> 26 let</span><br><span class="line"> 25 paste</span><br></pre></td></tr></table></figure>
+<p>​    在上例中，<code>history</code>命令将输出通过管道发送到<code>awk</code>命令，<code>awk</code>命令默认使用空格作为列分隔符，将<code>history</code>的输出分为了两列，并把第二列内容作为输出通过管道发送到了<code>sort</code>命令，使用<code>sort</code>命令进行排序后，再将输出通过管道发送到了<code>uniq</code>命令，使用<code>uniq</code>命令统计了历史命令重复出现的次数，再用<code>sort</code>命令将<code>uniq</code>命令的输出按照重复次数从高到低排序，最后使用<code>head</code>命令默认列出前<code>10</code>个的信息。</p>
+<p><strong>【实例3】显示当前系统的总内存大小，单位为<code>KB</code>。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ free | grep Mem | awk '&#123;print $2&#125;'</span><br><span class="line">2029860</span><br></pre></td></tr></table></figure>
+<h3 id="在管道中使用cut命令"><a href="#在管道中使用cut命令" class="headerlink" title="在管道中使用cut命令"></a>在管道中使用<code>cut</code>命令</h3><p>​    <code>cut</code>命令被用于文本处理。你可以使用这个命令来提取文件中指定列的内容。</p>
+<p><strong>【实例1】查看系统中登录<code>Shell</code>是<code>“/bin/bash”</code>的用户名和对应的用户主目录的信息：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ grep "bin/bash" /etc/passwd | cut -d: -f1,6</span><br><span class="line">root:/root</span><br><span class="line">mozhiyan:/home/mozhiyan</span><br></pre></td></tr></table></figure>
+<p>​    如果你对<code>Linux</code>系统有所了解，你会知道，<code>/ctc/passwd</code>文件被用来存放用户账号的信息，此文件中的每一行会记录一个账号的信息，每个字段之间用冒号分隔，第一个字段即是账号的账户名，而第六个字段就是账号的主目录的路径。</p>
+<p><strong>【实例2】查看当前机器的<code>CPU</code>类型。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat /proc/cpuinfo | grep name | cut -d: -f2 | uniq</span><br><span class="line">Intel(R) Core(TM) i5-2520M CPU @ 2.50GHz</span><br></pre></td></tr></table></figure>
+<p>​    上例中，执行命令<code>cat /proc/cpuinfo | grep name</code>得到的内容如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat /proc/cpuinfo | grep name</span><br><span class="line">model name    : Intel(R) Core(TM) i5-2520M CPU @ 2.50GHz</span><br><span class="line">model name    : Intel(R) Core(TM) i5-2520M CPU @ 2.50GHz</span><br><span class="line">model name    : Intel(R) Core(TM) i5-2520M CPU @ 2.50GHz</span><br><span class="line">model name    : Intel(R) Core(TM) i5-2520M CPU 0 2.50GHz</span><br></pre></td></tr></table></figure>
+<p>​    然后，我们使用<code>cut</code>命令将上述输出内容以冒号作为分隔符，将内容分为了两列， 并显示第二列的内容，最后使用<code>uniq</code>命令去掉了重复的行。</p>
+<p><strong>【实例3】查看当前目录下的子目录数。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls -l | cut -c 1 | grep d | wc -l</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>上述管道命令主要做了如下操作：</p>
+<ul>
+<li>命令<code>ls -l</code>输出的内容中，每行的第一个字符表示文件的类型，如果第一个字符是<code>d</code>，就表示文件的类型是目录。</li>
+<li>命令<code>cut -c 1</code>是截取每行的第一个字符。</li>
+<li>命令<code>grep d</code>来获取文件类型是目录的行。</li>
+<li>命令<code>wc -l</code>用来获得<code>grep</code>命令输出结果的行数，即目录个数。</li>
+</ul>
+<h3 id="在管道中使用grep命令"><a href="#在管道中使用grep命令" class="headerlink" title="在管道中使用grep命令"></a>在管道中使用<code>grep</code>命令</h3><p>​    <code>grep</code>命令是在管道中比较常用的一个命令。</p>
+<p><strong>【实例1】查看系统日志文件中的错误信息。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ grep -i "error:" /var/log/messages | less</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】查看系统中<code>HTTP</code>服务的进程信息。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ps auxwww | grep httpd</span><br><span class="line">apache 18968 0.0 0.0 26472 10404 ?    S    Dec15    0:01 /usr/sbin/httpd</span><br><span class="line">apache 18969 0.0 0.0 25528  8308 ?    S    Dec15    0:01 /usr/sbin/httpd</span><br><span class="line">apache 18970 0.0 0.0 26596 10524 ?    S    Dec15    0:01 /usr/sbin/httpd</span><br></pre></td></tr></table></figure>
+<p><strong>【实例3】查找我们的程序列表中所有命令名中包含关键字<code>zip</code>的命令。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls /bin /usr/bin | sort | uniq | grep zip</span><br><span class="line">bunzip2</span><br><span class="line">bzip2</span><br><span class="line">bzip2recover</span><br><span class="line">gunzip</span><br><span class="line">gzip</span><br></pre></td></tr></table></figure>
+<p><strong>【实例4】查看系统安装的<code>kernel</code>版本及相关的<code>kernel</code>软件包。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ rpm -qa | grep kernel</span><br><span class="line">kernel-2.6.18-92.e15</span><br><span class="line">kernel-debuginfo-2.6.18-92.e15</span><br><span class="line">kernel-debuginfo-common-2.6.18-92.e15</span><br><span class="line">kernel-devel-2.6.18-92.e15</span><br></pre></td></tr></table></figure>
+<p><strong>【实例5】查找<code>/etc</code>目录下所有包含<code>IP</code>地址的文件。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ find /etc -type f -exec grep '[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*' &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<h3 id="在管道中使用tar命令"><a href="#在管道中使用tar命令" class="headerlink" title="在管道中使用tar命令"></a>在管道中使用<code>tar</code>命令</h3><p>​    <code>tar</code>命令是<code>Linux</code>系统中最常用的打包文件的程序。</p>
+<p><strong>【实例1】你可以使用<code>tar</code>命令复制一个目录的整体结构。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ tar cf - /home/mozhiyan | ( cd /backup/; tar xf - )</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】跨网络地复制一个目录的整体结构。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ tar cf - /home/mozhiyan | ssh remote_host "( cd /backup/; tar xf - )"</span><br></pre></td></tr></table></figure>
+<p><strong>【实例3】跨网络地压缩复制一个目录的整体结构。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ tar czf - /home/mozhiyan | ssh remote_host "( cd /backup/; tar xzf - )"</span><br></pre></td></tr></table></figure>
+<p><strong>【实例4】检査<code>tar</code>归档文件的大小，单位为字节。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cd /; tar cf - etc | wc -c</span><br><span class="line">215040</span><br></pre></td></tr></table></figure>
+<p><strong>【实例5】检查<code>tar</code>归档文件压缩为<code>tar.gz</code>归裆文件后所占的大小。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ tar czf - etc.tar | wc -c</span><br><span class="line">58006</span><br></pre></td></tr></table></figure>
+<p><strong>【实例6】检查<code>tar</code>归档文件压缩为<code>tar.bz2</code>归裆文件后所占的大小。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ tar cjf - etc.tar | wc -c</span><br><span class="line">50708</span><br></pre></td></tr></table></figure>
+<h3 id="在管道中使用head命令"><a href="#在管道中使用head命令" class="headerlink" title="在管道中使用head命令"></a>在管道中使用<code>head</code>命令</h3><p>​    有时，你不需要一个命令的全部输出，可能只需要命令的前几行输出。这时，就可以使用<code>head</code>命令，它只打印命令的前几行输出。默认的输出行数为<code>10</code>行。</p>
+<p><strong>【实例1】显示<code>ls</code>命令的前<code>10</code>行输出。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls /usr/bin | head</span><br><span class="line">addftinfo</span><br><span class="line">afmtodit</span><br><span class="line">apropos</span><br><span class="line">arch</span><br><span class="line">ash</span><br><span class="line">awk</span><br><span class="line">base64</span><br><span class="line">basename</span><br><span class="line">bash</span><br><span class="line">bashbug</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】显示<code>ls</code>命令的前<code>5</code>行内容。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ls / | head -n 5</span><br><span class="line">bin</span><br><span class="line">cygdrive</span><br><span class="line">Cygwin.bat</span><br><span class="line">Cygwin.ico</span><br><span class="line">Cygwin-Terminal.ico</span><br></pre></td></tr></table></figure>
+<h3 id="在管道中使用uniq命令"><a href="#在管道中使用uniq命令" class="headerlink" title="在管道中使用uniq命令"></a>在管道中使用<code>uniq</code>命令</h3><p>​    <code>uniq</code>命令用于报告或删除重复的行。我们将使用一个测试文件进行管道中使用 <code>uniq</code>命令的实例讲解，其内容如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ cat testfile</span><br><span class="line">This line occurs only once.</span><br><span class="line">This line occurs twice.</span><br><span class="line">This line occurs twice.</span><br><span class="line">This line occurs three times.</span><br><span class="line">This line occurs three times.</span><br><span class="line">This line occurs three times.</span><br></pre></td></tr></table></figure>
+<p><strong>【实例1】去掉输出中重复的行。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ sort testfile | uniq</span><br><span class="line">This line occurs only once.</span><br><span class="line">This line occurs three times.</span><br><span class="line">This line occurs twice.</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】显示输出中各重复的行出现的次数，并按次数多少倒序显示。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ sort testfile | uniq -c | sort -nr</span><br><span class="line">3 This line occurs three times.</span><br><span class="line">2 This line occurs twice.</span><br><span class="line">1 This line occurs only once.</span><br></pre></td></tr></table></figure>
+<h3 id="在管道中使用wc命令"><a href="#在管道中使用wc命令" class="headerlink" title="在管道中使用wc命令"></a>在管道中使用<code>wc</code>命令</h3><p>​    <code>wc</code>命令用于统计包含在文本流中的字符数、单同数和行数。</p>
+<p><strong>【实例1】统计当前登录到系统的用户数。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ who | wc -l</span><br></pre></td></tr></table></figure>
+<p><strong>【实例2】统计当前的<code>Linux</code>系统中的进程数。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ ps -ef | wc -l</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/11/shell10-重定向/" rel="next" title="shell重定向">
+                <i class="fa fa-chevron-left"></i> shell重定向
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/15/shell12-模块化/" rel="prev" title="shell模块化">
+                shell模块化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#组命令"><span class="nav-number">1.</span> <span class="nav-text">组命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种组命令形式的对比"><span class="nav-number">1.1.</span> <span class="nav-text">两种组命令形式的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程替换"><span class="nav-number">2.</span> <span class="nav-text">进程替换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程替换的本质"><span class="nav-number">2.1.</span> <span class="nav-text">进程替换的本质</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-number">3.</span> <span class="nav-text">管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为何使用管道"><span class="nav-number">3.1.</span> <span class="nav-text">为何使用管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向和管道的区别"><span class="nav-number">3.2.</span> <span class="nav-text">重定向和管道的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道实例"><span class="nav-number">3.3.</span> <span class="nav-text">管道实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道与输入重定向"><span class="nav-number">3.4.</span> <span class="nav-text">管道与输入重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道与输出重定向"><span class="nav-number">3.5.</span> <span class="nav-text">管道与输出重定向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤器"><span class="nav-number">4.</span> <span class="nav-text">过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用awk命令"><span class="nav-number">4.1.</span> <span class="nav-text">在管道中使用awk命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用cut命令"><span class="nav-number">4.2.</span> <span class="nav-text">在管道中使用cut命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用grep命令"><span class="nav-number">4.3.</span> <span class="nav-text">在管道中使用grep命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用tar命令"><span class="nav-number">4.4.</span> <span class="nav-text">在管道中使用tar命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用head命令"><span class="nav-number">4.5.</span> <span class="nav-text">在管道中使用head命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用uniq命令"><span class="nav-number">4.6.</span> <span class="nav-text">在管道中使用uniq命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在管道中使用wc命令"><span class="nav-number">4.7.</span> <span class="nav-text">在管道中使用wc命令</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

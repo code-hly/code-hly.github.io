@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shell,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="变量是任何一种编程语言都必不可少的组成部分，变量用来存放各种数据。脚本语言在定义变量时通常不需要指明类型，直接赋值就可以，Shell变量也遵循这个规则。 ​        在Bash shell中，每一个变量的值都是字符串，无论你给变量赋值时有没有使用引号，值都会以字符串的形式存储。 ​        这意味着，Bash shell在默认情况下不会区分变量类型，即使你将整数和小数赋值给变量，它们也">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell变量">
+<meta property="og:url" content="http://yoursite.com/2018/04/22/shell1-变量/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="变量是任何一种编程语言都必不可少的组成部分，变量用来存放各种数据。脚本语言在定义变量时通常不需要指明类型，直接赋值就可以，Shell变量也遵循这个规则。 ​        在Bash shell中，每一个变量的值都是字符串，无论你给变量赋值时有没有使用引号，值都会以字符串的形式存储。 ​        这意味着，Bash shell在默认情况下不会区分变量类型，即使你将整数和小数赋值给变量，它们也">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1P930113JUZ.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z41QJGN02.gif">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z41QKS3523.gif">
+<meta property="og:updated_time" content="2020-06-30T09:29:35.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell变量">
+<meta name="twitter:description" content="变量是任何一种编程语言都必不可少的组成部分，变量用来存放各种数据。脚本语言在定义变量时通常不需要指明类型，直接赋值就可以，Shell变量也遵循这个规则。 ​        在Bash shell中，每一个变量的值都是字符串，无论你给变量赋值时有没有使用引号，值都会以字符串的形式存储。 ​        这意味着，Bash shell在默认情况下不会区分变量类型，即使你将整数和小数赋值给变量，它们也">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1P930113JUZ.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/22/shell1-变量/">
+
+
+
+
+
+  <title>shell变量 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/22/shell1-变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell变量</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T18:11:02+08:00">
+                2018-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/22/shell1-变量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/22/shell1-变量/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/04/22/shell1-变量/" class="leancloud_visitors" data-flag-title="shell变量">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>变量是任何一种编程语言都必不可少的组成部分，变量用来存放各种数据。脚本语言在定义变量时通常不需要指明类型，直接赋值就可以，<code>Shell</code>变量也遵循这个规则。</p>
+<p>​        在<code>Bash shell</code>中，每一个变量的值都是字符串，无论你给变量赋值时有没有使用引号，值都会以字符串的形式存储。</p>
+<p>​        这意味着，<code>Bash shell</code>在默认情况下不会区分变量类型，即使你将整数和小数赋值给变量，它们也会被视为字符串，这一点和大部分的编程语言不同。例如在<code>C语言</code>或者<code>C++</code>中，变量分为整数、小数、字符串、布尔等多种类型。</p>
+<p>​        当然，如果有必要，你也可以使用<code>Shell declare</code>关键字显式定义变量的类型，但在一般情况下没有这个需求，<code>Shell</code>开发者在编写代码时自行注意值的类型即可。</p>
+<a id="more"></a>
+<h2 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h2><p><code>Shell</code>支持以下三种定义变量的方式： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">variable=value</span><br><span class="line">variable='value'</span><br><span class="line">variable="value"</span><br></pre></td></tr></table></figure>
+<p>​        <code>variable</code>是变量名，<code>value</code>是赋给变量的值。如果<code>value</code>不包含任何空白符（例如空格、<code>Tab</code>缩进等），那么可以不使用引号；如果<code>value</code>包含了空白符，那么就必须使用引号包围起来。使用单引号和使用双引号也是有区别的，稍后我们会详细说明。</p>
+<blockquote>
+<p><strong>注意，赋值号<code>=</code>的周围不能有空格，这可能和你熟悉的大部分编程语言都不一样。</strong></p>
+</blockquote>
+<ul>
+<li>变量名由数字、字母、下划线组成；</li>
+<li>必须以字母或者下划线开头；</li>
+<li>不能使用<code>Shell</code>里的关键字（通过<code>help</code>命令可以查看保留关键字）。</li>
+</ul>
+<p> 变量定义举例： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">url=http://c.biancheng.net/shell/</span><br><span class="line">echo $url</span><br><span class="line">name='C语言中文网'</span><br><span class="line">echo $name</span><br><span class="line">author="严长生"</span><br><span class="line">echo $author</span><br></pre></td></tr></table></figure>
+<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><p>​        使用一个定义过的变量，只要在变量名前面加美元符号<code>$</code> 即可，如：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">author="严长生"</span><br><span class="line">echo $author</span><br><span class="line">echo $&#123;author&#125;</span><br></pre></td></tr></table></figure>
+<p>​        变量名外面的花括号<code>{ }</code>是可选的，加不加都行，加花括号是为了帮助解释器识别变量的边界，比如下面这种情况：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">skill="Java"</span><br><span class="line">echo "I am good at $&#123;skill&#125;Script"</span><br></pre></td></tr></table></figure>
+<p>​        如果不给<code>skill</code>变量加花括号，写成<code>echo &quot;I am good at $skillScript&quot;</code> ，解释器就会把<code>$skillScript</code>当成一个变量（其值为空），代码执行结果就不是我们期望的样子了。</p>
+<p>​        推荐给所有变量加上花括号<code>{ }</code>，这是个良好的编程习惯。</p>
+<h2 id="修改变量的值"><a href="#修改变量的值" class="headerlink" title="修改变量的值"></a>修改变量的值</h2><p>​        已定义的变量，可以被重新赋值，如： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">url="http://c.biancheng.net"</span><br><span class="line">echo $&#123;url&#125;</span><br><span class="line">url="http://c.biancheng.net/shell/"</span><br><span class="line">echo $&#123;url&#125;</span><br></pre></td></tr></table></figure>
+<p>​        第二次对变量赋值时不能在变量名前加<code>$</code>，只有在使用变量时才能加<code>$</code>。  </p>
+<h2 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h2><p>​        前面我们还留下一个疑问，定义变量时，变量的值可以由单引号<code>&#39; &#39;</code>包围，也可以由双引号<code>&quot; &quot;</code>包围，它们到底有什么区别呢？不妨以下</p>
+<p>面的代码为例来说明：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">url="http://c.biancheng.net"</span><br><span class="line">website1='C语言中文网：$&#123;url&#125;'</span><br><span class="line">website2="C语言中文网：$&#123;url&#125;"</span><br><span class="line">echo $website1</span><br><span class="line">echo $website2</span><br></pre></td></tr></table></figure>
+<p>​    运行结果：<br>C语言中文网：<code>${url}</code><br>C语言中文网：<code>http://c.biancheng.net</code></p>
+<p>​        以单引号<code>&#39; &#39;</code>包围变量的值时，单引号里面是什么就输出什么，即使内容中有变量和命令（命令需要反引起来）也会把它们原样输出。这种方式比较适合定义显示纯字符串的情况，即不希望解析变量、命令等的场景。</p>
+<p>​        以双引号<code>&quot; &quot;</code>包围变量的值时，输出时会先解析里面的变量和命令，而不是把双引号中的变量名和命令原样输出。这种方式比较适合字符串中附带有变量和命令并且想将其解析后再输出的变量定义。</p>
+<p>​        我的建议：如果变量的内容是数字，那么可以不加引号；如果真的需要原样输出就加单引号；其他没有特别要求的字符串等最好都加上双引号，定义变量时加双引号是最常见的使用场景。 </p>
+<h2 id="将命令的结果赋值给变量"><a href="#将命令的结果赋值给变量" class="headerlink" title="将命令的结果赋值给变量"></a>将命令的结果赋值给变量</h2><p>​        <code>Shell</code>也支持将命令的执行结果赋值给变量，常见的有以下两种方式： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">variable=`command`</span><br><span class="line">variable=$(command)</span><br></pre></td></tr></table></figure>
+<p>​        第一种方式把命令用反引号（位于<code>Esc</code>键的下方）包围起来，反引号和单引号非常相似，容易产生混淆，所以不推荐使用这种方式；第二种方式把命令用<code>$()</code>包围起来，区分更加明显，所以推荐使用这种方式。</p>
+<p>​        例如，我在<code>demo</code>目录中创建了一个名为<code>log.txt</code>的文本文件，用来记录我的日常工作。下面的代码中，使用 <code>cat</code>命令将<code>log.txt</code>的内容读取出来，并赋值给一个变量，然后使用 echo 命令输出。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mozhiyan@localhost ~]$ cd demo</span><br><span class="line">[mozhiyan@localhost demo]$ log=$(cat log.txt)</span><br><span class="line">[mozhiyan@localhost demo]$ echo $log</span><br><span class="line">严长生正在编写Shell教程，教程地址：http://c.biancheng.net/shell/</span><br><span class="line">[mozhiyan@localhost demo]$ log=`cat log.txt`</span><br><span class="line">[mozhiyan@localhost demo]$ echo $log</span><br><span class="line">严长生正在编写Shell教程，教程地址：http://c.biancheng.net/shell/</span><br></pre></td></tr></table></figure>
+<h2 id="只读变量"><a href="#只读变量" class="headerlink" title="只读变量"></a>只读变量</h2><p>​        使用 <strong><code>readonly</code></strong> 命令可以将变量定义为只读变量，只读变量的值不能被改变。</p>
+<p> 下面的例子尝试更改只读变量，结果报错：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">myUrl="http://c.biancheng.net/shell/"</span><br><span class="line">readonly myUrl</span><br><span class="line">myUrl="http://c.biancheng.net/shell/"</span><br></pre></td></tr></table></figure>
+<p> 运行脚本，结果如下： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash: myUrl: This variable is read only.</span><br></pre></td></tr></table></figure>
+<h2 id="删除变量"><a href="#删除变量" class="headerlink" title="删除变量"></a>删除变量</h2><p>​        使用 <strong><code>unset</code></strong> 命令可以删除变量。语法：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unset variable_name</span><br></pre></td></tr></table></figure>
+<p>​        变量被删除后不能再次使用；<code>unset</code>命令不能删除只读变量。</p>
+<p>​        举个例子：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line"></span><br><span class="line">myUrl="http://c.biancheng.net/shell/"</span><br><span class="line"></span><br><span class="line">unset myUrl</span><br><span class="line">echo $myUrl</span><br></pre></td></tr></table></figure>
+<p>​        上面的脚本没有任何输出。</p>
+<p><code>Shell</code>变量的作用域（<code>Scope</code>） ，就是<code>Shell</code>变量的有效范围（可以使用的范围）。</p>
+<p>​        在不同的作用域中，同名的变量不会相互干涉，就好像 A 班有个叫小明的同学，B  班也有个叫小明的同学，虽然他们都叫小明（对应于变量名），但是由于所在的班级（对应于作用域）不同，所以不会造成混乱。但是如果同一个班级中有两个叫小明的同学，就必须用类似于“大小明”、“小小明”这样的命名来区分他们。</p>
+<p>​        <code>Shell</code>变量的作用域可以分为三种：  </p>
+<ul>
+<li>有的变量只能在函数内部使用，这叫做局部变量（<code>local variable</code>）；</li>
+<li>有的变量可以在当前<code>Shell</code>进程中使用，这叫做全局变量（<code>global variable</code>）；</li>
+<li>而有的变量还可以在子进程中使用，这叫做环境变量（<code>environment variable</code>）。</li>
+</ul>
+<h2 id="Shell局部变量"><a href="#Shell局部变量" class="headerlink" title="Shell局部变量"></a><code>Shell</code>局部变量</h2><p>​        <code>Shell</code>也支持自定义函数，但是<code>Shell</code>函数和<code>C++</code>、<code>Java</code>、<code>C#</code>等其他编程语言函数的一个不同点就是：在 Shell 函数中定义的变量默认也是全局变量，它和在函数外部定义变量拥有一样的效果。请看下面的代码： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"><span class="meta">#</span>定义函数</span><br><span class="line">function func()&#123;</span><br><span class="line">    a=99</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span>调用函数</span><br><span class="line">func</span><br><span class="line"><span class="meta">#</span>输出函数内部的变量</span><br><span class="line">echo $a</span><br></pre></td></tr></table></figure>
+<p>​        输出结果：<br>​        <code>99</code></p>
+<p>​        <code>a</code>是在函数内部定义的，但是在函数外部也可以得到它的值，证明它的作用域是全局的，而不是仅限于函数内部。要想变量的作用域仅限于函数内部，可以在定义时加上<code>local</code>命令，此时该变量就成了局部变量。请看下面的代码：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"><span class="meta">#</span>定义函数</span><br><span class="line">function func()&#123;</span><br><span class="line">    local a=99</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#</span>调用函数</span><br><span class="line">func</span><br><span class="line"><span class="meta">#</span>输出函数内部的变量</span><br><span class="line">echo $a</span><br></pre></td></tr></table></figure>
+<p>​        输出结果为空，表明变量<code>a</code>在函数外部无效，是一个局部变量。</p>
+<p>​        <code>Shell</code>变量的这个特性和<code>JavaScript</code>中的变量是类似的。在<code>JavaScript</code>函数内部定义的变量，默认也是全局变量，只有加上<code>var</code>关键字，它才会变成局部变量。</p>
+<h2 id="Shell全局变量"><a href="#Shell全局变量" class="headerlink" title="Shell全局变量"></a><code>Shell</code>全局变量</h2><p>​        所谓全局变量，就是指变量在当前的整个<code>Shell</code>进程中都有效。每个<code>Shell</code>进程都有自己的作用域，彼此之间互不影响。在<code>Shell</code>中定义的变量，默认就是全局变量。</p>
+<p>​        想要实际演示全局变量在不同<code>Shell</code>进程中的互不相关性，可在图形界面下同时打开两个<code>Shell</code>，或使用两个终端远程连接到服务器（<code>SSH</code>）。</p>
+<p>​        首先打开一个<code>Shell</code>窗口，定义一个变量<code>a</code>并赋值为<code>99</code>，然后打印，这时在同一个<code>Shell</code>窗口中是可正确打印变量<code>a</code>的值的。然后再打开一个新的<code>Shell</code>窗口，同样打印变量<code>a</code>的值，但结果却为空，如图 1 所示。 </p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1P930113JUZ.png" alt></p>
+<p>​        这说明全局变量 a 仅仅在定义它的第一个<code>Shell</code>进程中有效，对新的<code>Shell</code>进程没有影响。这很好理解，就像小王家和小徐家都有一部电视机（变量名相同），但是同一时刻小王家和小徐家的电视中播放的节目可以是不同的（变量值不同）。</p>
+<p>​        需要强调的是，全局变量的作用范围是当前的<code>Shell</code>进程，而不是当前的<code>Shell</code>脚本文件，它们是不同的概念。打开一个<code>Shell</code>窗口就创建了一个<code>Shell</code>进程，打开多个 Shell 窗口就创建了多个<code>Shell</code>进程，每个<code>Shell</code>进程都是独立的，拥有不同的进程<code>ID</code>。在一个<code>Shell</code>进程中可以使用<strong><code>source</code></strong>命令执行多个<code>Shell</code>脚本文件，此时全局变量在这些脚本文件中都有效。</p>
+<p>​        例如，现在有两个<code>Shell</code>脚本文件，分别是<code>a.sh</code>和<code>b.sh</code>。<code>a.sh</code>的代码如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">echo $a</span><br><span class="line">b=200</span><br></pre></td></tr></table></figure>
+<p>​        <code>b.sh</code>的代码如下：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">echo $b</span><br></pre></td></tr></table></figure>
+<p>​        打开一个<code>Shell</code>窗口，输入以下命令：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ a=99</span><br><span class="line">[c.biancheng.net]$ . ./a.sh</span><br><span class="line">99</span><br><span class="line">[c.biancheng.net]$ . ./b.sh</span><br><span class="line">200</span><br></pre></td></tr></table></figure>
+<p>​        这三条命令都是在一个进程中执行的，从输出结果可以发现，在<code>Shell</code>窗口中以命令行的形式定义的变量<code>a</code>，在<code>a.sh</code>中有效；在<code>a.sh</code>中定义的变量<code>b</code>，在<code>b.sh</code>中也有效，变量<code>b</code>的作用范围已经超越了<code>a.sh</code>。</p>
+<p>​        注意，必须在当前进程中运行 Shell 脚本，不能在新进程中运行 Shell 脚本。</p>
+<h2 id="Shell环境变量"><a href="#Shell环境变量" class="headerlink" title="Shell环境变量"></a><code>Shell</code>环境变量</h2><p>​        全局变量只在当前<code>Shell</code>进程中有效，对其它<code>Shell</code>进程和子进程都无效。如果使用<code>export</code> 命令将全局变量导出，那么它就在所有的子进程中也有效了，这称为“环境变量”。</p>
+<p>​        环境变量被创建时所处的<code>Shell</code>进程称为父进程，如果在父进程中再创建一个新的进程来执行<code>Shell</code>命令，那么这个新的进程被称作<code>Shell</code>子进程。当<code>Shell</code>子进程产生时，它会继承父进程的环境变量为自己所用，所以说环境变量可从父进程传给子进程。不难理解，环境变量还可以传递给孙进程。</p>
+<p>​        注意，两个没有父子关系的<code>Shell</code>进程是不能传递环境变量的，并且环境变量只能向下传递而不能向上传递，即“传子不传父”。</p>
+<p>​        创建<code>Shell</code>子进程最简单的方式是运行<code>bash</code>命令，如图 2 所示。 </p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z41QJGN02.gif" alt></p>
+<p>​        通过<code>exit</code>命令可以一层一层地退出<code>Shell</code>。</p>
+<p>​        下面演示一下环境变量的使用：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ a=22       #定义一个全局变量</span><br><span class="line">[c.biancheng.net]$ echo $a    #在当前Shell中输出a，成功</span><br><span class="line">22</span><br><span class="line">[c.biancheng.net]$ bash       #进入Shell子进程</span><br><span class="line">[c.biancheng.net]$ echo $a    #在子进程中输出a，失败</span><br><span class="line"></span><br><span class="line">[c.biancheng.net]$ exit       #退出Shell子进程，返回上一级Shell</span><br><span class="line">exit</span><br><span class="line">[c.biancheng.net]$ export a   #将a导出为环境变量</span><br><span class="line">[c.biancheng.net]$ bash       #重新进入Shell子进程</span><br><span class="line">[c.biancheng.net]$ echo $a    #在子进程中再次输出a，成功</span><br><span class="line">22</span><br><span class="line">[c.biancheng.net]$ exit       #退出Shell子进程</span><br><span class="line">exit</span><br><span class="line">[c.biancheng.net]$ exit       #退出父进程，结束整个Shell会话</span><br></pre></td></tr></table></figure>
+<p>​        可以发现，默认情况下，<code>a</code>在<code>Shell</code>子进程中是无效的；使用<code>export</code>将<code>a</code>导出为环境变量后，在子进程中就可以使用了。</p>
+<p>​        <code>export a</code>这种形式是在定义变量<code>a</code>以后再将它导出为环境变量，如果想在定义的同时导出为环境变量，可以写作<code>export a=22</code>。</p>
+<p>​        我们一直强调的是环境变量在 Shell 子进程中有效，并没有说它在所有的<code>Shell</code>进程中都有效；如果你通过终端创建了一个新的<code>Shell</code>窗口，那它就不是当前<code>Shell</code>的子进程，环境变量对这个新的<code>Shell</code>进程仍然是无效的。请看下图：  </p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1-1Z41QKS3523.gif" alt></p>
+<p>​        第一个窗口中的环境变量<code>a</code>在第二个窗口中就无效。 </p>
+<h4 id="环境变量也是临时的"><a href="#环境变量也是临时的" class="headerlink" title="环境变量也是临时的"></a>环境变量也是临时的</h4><p>​        通过<code>export</code>导出的环境变量只对当前<code>Shell</code>进程以及所有的子进程有效，如果最顶层的父进程被关闭了，那么环境变量也就随之消失了，其它的进程也就无法使用了，所以说环境变量也是临时的。</p>
+<h2 id="Shell命令替换"><a href="#Shell命令替换" class="headerlink" title="Shell命令替换"></a><code>Shell</code>命令替换</h2><p><code>Shell</code>命令替换是指将命令的输出结果赋值给某个变量。比如，在某个目录中输入<code>ls</code>命令可查看当前目录中所有的文件，但如何将输出内容存入某个变量中呢？这就需要使用命令替换了，这也是<code>Shell</code>编程中使用非常频繁的功能。</p>
+<p>​        <code>Shell</code>中有两种方式可以完成命令替换，一种是反引号，一种是<code>$()</code>，使用方法如下： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">variable=`commands`</span><br><span class="line">variable=$(commands)</span><br></pre></td></tr></table></figure>
+<p>​        其中，<code>variable</code>是变量名，<code>commands</code>是要执行的命令。<code>commands</code>可以只有一个命令，也可以有多个命令，多个命令之间以分号<code>;</code>分隔。</p>
+<p>​        例如，<code>date</code>命令用来获得当前的系统时间，使用命令替换可以将它的结果赋值给一个变量。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">begin_time=`date`    #开始时间，使用``替换</span><br><span class="line">sleep 20s            #休眠20秒</span><br><span class="line">finish_time=$(date)  #结束时间，使用$()替换</span><br><span class="line">echo "Begin time: $begin_time"</span><br><span class="line">echo "Finish time: $finish_time"</span><br></pre></td></tr></table></figure>
+<p>​        运行脚本，20 秒后可以看到输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Begin time: 2019年 04月 19日 星期五 09:59:58 CST</span><br><span class="line">Finish time: 2019年 04月 19日 星期五 10:00:18 CST</span><br></pre></td></tr></table></figure>
+<p>​        使用 data 命令的<code>%s</code>格式控制符可以得到当前的<code>UNIX</code>时间戳，这样就可以直接计算脚本的运行时间了。<code>UNIX</code>时间戳是指从<code>1970 年 1 月 1 日 00:00:00</code>到目前为止的秒数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">begin_time=`date +%s`    #开始时间，使用``替换</span><br><span class="line">sleep 20s                #休眠20秒</span><br><span class="line">finish_time=$(date +%s)  #结束时间，使用$()替换</span><br><span class="line">run_time=$((finish_time - begin_time))  #时间差</span><br><span class="line">echo "begin time: $begin_time"</span><br><span class="line">echo "finish time: $finish_time"</span><br><span class="line">echo "run time: $&#123;run_time&#125;s"</span><br></pre></td></tr></table></figure>
+<p>​         运行脚本，20 秒后可以看到输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">begin time: 1555639864</span><br><span class="line">finish time: 1555639884</span><br><span class="line">run time: 20s</span><br></pre></td></tr></table></figure>
+<p>​        第 6 行代码中的<code>(( ))</code>是 Shell 数学计算命令。和<code>C++</code>、<code>C#</code>、<code>Java</code> 等编程语言不同，在 Shell 中进行数据计算不那么方便，必须使用专门的数学计算命令，<code>(( ))</code>就是其中之一。</p>
+<p>​        注意，如果被替换的命令的输出内容包括多行（也即有换行符），或者含有多个连续的空白符，那么在输出变量时应该将变量用双引号包围，否则系统会使用默认的空白符来填充，这会导致换行无效，以及连续的空白符被压缩成一个。请看下面的代码：  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">LSL=`ls -l`</span><br><span class="line">echo $LSL  #不使用双引号包围</span><br><span class="line">echo "--------------------------"  #输出分隔符</span><br><span class="line">echo "$LSL"  #使用引号包围</span><br></pre></td></tr></table></figure>
+<pre><code>运行结果：  
+</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">total 8 drwxr-xr-x. 2 root root 21 7月 1 2016 abc -rw-rw-r--. 1 mozhiyan mozhiyan 147 10月 31 10:29 demo.sh -rw-rw-r--. 1 mozhiyan mozhiyan 35 10月 31 10:20 demo.sh~</span><br><span class="line">--------------------------</span><br><span class="line">total 8</span><br><span class="line">drwxr-xr-x. 2 root     root      21 7月   1 2016 abc</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan 147 10月 31 10:29 demo.sh</span><br><span class="line">-rw-rw-r--. 1 mozhiyan mozhiyan  35 10月 31 10:20 demo.sh~</span><br></pre></td></tr></table></figure>
+<p>​        所以，为了防止出现格式混乱的情况，我建议在输出变量时加上双引号。 </p>
+<h2 id="再谈反引号和"><a href="#再谈反引号和" class="headerlink" title="再谈反引号和 $()"></a>再谈反引号和 $()</h2><p>​        原则上讲，上面提到的两种变量替换的形式是等价的，可以随意使用；但是，反引号毕竟看起来像单引号，有时候会对查看代码造成困扰，而使用<code>$()</code>就相对清晰，能有效避免这种混乱。而且有些情况必须使用<code>$()</code>；<code>$()</code>支持嵌套，反引号不行。</p>
+<p>​        下面的例子演示了使用计算<code>ls</code>命令列出的第一个文件的行数，这里使用了两层嵌套。  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[c.biancheng.net]$ Fir_File_Lines=$(wc -l $(ls | sed -n '1p'))</span><br><span class="line">[c.biancheng.net]$ echo "$Fir_File_Lines"</span><br><span class="line">36 anaconda-ks.cfg</span><br></pre></td></tr></table></figure>
+<p>​        要注意的是，<code>$()</code>仅在<code>Bash Shell</code>中有效，而反引号可在多种<code>Shell</code>中使用。所以这两种命令替换的方式各有特点，究竟选用哪种方式全看个人需求。 </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/shell2-特殊变量/" rel="prev" title="shell特殊变量">
+                shell特殊变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义变量"><span class="nav-number">1.</span> <span class="nav-text">定义变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用变量"><span class="nav-number">2.</span> <span class="nav-text">使用变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改变量的值"><span class="nav-number">3.</span> <span class="nav-text">修改变量的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单引号和双引号的区别"><span class="nav-number">4.</span> <span class="nav-text">单引号和双引号的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将命令的结果赋值给变量"><span class="nav-number">5.</span> <span class="nav-text">将命令的结果赋值给变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#只读变量"><span class="nav-number">6.</span> <span class="nav-text">只读变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除变量"><span class="nav-number">7.</span> <span class="nav-text">删除变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell局部变量"><span class="nav-number">8.</span> <span class="nav-text">Shell局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell全局变量"><span class="nav-number">9.</span> <span class="nav-text">Shell全局变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell环境变量"><span class="nav-number">10.</span> <span class="nav-text">Shell环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境变量也是临时的"><span class="nav-number">10.0.1.</span> <span class="nav-text">环境变量也是临时的</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell命令替换"><span class="nav-number">11.</span> <span class="nav-text">Shell命令替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再谈反引号和"><span class="nav-number">12.</span> <span class="nav-text">再谈反引号和 $()</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
