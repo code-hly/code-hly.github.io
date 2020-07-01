@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++模板定义">
+<meta property="og:url" content="http://yoursite.com/2018/08/07/c++模板1-模板定义/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:40:53.797Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++模板定义">
+<meta name="twitter:description" content="为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/07/c++模板1-模板定义/">
+
+
+
+
+
+  <title>c++模板定义 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/07/c++模板1-模板定义/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++模板定义</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T00:00:00+08:00">
+                2018-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/07/c++模板1-模板定义/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/07/c++模板1-模板定义/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/07/c++模板1-模板定义/" class="leancloud_visitors" data-flag-title="c++模板定义">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：</p>
+<a id="more"></a>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//交换 int 变量的值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//交换 float 变量的值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">float</span> *a, <span class="keyword">float</span> *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//交换 char 变量的值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">char</span> *a, <span class="keyword">char</span> *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//交换 bool 变量的值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">bool</span> *a, <span class="keyword">bool</span> *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些函数虽然在调用时方便了一些，但从本质上说还是定义了三个功能相同、函数体相同的函数，只是数据的类型不同而已，我们可以借助本节讲的函数模板把它们压缩成一个函数。</p>
+<p>​    我们知道，数据的值可以通过函数参数传递，在函数定义时数据的值是未知的，只有等到函数调用时接收了实参才能确定其值。这就是值的参数化。</p>
+<h2 id="模板的定义"><a href="#模板的定义" class="headerlink" title="模板的定义"></a>模板的定义</h2><p>​    在<code>C++</code>中，数据的类型也可以通过参数来传递，在函数定义时可以不指明具体的数据类型，当发生函数调用时，编译器可以根据传入的实参自动推断数据类型。这就是类型的参数化。</p>
+<p>​    值（<code>Value</code>）和类型（<code>Type</code>）是数据的两个主要特征，它们在<code>C++</code>中都可以被参数化。</p>
+<h3 id="函数模板定义"><a href="#函数模板定义" class="headerlink" title="函数模板定义"></a>函数模板定义</h3><p>​    所谓函数模板，实际上是建立一个通用函数，它所用到的数据的类型（包括返回值类型、形参类型、局部变量类型）可以不具体指定，而是用一个虚拟的类型来代替（实际上是用一个标识符来占位），等发生函数调用时再根据传入的实参来逆推出真正的类型。这个通用函数就称为<strong>函数模板（<code>Function Template</code>）</strong>。</p>
+<p>​    定义模板函数的语法：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> 类型参数<span class="number">1</span> , <span class="keyword">typename</span> 类型参数<span class="number">2</span> , ...&gt; 返回值类型  函数名(形参列表)&#123;</span><br><span class="line">   <span class="comment">//在函数体中可以使用类型参数</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>​    类型参数可以有多个，它们之间以逗号<code>,</code>分隔。类型参数列表以<code>&lt;&gt;</code>包围，形式参数列表以<code>()</code>包围。<code>typename</code>关键字也可以使用<code>class</code>关键字替代，它们没有任何区别。</p>
+<p>​    在函数模板中，数据的值和类型都被参数化了，发生函数调用时编译器会根据传入的实参来推演形参的值和类型。换个角度说，函数模板除了支持值的参数化，还支持类型的参数化。</p>
+<p>​    一但定义了函数模板，就可以将类型参数用于函数定义和函数声明了。说得直白一点，原来使用<code>int</code>、<code>float</code>、<code>char</code>等内置类型的地方，都可以用类型参数来代替。</p>
+<p>​    下面我们就来实践一下，将上面的四个<code>Swap()</code>函数压缩为一个函数模板：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T *a, T *b)</span></span>&#123;</span><br><span class="line">    T temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">template&lt;typename T&gt; void Swap(T &amp;a, T &amp;b)&#123;</span></span><br><span class="line"><span class="comment">    T temp = a;</span></span><br><span class="line"><span class="comment">    a = b;</span></span><br><span class="line"><span class="comment">    b = temp;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//交换 int 变量的值</span></span><br><span class="line">    <span class="keyword">int</span> n1 = <span class="number">100</span>, n2 = <span class="number">200</span>;</span><br><span class="line">    Swap(&amp;n1, &amp;n2);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;n1&lt;&lt;<span class="string">", "</span>&lt;&lt;n2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//交换 float 变量的值</span></span><br><span class="line">    <span class="keyword">float</span> f1 = <span class="number">12.5</span>, f2 = <span class="number">56.93</span>;</span><br><span class="line">    Swap(&amp;f1, &amp;f2);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;f1&lt;&lt;<span class="string">", "</span>&lt;&lt;f2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//交换 char 变量的值</span></span><br><span class="line">    <span class="keyword">char</span> c1 = <span class="string">'A'</span>, c2 = <span class="string">'B'</span>;</span><br><span class="line">    Swap(&amp;c1, &amp;c2);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;c1&lt;&lt;<span class="string">", "</span>&lt;&lt;c2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//交换 bool 变量的值</span></span><br><span class="line">    <span class="keyword">bool</span> b1 = <span class="literal">false</span>, b2 = <span class="literal">true</span>;</span><br><span class="line">    Swap(&amp;b1, &amp;b2);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;b1&lt;&lt;<span class="string">", "</span>&lt;&lt;b2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>200, 100</code><br><code>56.93, 12.5</code><br><code>B, A</code><br><code>1, 0</code></p>
+<p>​    请读者重点关注第<code>4</code>行代码。<code>template</code>是定义函数模板的关键字，它后面紧跟尖括号<code>&lt;&gt;</code>，尖括号包围的是类型参数（也可以说是虚拟的类型，或者说是类型占位符）。<code>typename</code>是另外一个关键字，用来声明具体的类型参数，这里的类型参数就是<code>T</code>。从整体上看，<code>template</code>被称为模板头。</p>
+<h3 id="类模板定义"><a href="#类模板定义" class="headerlink" title="类模板定义"></a>类模板定义</h3><p>​    <code>C++</code>除了支持函数模板，还支持<strong>类模板（<code>Class Template</code>）</strong>。函数模板中定义的类型参数可以用在函数声明和函数定义中，类模板中定义的类型参数可以用在类声明和类实现中。类模板的目的同样是将数据的类型参数化。</p>
+<p>​    声明类模板的语法为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> 类型参数<span class="number">1</span> , <span class="keyword">typename</span> 类型参数<span class="number">2</span> , ...&gt; <span class="class"><span class="keyword">class</span> 类名&#123;</span></span><br><span class="line">   <span class="comment">//<span class="doctag">TODO:</span></span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>​    类模板和函数模板都是以<code>template</code>开头（当然也可以使用<code>class</code>，目前来讲它们没有任何区别），后跟类型参数；类型参数不能为空，多个类型参数用逗号隔开。</p>
+<p>​    一但声明了类模板，就可以将类型参数用于类的成员函数和成员变量了。换句话说，原来使用<code>int</code>、<code>float</code>、<code>char</code>等内置类型的地方，都可以用类型参数来代替。</p>
+<p>​    假如我们现在要定义一个类来表示坐标，要求坐标的数据类型可以是整数、小数和字符串，例如：</p>
+<ul>
+<li><code>x = 10</code>、<code>y = 10</code></li>
+<li><code>x = 12.88</code>、<code>y = 129.65</code></li>
+<li><code>x = &quot;东经180度&quot;</code>、<code>y = &quot;北纬210度&quot;</code></li>
+</ul>
+<p> 这个时候就可以使用类模板，请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;  <span class="comment">//这里不能有分号</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>;  <span class="comment">//获取x坐标</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>;  <span class="comment">//设置x坐标</span></span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>;  <span class="comment">//获取y坐标</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>;  <span class="comment">//设置y坐标</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;  <span class="comment">//x坐标</span></span><br><span class="line">    T2 m_y;  <span class="comment">//y坐标</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​    <code>x</code>坐标和<code>y</code>坐标的数据类型不确定，借助类模板可以将数据类型参数化，这样就不必定义多个类了。</p>
+<blockquote>
+<p>注意：模板头和类头是一个整体，可以换行，但是中间不能有分号。</p>
+</blockquote>
+<p>​    上面的代码仅仅是类的声明，我们还需要在类外定义成员函数。在类外定义成员函数时仍然需要带上模板头，格式为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> 类型参数<span class="number">1</span> , <span class="keyword">typename</span> 类型参数<span class="number">2</span> , .....&gt;</span><br><span class="line"> 返回值类型 类名&lt;类型参数<span class="number">1</span> , 类型参数<span class="number">2</span>, ...&gt;::函数名(形参列表)&#123;</span><br><span class="line">   <span class="comment">//<span class="doctag">TODO:</span></span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>​    第一行是模板头，第二行是函数头，它们可以合并到一行，不过为了让代码格式更加清晰，一般是将它们分成两行。</p>
+<p>​    下面就对<code>Point</code>类的成员函数进行定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;  <span class="comment">//模板头</span></span><br><span class="line">T1 Point&lt;T1, T2&gt;::getX() <span class="keyword">const</span> <span class="comment">/*函数头*/</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> m_x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">void</span> Point&lt;T1, T2&gt;::setX(T1 x)&#123;</span><br><span class="line">    m_x = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span><br><span class="line">T2 Point&lt;T1, T2&gt;::getY() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> m_y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">void</span> Point&lt;T1, T2&gt;::setY(T2 y)&#123;</span><br><span class="line">    m_y = y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    仔细观察代码，除了<code>template</code>关键字后面要指明类型参数，类名<code>Point</code>后面也要带上类型参数，只是不加<code>typename</code>关键字了。另外需要注意的是，在类外定义成员函数时，<code>template</code>后面的类型参数要和类声明时的一致。</p>
+<h4 id="使用类模板创建对象"><a href="#使用类模板创建对象" class="headerlink" title="使用类模板创建对象"></a>使用类模板创建对象</h4><p>​    上面的两段代码完成了类的定义，接下来就可以使用该类创建对象了。使用类模板创建对象时，需要指明具体的数据类型。请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">Point&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt; p2(<span class="number">10</span>, <span class="number">15.5</span>);</span><br><span class="line">Point&lt;<span class="keyword">float</span>, <span class="keyword">char</span>*&gt; p3(<span class="number">12.4</span>, <span class="string">"东经180度"</span>);</span><br></pre></td></tr></table></figure>
+<p>​    与函数模板不同的是，类模板在实例化时必须显式地指明数据类型，编译器不能根据给定的数据推演出数据类型。</p>
+<p>​    除了对象变量，我们也可以使用对象指针的方式来实例化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Point&lt;<span class="keyword">float</span>, <span class="keyword">float</span>&gt; *p1 = <span class="keyword">new</span> Point&lt;<span class="keyword">float</span>, <span class="keyword">float</span>&gt;(<span class="number">10.6</span>, <span class="number">109.3</span>);</span><br><span class="line">Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; *p = <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;(<span class="string">"东经180度"</span>, <span class="string">"北纬210度"</span>);</span><br></pre></td></tr></table></figure>
+<p>​    需要注意的是，赋值号两边都要指明具体的数据类型，且要保持一致。下面的写法是错误的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//赋值号两边的数据类型不一致</span></span><br><span class="line">Point&lt;<span class="keyword">float</span>, <span class="keyword">float</span>&gt; *p = <span class="keyword">new</span> Point&lt;<span class="keyword">float</span>, <span class="keyword">int</span>&gt;(<span class="number">10.6</span>, <span class="number">109</span>);</span><br><span class="line"><span class="comment">//赋值号右边没有指明数据类型</span></span><br><span class="line">Point&lt;<span class="keyword">float</span>, <span class="keyword">float</span>&gt; *p = <span class="keyword">new</span> Point(<span class="number">10.6</span>, <span class="number">109</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="综合示例"><a href="#综合示例" class="headerlink" title="综合示例"></a>综合示例</h4><p>​    【实例1】将上面的类定义和类实例化的代码整合起来，构成一个完整的示例，如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;  //这里不能有分号</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>;  <span class="comment">//获取x坐标</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>;  <span class="comment">//设置x坐标</span></span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>;  <span class="comment">//获取y坐标</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>;  <span class="comment">//设置y坐标</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;  <span class="comment">//x坐标</span></span><br><span class="line">    T2 m_y;  <span class="comment">//y坐标</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;  //模板头</span></span><br><span class="line"><span class="class"><span class="title">T1</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:getX() <span class="keyword">const</span> <span class="comment">/*函数头*/</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> m_x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:setX(T1 x)&#123;</span><br><span class="line">    m_x = x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T2</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:getY() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> m_y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:setY(T2 y)&#123;</span><br><span class="line">    m_y = y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p1.getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p1.getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">    Point&lt;<span class="keyword">int</span>, <span class="keyword">char</span>*&gt; p2(<span class="number">10</span>, <span class="string">"东经180度"</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p2.getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p2.getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line">    Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; *p3 = <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;(<span class="string">"东经180度"</span>, <span class="string">"北纬210度"</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p3-&gt;getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p3-&gt;getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>x=10, y=20</code><br><code>x=10, y=东经180度</code><br><code>x=东经180度, y=北纬210度</code></p>
+<p>​    在定义类型参数时我们使用了<code>class</code>，而不是<code>typename</code>，这样做的目的是让读者对两种写法都熟悉。</p>
+<p>【实例2】用类模板实现可变长数组。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">CArray</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> size; <span class="comment">//数组元素的个数</span></span><br><span class="line">    T *ptr; <span class="comment">//指向动态分配的数组</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CArray(<span class="keyword">int</span> s = <span class="number">0</span>);  <span class="comment">//s代表数组元素的个数</span></span><br><span class="line">    CArray(CArray &amp; a);</span><br><span class="line">    ~CArray();</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(<span class="keyword">const</span> T &amp; v)</span></span>; <span class="comment">//用于在数组尾部添加一个元素v</span></span><br><span class="line">    CArray &amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> CArray &amp; a); <span class="comment">//用于数组对象间的赋值</span></span><br><span class="line">    <span class="function">T <span class="title">length</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> size; &#125;</span><br><span class="line">    T &amp; <span class="keyword">operator</span>[](<span class="keyword">int</span> i)</span><br><span class="line">    &#123;<span class="comment">//用以支持根据下标访问数组元素，如a[i] = 4;和n = a[i]这样的语句</span></span><br><span class="line">        <span class="keyword">return</span> ptr[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CArray</span>&lt;T&gt;:</span>:CArray(<span class="keyword">int</span> s):size(s)</span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">if</span>(s == <span class="number">0</span>)</span><br><span class="line">         ptr = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ptr = <span class="keyword">new</span> T[s];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CArray</span>&lt;T&gt;:</span>:CArray(CArray &amp; a)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!a.ptr) &#123;</span><br><span class="line">        ptr = <span class="literal">NULL</span>;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ptr = <span class="keyword">new</span> T[a.size];</span><br><span class="line">    <span class="built_in">memcpy</span>(ptr, a.ptr, <span class="keyword">sizeof</span>(T ) * a.size);</span><br><span class="line">    size = a.size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CArray</span>&lt;T&gt;:</span>:~CArray()</span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">if</span>(ptr) <span class="keyword">delete</span> [] ptr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CArray</span>&lt;T&gt; &amp; <span class="title">CArray</span>&lt;T&gt;:</span>:<span class="keyword">operator</span>=(<span class="keyword">const</span> CArray &amp; a)</span><br><span class="line">&#123; <span class="comment">//赋值号的作用是使"="左边对象里存放的数组，大小和内容都和右边的对象一样</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span> == &amp; a) <span class="comment">//防止a=a这样的赋值导致出错</span></span><br><span class="line">    <span class="keyword">return</span> * <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span>(a.ptr == <span class="literal">NULL</span>) &#123;  <span class="comment">//如果a里面的数组是空的</span></span><br><span class="line">        <span class="keyword">if</span>( ptr )</span><br><span class="line">            <span class="keyword">delete</span> [] ptr;</span><br><span class="line">        ptr = <span class="literal">NULL</span>;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> * <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">if</span>(size &lt; a.size) &#123; <span class="comment">//如果原有空间够大，就不用分配新的空间</span></span><br><span class="line">         <span class="keyword">if</span>(ptr)</span><br><span class="line">            <span class="keyword">delete</span> [] ptr;</span><br><span class="line">        ptr = <span class="keyword">new</span> T[a.size];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">memcpy</span>(ptr,a.ptr,<span class="keyword">sizeof</span>(T)*a.size);   </span><br><span class="line">    size = a.size;</span><br><span class="line">     <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">CArray</span>&lt;T&gt;:</span>:push_back(<span class="keyword">const</span> T &amp; v)</span><br><span class="line">&#123;  <span class="comment">//在数组尾部添加一个元素</span></span><br><span class="line">    <span class="keyword">if</span>(ptr) &#123;</span><br><span class="line">        T *tmpPtr = <span class="keyword">new</span> T[size+<span class="number">1</span>]; <span class="comment">//重新分配空间</span></span><br><span class="line">    <span class="built_in">memcpy</span>(tmpPtr,ptr,<span class="keyword">sizeof</span>(T)*size); <span class="comment">//拷贝原数组内容</span></span><br><span class="line">    <span class="keyword">delete</span> []ptr;</span><br><span class="line">    ptr = tmpPtr;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">else</span>  <span class="comment">//数组本来是空的</span></span><br><span class="line">        ptr = <span class="keyword">new</span> T[<span class="number">1</span>];</span><br><span class="line">    ptr[size++] = v; <span class="comment">//加入新的数组元素</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CArray&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">5</span>;++i)</span><br><span class="line">        a.push_back(i);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length(); ++i)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; a[i] &lt;&lt; <span class="string">" "</span>;   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="模板编程来源"><a href="#模板编程来源" class="headerlink" title="模板编程来源"></a>模板编程来源</h2><p>​    计算机编程语言种类繁多，这些编程语言根据不同的标准可以分为不同的种类，根据“在定义变量时是否需要显式地指明数据类型”可以分为<strong>强类型语言</strong>和<strong>弱类型语言</strong>。</p>
+<h3 id="强类型语言"><a href="#强类型语言" class="headerlink" title="强类型语言"></a>强类型语言</h3><p>​    <strong>强类型语言在定义变量时需要显式地指明数据类型，并且一旦为变量指明了某种数据类型，该变量以后就不能赋予其他类型的数据了，除非经过强制类型转换或隐式类型转换。</strong>典型的强类型语言有<code>C/C++</code>、<code>Java</code>、<code>C#</code>等。</p>
+<p>​    下面的代码演示了如何在<code>C/C++</code>中使用变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">100</span>;  <span class="comment">//不转换</span></span><br><span class="line">a = <span class="number">12.34</span>;  <span class="comment">//隐式转换（直接舍去小数部分，得到12）</span></span><br><span class="line">a = (<span class="keyword">int</span>)<span class="string">"http://c.biancheng.net"</span>;  <span class="comment">//强制转换（得到字符串的地址）</span></span><br></pre></td></tr></table></figure>
+<p>​    下面的代码演示了如何在<code>Java</code>中使用变量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">100</span>;  <span class="comment">//不转换</span></span><br><span class="line">a = (<span class="keyword">int</span>)<span class="number">12.34</span>;  <span class="comment">//强制转换（直接舍去小数部分，得到12）</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>Java</code>对类型转换的要求比<code>C/C++</code>更为严格，隐式转换只允许由低向高转，由高向低转必须强制转换。</p>
+<h3 id="弱类型语言"><a href="#弱类型语言" class="headerlink" title="弱类型语言"></a>弱类型语言</h3><p>​    <strong>弱类型语言在定义变量时不需要显式地指明数据类型，编译器（解释器）会根据赋给变量的数据自动推导出类型，并且可以赋给变量不同类型的数据。</strong>典型的弱类型语言有<code>JavaScript</code>、<code>Python</code>、<code>PHP</code>、<code>Ruby</code>、<code>Shell</code>、<code>Perl</code>等。</p>
+<p>​    下面的代码演示了如何在 <code>JavaScript</code>中使用变量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;  <span class="comment">//赋给整数</span></span><br><span class="line">a = <span class="number">12.34</span>;  <span class="comment">//赋给小数</span></span><br><span class="line">a = <span class="string">"http://c.biancheng.net"</span>;  <span class="comment">//赋给字符串</span></span><br><span class="line">a = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="string">"JavaScript"</span>,<span class="string">"React"</span>,<span class="string">"JSON"</span>);  <span class="comment">//赋给数组</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>var</code>是<code>JavaScript</code>中的一个关键字，表示定义一个新的变量，而不是数据类型。</p>
+<p>​    下面的代码演示了如何在<code>PHP</code>中使用变量：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">100</span>;  <span class="comment">//赋给整数</span></span><br><span class="line">$a = <span class="number">12.34</span>;  <span class="comment">//赋给小数</span></span><br><span class="line">$a = <span class="string">"http://c.biancheng.net"</span>;  <span class="comment">//赋给字符串</span></span><br><span class="line">$a = <span class="keyword">array</span>(<span class="string">"JavaScript"</span>,<span class="string">"React"</span>,<span class="string">"JSON"</span>);  <span class="comment">//赋给数组</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>$</code>是一个特殊符号，所有的变量名都要以<code>$</code>开头。<code>PHP</code>中的变量不用特别地定义，变量名首次出现即视为定义。</p>
+<blockquote>
+<p>这里的强类型和弱类型是站在变量定义和类型转换的角度讲的，并把<code>C/C++</code>归为强类型语言。另外还有一种说法是站在编译和运行的角度，并把<code>C/C++</code>归为弱类型语言。本节我们只关注第一种说法。</p>
+</blockquote>
+<p>​    类型对于编程语言来说非常重要，不同的类型支持不同的操作，例如<code>class Student</code>类型的变量可以调用 <code>display()</code>方法，<code>int</code>类型的变量就不行。不管是强类型语言还是弱类型语言，在编译器（解释器）内部都有一个类型系统来维护变量的各种信息。</p>
+<p>​    <strong>对于强类型的语言，变量的类型从始至终都是确定的、不变的，编译器在编译期间就能检测某个变量的操作是否正确，这样最终生成的程序中就不用再维护一套类型信息了，从而减少了内存的使用，加快了程序的运行。</strong></p>
+<p>​    不过这种说法也不是绝对的，有些特殊情况还是要等到运行阶段才能确定变量的类型信息。比如<code>C++</code>中的多态，编译器在编译阶段会在对象内存模型中增加虚函数表、<code>type_info</code>对象等辅助信息，以维护一个完整的继承链，等到程序运行后再执行一段代码才能确定调用哪个函数。</p>
+<p>​    <strong>对于弱类型的语言，变量的类型可以随时改变，赋予它什么类型的数据它就是什么类型，编译器在编译期间不好确定变量的类型，只有等到程序运行后、真的赋给变量一个值了，才能确定变量当前是什么类型</strong>，所以传统的编译对弱类型语言意义不大，因为即使编译了也有很多东西确定不下来。</p>
+<p>​    弱类型语言往往是一边执行一边编译，这样可以根据上下文（可以理解为当前的执行环境）推导出很多有用信息，让编译更加高效。</p>
+<p>​    我们将这种<strong>一边执行一边编译的语言称为解释型语言</strong>，而将<strong>传统的先编译后执行的语言称为编译型语言。</strong></p>
+<p>​    强类型语言较为严谨，在编译时就能发现很多错误，适合开发大型的、系统级的、工业级的项目；而弱类型语言较为灵活，编码效率高，部署容易，学习成本低，在<code>Web</code>开发中大显身手。另外，强类型语言的<code>IDE</code>一般都比较强大，代码感知能力好，提示信息丰富；而弱类型语言一般都是在编辑器中直接书写代码。</p>
+<p>​    为了展示弱类型语言的灵活，我们以<code>PHP</code>为例来实现上节中的<code>Point</code>类，让它可以处理整数、小数以及字符串：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">Point</span><span class="params">($x, $y)</span></span>&#123;  <span class="comment">//构造函数</span></span><br><span class="line">        <span class="keyword">$this</span> -&gt; m_x = $x;</span><br><span class="line">        <span class="keyword">$this</span> -&gt; m_y = $y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getX</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span> -&gt; m_x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getY</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span> -&gt; m_y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setX</span><span class="params">($x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span> -&gt; m_x = $x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setY</span><span class="params">($y)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span> -&gt; m_y = $y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $m_x;</span><br><span class="line">    <span class="keyword">private</span> $m_y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$p = <span class="keyword">new</span> Point(<span class="number">10</span>, <span class="number">20</span>);  <span class="comment">//处理整数</span></span><br><span class="line"><span class="keyword">echo</span> $p-&gt;getX() . <span class="string">", "</span> . $p-&gt;getY() . <span class="string">"&lt;br /&gt;"</span>;</span><br><span class="line"></span><br><span class="line">$p = <span class="keyword">new</span> Point(<span class="number">24.56</span>, <span class="string">"东京180度"</span>);  <span class="comment">//处理小数和字符串</span></span><br><span class="line"><span class="keyword">echo</span> $p-&gt;getX() . <span class="string">", "</span> . $p-&gt;getY() . <span class="string">"&lt;br /&gt;"</span>;</span><br><span class="line"></span><br><span class="line">$p = <span class="keyword">new</span> Point(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>);  <span class="comment">//处理字符串</span></span><br><span class="line"><span class="keyword">echo</span> $p-&gt;getX() . <span class="string">", "</span> . $p-&gt;getY() . <span class="string">"&lt;br /&gt;"</span>;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>10, 20</code><br><code>24.56, 东京180度</code><br><code>东京180度, 北纬210度</code></p>
+<p>​    <code>PHP</code>不需要使用模板就可以处理多种类型的数据，它天生对类型就不敏感。<code>C++</code>就不一样了，它是强类型的，比较“死板”，所以后来<code>C++</code>开始支持模板了，主要就是为了弥补强类型语言“不够灵活”的缺点。</p>
+<p>​    <strong>模板所支持的类型是宽泛的，没有限制的，我们可以使用任意类型来替换，这种编程方式称为泛型编程（<code>Generic Programming</code>）。</strong>相应地，可以将参数<code>T</code>看做是一个泛型，而将<code>int</code>、<code>float</code>、<code>string</code>等看做是一种具体的类型。除了<code>C++</code>，<code>Java</code>、<code>C#</code>、<code>Pascal（Delphi）</code>也都支持泛型编程。</p>
+<p>​    <strong><code>C++</code>模板也是被迫推出的，最直接的动力来源于对数据结构的封装。</strong>数据结构关注的是数据的存储，以及存储后如何进行增加、删除、修改和查询操作，它是一门基础性的学科，在实际开发中有着非常广泛的应用。<code>C++</code>开发者们希望为线性表、链表、图、树等常见的数据结构都定义一个类，并把它们加入到标准库中，这样以后程序员就不用重复造轮子了，直接拿来使用即可。</p>
+<p>​    但是这个时候遇到了一个无法解决的问题，就是数据结构中每份数据的类型无法提前预测。以链表为例，它的每个节点可以用来存储小数、整数、字符串等，也可以用来存储一名学生、教师、司机等，还可以直接存储二进制数据，这些都是可以的，没有任何限制。而<code>C++</code>又是强类型的，数据的种类受到了严格的限制，这种矛盾是无法调和的。</p>
+<p>​    要想解决这个问题，<code>C++</code>必须推陈出新，跳出现有规则的限制，开发新的技术，于是模板就诞生了。模板虽然不是<code>C++</code>的首创，但是却在<code>C++</code>中大放异彩，后来也被<code>Java</code>、<code>C#</code>等其他强类型语言采用。</p>
+<p>​    <code>C++</code>模板有着复杂的语法，也非常重要，整个标准库几乎都是使用模板来开发的，<code>STL</code>更是经典之作。</p>
+<blockquote>
+<p><code>STL</code>（<code>Standard Template Library</code>，标准模板库）就是<code>C++</code>对数据结构进行封装后的称呼。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" rel="next" title="c++运行时类型识别(RTTI)">
+                <i class="fa fa-chevron-left"></i> c++运行时类型识别(RTTI)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/c++模板2-函数模板/" rel="prev" title="c++函数模板">
+                c++函数模板 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板的定义"><span class="nav-number">1.</span> <span class="nav-text">模板的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板定义"><span class="nav-number">1.1.</span> <span class="nav-text">函数模板定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板定义"><span class="nav-number">1.2.</span> <span class="nav-text">类模板定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用类模板创建对象"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用类模板创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#综合示例"><span class="nav-number">1.2.2.</span> <span class="nav-text">综合示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板编程来源"><span class="nav-number">2.</span> <span class="nav-text">模板编程来源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#强类型语言"><span class="nav-number">2.1.</span> <span class="nav-text">强类型语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#弱类型语言"><span class="nav-number">2.2.</span> <span class="nav-text">弱类型语言</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

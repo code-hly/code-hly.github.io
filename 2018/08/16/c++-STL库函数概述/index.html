@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="STL概论​    长久以来，软件界一直希望建立一种可重复利用的东西，以及一种得以制造出”可重复运用的东西”的方法，让程序员的心血不止于随时间的迁移，人事异动而烟消云散，从函数(functions)，类别(classes)，函数库(function libraries)，类别库(class libraries)、各种组件，从模块化设计，到面向对象(object oriented)，为的就是复用性的">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++STL库函数概述">
+<meta property="og:url" content="http://yoursite.com/2018/08/16/c++-STL库函数概述/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="STL概论​    长久以来，软件界一直希望建立一种可重复利用的东西，以及一种得以制造出”可重复运用的东西”的方法，让程序员的心血不止于随时间的迁移，人事异动而烟消云散，从函数(functions)，类别(classes)，函数库(function libraries)，类别库(class libraries)、各种组件，从模块化设计，到面向对象(object oriented)，为的就是复用性的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:41:19.189Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++STL库函数概述">
+<meta name="twitter:description" content="STL概论​    长久以来，软件界一直希望建立一种可重复利用的东西，以及一种得以制造出”可重复运用的东西”的方法，让程序员的心血不止于随时间的迁移，人事异动而烟消云散，从函数(functions)，类别(classes)，函数库(function libraries)，类别库(class libraries)、各种组件，从模块化设计，到面向对象(object oriented)，为的就是复用性的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/16/c++-STL库函数概述/">
+
+
+
+
+
+  <title>c++STL库函数概述 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/c++-STL库函数概述/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++STL库函数概述</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T00:00:00+08:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/16/c++-STL库函数概述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/16/c++-STL库函数概述/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/16/c++-STL库函数概述/" class="leancloud_visitors" data-flag-title="c++STL库函数概述">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  24
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="STL概论"><a href="#STL概论" class="headerlink" title="STL概论"></a><code>STL</code>概论</h1><p>​    长久以来，软件界一直希望建立一种可重复利用的东西，以及一种得以制造出”可重复运用的东西”的方法，让程序员的心血不止于随时间的迁移，人事异动而烟消云散，从函数(<code>functions</code>)，类别(<code>classes</code>)，函数库(<code>function libraries</code>)，类别库(<code>class libraries</code>)、各种组件，从模块化设计，到面向对象(<code>object oriented</code>)，为的就是复用性的提升。</p>
+<p>​    复用性必须建立在某种标准之上。但是在许多环境下，就连软件开发最基本的数据结构(<code>data structures</code>) 和算法(<code>algorithm</code>)都未能有一套标准。大量程序员被迫从事大量重复的工作，竟然是为了完成前人已经完成而自己手上并未拥有的程序代码，这不仅是人力资源的浪费，也是挫折与痛苦的来源。</p>
+<p>​    为了建立数据结构和算法的一套标准，并且降低他们之间的耦合关系，以提升各自的独立性、弹性、交互操作性(相互合作性，<code>interoperability</code>)，诞生了<code>STL</code>。</p>
+ <a id="more"></a>
+<h2 id="STL基本概念"><a href="#STL基本概念" class="headerlink" title="STL基本概念"></a><code>STL</code>基本概念</h2><p>​    <code>STL</code>(<code>Standard Template Library</code>，标准模板库)，是惠普实验室开发的一系列软件的统称。现在主要出现在<code>c++</code>中，但是在引入<code>c++</code>之前该技术已经存在很长时间了。<br>​    <code>STL</code>从广义上分为: 容器(<code>container</code>) 、算法(<code>algorithm</code>) 、迭代器(<code>iterator</code>)，容器和算法之间通过迭代器进行无缝连接。<code>STL</code> 几乎所有的代码都采用了模板类或者模板函数，这相比传统的由函数和类组成的库来说提供了更好的代码重用机会。<code>STL</code>(<code>Standard Template Library</code>)标准模板库，在我们<code>c++</code>标准程序库中隶属于<code>STL</code>的占到了 80%以上。</p>
+<h2 id="STL六大组件简介"><a href="#STL六大组件简介" class="headerlink" title="STL六大组件简介"></a><code>STL</code>六大组件简介</h2><p>​    <code>STL</code>提供了六大组件，彼此之间可以组合套用，这六大组件分别是:容器、算法、迭代器、仿函数、适配器（配接器）、空间配置器。</p>
+<p>​    <strong>容器：</strong>各种数据结构，如<code>vector</code>、<code>list</code>、<code>deque</code>、<code>set</code>、<code>map</code>等，用来存放数据，从实现角度来看，<code>STL</code>容器是一种<code>class template</code>。</p>
+<p>​    <strong>算法：</strong>各种常用的算法，如<code>sort</code>、<code>find</code>、<code>copy</code>、<code>for_each</code>。从实现的角度来看，<code>STL</code>算法是一种<code>function tempalte</code>.</p>
+<p>​    <strong>迭代器：</strong>扮演了容器与算法之间的胶合剂，共有五种类型，从实现角度来看，迭代器是一种将<code>operator*</code> , <code>operator-&gt;</code> , <code>operator++</code>,<code>operator--</code>等指针相关操作予以重载的<code>class template</code>. 所有<code>STL</code>容器都附带有自己专属的迭代器，只有容器的设计者才知道如何遍历自己的元素。原生指针(<code>native pointer</code>)也是一种迭代器。</p>
+<p>​    <strong>仿函数：</strong>行为类似函数，可作为算法的某种策略。从实现角度来看，仿函数是一种重载了<code>operator()</code>的<code>class</code> 或者<code>class template</code></p>
+<p>​    <strong>适配器：</strong>一种用来修饰容器或者仿函数或迭代器接口的东西。</p>
+<p>​    <strong>空间配置器：</strong>负责空间的配置与管理。从实现角度看，配置器是一个实现了动态空间配置、空间管理、空间释放的<code>class tempalte</code>.</p>
+<p>​    <code>STL</code>六大组件的交互关系，容器通过空间配置器取得数据存储空间，算法通过迭代器存储容器中的内容，仿函数可以协助算法完成不同的策略的变化，适配器可以修饰仿函数。</p>
+<h2 id="STL优点"><a href="#STL优点" class="headerlink" title="STL优点"></a><code>STL</code>优点</h2><p>​    <code>STL</code> 是 <code>C++</code>的一部分，因此不用额外安装什么，它被内建在你的编译器之内。</p>
+<p>​    <code>STL</code> 的一个重要特性是将数据和操作分离。数据由容器类别加以管理，操作则由可定制的算法定义。迭代器在两者之间充当“粘合剂”，以使算法可以和容器交互运作</p>
+<p>​    程序员可以不用思考<code>STL</code>具体的实现过程，只要能够熟练使用 <code>STL</code> 就 <code>OK</code> 了。这样他们就可以把精力放在程序开发的别的方面。</p>
+<p><code>STL</code> 具有高可重用性，高性能，高移植性，跨平台的优点。</p>
+<ul>
+<li><strong>高可重用性：</strong><code>STL</code> 中几乎所有的代码都采用了模板类和模版函数的方式实现，这相比于传统的由函数和类组成的库来说提供了更好的代码重用机会。关于模板的知识，已经给大家介绍了。</li>
+<li><strong>高性能：</strong>如<code>map</code> 可以高效地从十万条记录里面查找出指定的记录，因为 <code>map</code> 是采用红黑树的变体实现的。</li>
+<li><strong>高移植性：</strong>如在项目<code>A</code> 上用 <code>STL</code> 编写的模块，可以直接移植到项目 <code>B</code> 上。</li>
+</ul>
+<h1 id="STL三大组件"><a href="#STL三大组件" class="headerlink" title="STL三大组件"></a><code>STL</code>三大组件</h1><h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><p>容器，置物之所也。</p>
+<p>​    研究数据的特定排列方式，以利于搜索或排序或其他特殊目的，这一门学科我们称为数据结构。大学信息类相关专业里面，与编程最有直接关系的学科，首推数据结构与算法。几乎可以说，任何特定的数据结构都是为了实现某种特定的算法。<code>STL</code>容器就是将运用最广泛的一些数据结构实现出来。</p>
+<p>​    常用的数据结构：可变长动态数组 (<code>vector</code>)，双向链表(<code>list</code>)，<code>tree</code>(树)，栈(<code>stack</code>)，双端队列(<code>deque</code>)，集合(<code>set</code>)，映射表(<code>map</code>)，根据数据在容器中的排列特性，这些数据分为<strong>序列式容器</strong>和<strong>关联式容器</strong>两种。</p>
+<ul>
+<li><p><strong>序列式容器</strong>是指元素在容器中的位置同元素的值无关，即容器不是排序的。将元素插入容器时，指定在什么位置（尾部、头部或中间某处）插入，元素就会位于什么位置。可变长动态数组 (<code>vector</code>)，双端队列(<code>deque</code>)，双向链表(<code>list</code>)。</p>
+</li>
+<li><p><strong>关联式容器</strong>内的元素是排序的。插入元素时，容器会按一定的排序规则将元素放到适当的位置上，因此插入元素时不能指定位置。</p>
+<p>​    默认情况下，关联容器中的元素是从小到大排序（或按关键字从小到大排序）的，而且用<code>&lt;</code>运算符比较元素或关键字大小。因为是排好序的，所以关联容器在查找时具有非常好的性能。关联式容器另一个显著特点是：在值中选择一个值作为关键字<code>key</code>，这个关键字对值起到索引的作用，方便查找。其包括<code>set</code>、<code>multiset</code>、 <code>map</code>、<code>multimap</code>容器</p>
+</li>
+<li><p>除了以上两类容器外，<code>STL</code>还在两类容器的基础上屏蔽一部分功能，突出或增加另一部分功能，实现了三种容器适配器：栈<code>stack</code>、队列<code>queue</code>、优先级队列<code>priority_queue</code>。</p>
+</li>
+</ul>
+<p>容器都是类模板。它们实例化后就成为容器类。用容器类定义的对象称为容器对象。 </p>
+<p>​    例如，<code>vector</code>是一个容器类的名字，<code>vector&lt;int&gt; a;</code>就定义了一个容器对象<code>a</code>，<code>a</code>代表一个长度可变的数组，数组中的每个元素都是<code>int</code>类型的变量；<code>vector&lt;double&gt; b;</code>定义了另一个容器对象<code>b</code>，<code>a</code>和<code>b</code>的类型是不同的。</p>
+<p>​    任何两个容器对象，只要它们的类型相同，就可以用<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>、<code>==</code>、<code>!=</code>进行词典式的比较运算。假设<code>a</code>、<code>b</code>是两个类型相同的容器对象，这些运算符的运算规则如下。</p>
+<ul>
+<li><code>a == b</code>：若<code>a</code>和<code>b</code>中的元素个数相同，且对应元素均相等，则<code>a == b</code>的值为<code>true</code>，否则值为 <code>false</code>。元素是否相等是用<code>==</code>运算符进行判断的。</li>
+<li><code>a&lt;b</code>：规则类似于词典中两个单词比较大小，从头到尾依次比较每个元素，如果发生<code>a</code>中的元素小于<code>b</code>中的元素的情况，则<code>a&lt;b</code>的值为<code>true</code>；如果没有发生<code>b</code>中的元素小于<code>a</code>中的元素的情况，且<code>a</code>中的元素个数比<code>b</code>少，<code>a&lt;b</code>的值也为<code>true</code>；其他情况下值为<code>false</code>。元素比较大小是通过<code>&lt;</code>运算符进行的。</li>
+<li><code>a != b</code>：等价于<code>!(a == b)</code>。</li>
+<li><code>a &gt; b</code>：等价于<code>b &lt; a</code>。</li>
+<li><code>a &lt;= b</code>：等价于<code>!(b &lt; a)</code>。</li>
+<li><code>a &gt;= b</code>：等价于<code>!(a &lt; b)</code>。</li>
+</ul>
+<p> 所有容器都有以下两个成员函数：</p>
+<ul>
+<li><code>int size()</code>：返回容器对象中元素的个数。</li>
+<li><p><code>bool empty()</code>：判断容器对象是否为空。</p>
+<p>顺序容器和关联容器还有以下成员函数：</p>
+</li>
+<li><p><code>begin()</code>：返回指向容器中第一个元素的迭代器。</p>
+</li>
+<li><code>end()</code>：返回指向容器中最后一个元素后面的位置的迭代器。</li>
+<li><code>rbegin()</code>：返回指向容器中最后一个元素的反向迭代器。</li>
+<li><code>rend()</code>：返回指向容器中第一个元素前面的位置的反向迭代器。</li>
+<li><code>erase(...)</code>：从容器中删除一个或几个元素。</li>
+<li><p><code>clear()</code>：从容器中删除所有元素。</p>
+<p>如果一个容器是空的，则<code>begin()</code>和<code>end()</code>的返回值相等，<code>rbegin()</code>和<code>rend()</code>的返回值也相等。</p>
+<p>顺序容器还有以下常用成员函数：</p>
+</li>
+<li><p><code>front()</code>：返回容器中第一个元素的引用。</p>
+</li>
+<li><code>back()</code>：返回容器中最后一个元素的引用。</li>
+<li><code>push_back()</code>：在容器末尾增加新元素。</li>
+<li><code>pop_back()</code>：删除容器末尾的元素。</li>
+<li><code>insert(...)</code>：插入一个或多个元素。</li>
+</ul>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>​    <code>STL</code> 提供能在各种容器中通用的算法，如插入、删除、查找、排序等。算法就是函数模板。<strong>算法通过迭代器来操纵容器中的元素。</strong></p>
+<p>​    <strong>许多算法操作的是容器上的一个区间</strong>（也可以是整个容器），因此需要两个参数，一个是区间起点元素的迭代器，另一个是区间终点元素的后面一个元素的迭代器。例如，排序和查找算法都需要这两个参数来指明待排序或待查找的区间。</p>
+<p>​    <strong>有的算法返回一个迭代器。</strong>例如，<code>find</code>算法在容器中查找一个元素，并返回一个指向该元素的迭代器。</p>
+<p>​    <strong>算法可以处理容器，也可以处理普通的数组。</strong></p>
+<p>有的算法会改变其所作用的容器。例如：</p>
+<ul>
+<li><code>copy</code>：将一个容器的内容复制到另一个容器。</li>
+<li><code>remove</code>：在容器中删除一个元素。</li>
+<li><code>random_shuffle</code>：随机打乱容器中的元素。</li>
+<li><code>fill</code>：用某个值填充容器。</li>
+</ul>
+<p>有的算法不会改变其所作用的容器。例如：</p>
+<ul>
+<li><code>find</code>：在容器中查找元素。</li>
+<li><code>count_if</code>：统计容器中符合某种条件的元素的个数。</li>
+</ul>
+<p><code>STL</code>中的大部分常用算法都在头文件<code>algorithm</code>中定义。此外，头文件<code>numeric</code>中也有一些算法。</p>
+<p>​    下面介绍一个常用算法<code>find</code>。<code>find</code>算法和其他算法一样都是函数模板。find 模板的原型如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InIt</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">InIt</span> <span class="title">find</span>(<span class="title">InIt</span> <span class="title">first</span>, <span class="title">InIt</span> <span class="title">last</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">val</span>);</span></span><br></pre></td></tr></table></figure>
+<p>​    其功能可以是在迭代器<code>first</code>、<code>last</code>指定的容器的一个区间<code>[first, last)</code>中，按顺序查找和<code>val</code> 相等的元素。如果找到，就返回该元素的迭代器；如果找不到，就返回<code>last</code>。</p>
+<blockquote>
+<p><code>[first, last)</code>这个区间是一个左闭右开的区间，即<code>last</code>指向的元素其实不在此区间内。</p>
+</blockquote>
+<p>​    <code>find</code>模板使用<code>==</code>运算符判断元素是否相等。因此，如果<code>[first, last)</code>区间中存放的是对象，则<code>==</code>运算符应该被适当重载，使得两个对象可以用<code>==</code>运算符比较。</p>
+<p>​    演示<code>find</code>用法的程序如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">40</span>&#125;;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">    v.push_back(<span class="number">1</span>);    </span><br><span class="line">    v.push_back(<span class="number">2</span>);</span><br><span class="line">    v.push_back(<span class="number">3</span>);    </span><br><span class="line">    v.push_back(<span class="number">4</span>); 	<span class="comment">//此后v里放着4个元素：1,2,3,4</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator p;</span><br><span class="line">    p = find(v.begin(),v.end(),<span class="number">3</span>); 	<span class="comment">//在v中查找3</span></span><br><span class="line">    <span class="keyword">if</span>(p != v.end()) 				<span class="comment">//若找不到,find返回 v.end()</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"1) "</span> &lt;&lt;  * p &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//找到了</span></span><br><span class="line">    p = find(v.begin(),v.end(),<span class="number">9</span>);</span><br><span class="line">    <span class="keyword">if</span>(p == v.end())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"not found "</span> &lt;&lt; <span class="built_in">endl</span>; 	<span class="comment">//没找到</span></span><br><span class="line">    p = find(v.begin()+<span class="number">1</span>,v.end()<span class="number">-1</span>,<span class="number">4</span>); 	<span class="comment">//在,3 这两个元素中查找4</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"2) "</span> &lt;&lt; * p &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> * pp = find(a,a+<span class="number">4</span>,<span class="number">20</span>);</span><br><span class="line">    <span class="keyword">if</span>(pp == a + <span class="number">4</span>)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"not found"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"3) "</span> &lt;&lt;* pp &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>1) 3</code><br> <code>not found</code><br><code>2) 4</code><br><code>3) 20</code></p>
+<p> 第<code>13</code>行，要查找的区间是<code>[v.begin(), v.end( ))</code>，<code>v.end()</code>不在查找范围内，因此没有问题。本行的查找会成功，因此<code>p</code>指向找到的元素<code>3</code>。</p>
+<p> 第<code>19</code>行，因为要查找的区间是<code>[v.begin()+l，v.end()-1)</code>，这个区间中只有<code>2、3</code>这两个元素，因此查找会失败，<code>p</code>的值变为<code>v.end() - 1</code>，因此<code>p</code>正好指向<code>4</code>这个元素。</p>
+<p> 第<code>21</code>行，数组<code>a</code>是一个容器。数组名<code>a</code>的类型是<code>int *</code>，可以做迭代器使用，表达式<code>a+4</code>的类型也是<code>int*</code>，因此也能做迭代器。本次调用<code>find</code>,查找区间是<code>[a, a+4)</code>，即数组<code>a</code>的前<code>4</code>个元素。如果查找失败，<code>find</code>就会返回<code>a+4</code>。</p>
+<p>​    <code>STL</code>中还有一个常用的算法<code>sort</code>，用于对容器排序，其原型为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;class_RandIt&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(_RandIt first, _RandIt last)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    该算法可以用来对区间<code>[first, last)</code>从小到大进行排序。下面两行程序就能对数组<code>a</code>排序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">4</span>] = &#123;<span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>&#125;;</span><br><span class="line">sort(a, a+<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>​    迭代器(<code>iterator</code>)是一种抽象的设计概念，现实程序语言中并没有直接对应于这个概念的实物。在&lt;&lt;<code>Design Patterns</code>&gt;&gt;一书中提供了<code>23</code>中设计模式的完整描述，其中<code>iterator</code>模式定义如下：提供一种方法，使之能够依序寻访某个容器所含的各个元素，而又无需暴露该容器的内部表示方式。</p>
+<p>​    迭代器的设计思维-<code>STL</code>的关键所在，<code>STL</code>的中心思想在于将容器(<code>container</code>)和算法(<code>algorithms</code>)分开，彼此独立设计，最后再一贴胶着剂将他们撮合在一起。从技术角度来看，容器和算法的泛型化并不困难，<code>c++</code>的<code>class template</code>和<code>function template</code>可分别达到目标，如果设计出两这个之间的良好的胶着剂，才是大难题。</p>
+<p>迭代器按照定义方式分成以下四种。</p>
+<ul>
+<li><p><strong>正向迭代器</strong>，定义方法如下：</p>
+<p><code>容器类名::iterator 迭代器名;</code></p>
+</li>
+<li><p><strong>常量正向迭代器</strong>，定义方法如下：</p>
+<p><code>容器类名::const_iterator 迭代器名;</code></p>
+</li>
+<li><p><strong>反向迭代器</strong>，定义方法如下：</p>
+<p><code>容器类名::reverse_iterator 迭代器名;</code></p>
+</li>
+<li><p><strong>常量反向迭代器</strong>，定义方法如下：</p>
+<p><code>容器类名::const_reverse_iterator 迭代器名;</code></p>
+</li>
+</ul>
+<h3 id="迭代器用法示例"><a href="#迭代器用法示例" class="headerlink" title="迭代器用法示例"></a>迭代器用法示例</h3><p>​    通过迭代器可以读取它指向的元素，<code>*迭代器名</code>就表示迭代器指向的元素。通过非常量迭代器还能修改其指向的元素。</p>
+<p> 迭代器都可以进行<code>++</code>操作。反向迭代器和正向迭代器的区别在于：</p>
+<ul>
+<li>对正向迭代器进行<code>++</code>操作时，迭代器会指向容器中的后一个元素；</li>
+<li>而对反向迭代器进行<code>++</code>操作时，迭代器会指向容器中的前一个元素。</li>
+</ul>
+<p> 下面的程序演示了如何通过迭代器遍历一个<code>vector</code>容器中的所有元素。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;  <span class="comment">//v是存放int类型变量的可变长数组，开始时没有元素</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n&lt;<span class="number">5</span>; ++n)</span><br><span class="line">        v.push_back(n);  <span class="comment">//push_back成员函数在vector容器尾部添加一个元素</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator i;  <span class="comment">//定义正向迭代器</span></span><br><span class="line">    <span class="keyword">for</span> (i = v.begin(); i != v.end(); ++i) &#123;  <span class="comment">//用迭代器遍历容器</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">" "</span>;  <span class="comment">//*i 就是迭代器i指向的元素</span></span><br><span class="line">        *i *= <span class="number">2</span>;  <span class="comment">//每个元素变为原来的2倍</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">//用反向迭代器遍历容器</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::reverse_iterator j = v.rbegin(); j != v.rend(); ++j)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *j &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>0 1 2 3 4</code><br><code>8 6 4 2 0</code></p>
+<p>​    第<code>10</code>行，<code>begin</code>成员函数返回指向容器中第一个元素的迭代器。<code>++i</code>使得<code>i</code>指向容器中的下一个元素。<code>end</code>成员函数返回的不是指向最后一个元素的迭代器，而是指向最后一个元素后面的位置的迭代器，因此循环的终止条件是<code>i != v.end()</code>。</p>
+<p>​    第<code>16</code>行定义了反向迭代器用以遍历容器。反向迭代器进行<code>++</code>操作后，会指向容器中的上一个元素。<code>rbegin</code> 成员函数返回指向容器中最后一个元素的迭代器，<code>rend</code>成员函数返回指向容器中第一个元素前面的位置的迭代器，因此本循环实际上是从后往前遍历整个数组。</p>
+<p>​    如果迭代器指向了容器中最后一个元素的后面或第一个元素的前面，再通过该迭代器访问元素，就有可能导致程序崩溃，这和访问<code>NULL</code>或未初始化的指针指向的地方类似。</p>
+<p>​    第<code>10</code>行和第<code>16</code>行，写<code>++i</code>、<code>++j</code>相比于写<code>i++</code>、<code>j++</code>，程序的执行速度更快。回顾<code>++</code>被重载成前置和后置运算符的例子如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CDemo CDemo::<span class="keyword">operator</span>++ ()</span><br><span class="line">&#123;  <span class="comment">//前置++</span></span><br><span class="line">    ++n;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line">CDemo CDemo::<span class="keyword">operator</span> ++(<span class="keyword">int</span> k)</span><br><span class="line">&#123;  <span class="comment">//后置++</span></span><br><span class="line">    <span class="function">CDemo <span class="title">tmp</span><span class="params">(*<span class="keyword">this</span>)</span></span>;  <span class="comment">//记录修改前的对象</span></span><br><span class="line">    n++;</span><br><span class="line">    <span class="keyword">return</span> tmp;  <span class="comment">//返回修改前的对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    后置<code>++</code>要多生成一个局部对象<code>tmp</code>，因此执行速度比前置的慢。同理，迭代器是一个对象，<code>STL</code>在重载迭代器的<code>++</code>运算符时，后置形式也比前置形式慢。在次数很多的循环中，<code>++i</code>和<code>i++</code>可能就会造成运行时间上可观的差别了。因此，对循环控制变量<code>i</code>，要养成写<code>++i</code>、不写<code>i++</code>的习惯。</p>
+<p>​    注意，容器适配器<code>stack</code>、<code>queue</code>和<code>priority_queue</code>没有迭代器。容器适配器有一些成员函数，可以用来对元素进行访问。</p>
+<h3 id="迭代器的功能分类"><a href="#迭代器的功能分类" class="headerlink" title="迭代器的功能分类"></a>迭代器的功能分类</h3><p>​    不同容器的迭代器，其功能强弱有所不同。容器的迭代器的功能强弱，决定了该容器是否支持<code>STL</code>中的某种算法。例如，排序算法需要通过随机访问迭代器来访问容器中的元素，因此有的容器就不支持排序算法。</p>
+<p>​    常用的迭代器按功能强弱分为输入、输出、正向、双向、随机访问五种，这里只介绍常用的三种。</p>
+<ul>
+<li><p><strong>正向迭代器</strong>。假设<code>p</code>是一个正向迭代器，则<code>p</code>支持以下操作：<code>++p</code>，<code>p++</code>，<code>*p</code>。此外，两个正向迭代器可以互相赋值，还可以用<code>==</code>和<code>!=</code>运算符进行比较。</p>
+</li>
+<li><p><strong>双向迭代器。</strong>双向迭代器具有正向迭代器的全部功能。除此之外，若<code>p</code>是一个双向迭代器，则<code>--p</code>和<code>p--</code>都是有定义的。<code>--p</code>使得<code>p</code>朝和<code>++p</code>相反的方向移动。</p>
+</li>
+<li><p><strong>随机访问迭代器。</strong>随机访问迭代器具有双向迭代器的全部功能。若<code>p</code>是一个随机访问迭代器，<code>i</code>是一个整型变量或常量，则<code>p</code>还支持以下操作：</p>
+<ul>
+<li><code>p+=i</code>：使得<code>p</code>往后移动<code>i</code>个元素。</li>
+<li><code>p-=i</code>：使得<code>p</code> 往前移动<code>i</code>个元素。</li>
+<li><code>p+i</code>：返回<code>p</code>后面第<code>i</code>个元素的迭代器。</li>
+<li><code>p-i</code>：返回<code>p</code>前面第<code>i</code>个元素的迭代器。</li>
+<li><code>p[i]</code>：返回<code>p</code>后面第<code>i</code>个元素的引用。</li>
+</ul>
+</li>
+</ul>
+<pre><code>​     此外，两个随机访问迭代器` p1`、`p2 `还可以用` &lt;`、`&gt;`、`&lt;=`、`&gt;= `运算符进行比较。`p1&lt;p2`的含义是：`p1 `经过若干次（至少一次）`++`操作后，就会等于` p2`。其他比较方式的含义与此类似。
+
+​     对于两个随机访问迭代器` p1`、`p2`，表达式`p2-p1`也是有定义的，其返回值是` p2 `所指向元素和` p1 `所指向元素的序号之差（也可以说是` p2 `和` p1 `之间的元素个数减一）。
+</code></pre><p> 表1所示为不同容器的迭代器的功能。</p>
+<table>
+<thead>
+<tr>
+<th>容器</th>
+<th>迭代器功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vector</code></td>
+<td>随机访问</td>
+</tr>
+<tr>
+<td><code>deque</code></td>
+<td>随机访问</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td>双向</td>
+</tr>
+<tr>
+<td><code>set / multiset</code></td>
+<td>双向</td>
+</tr>
+<tr>
+<td><code>map / multimap</code></td>
+<td>双向</td>
+</tr>
+<tr>
+<td><code>stack</code></td>
+<td>不支持迭代器</td>
+</tr>
+<tr>
+<td><code>queue</code></td>
+<td>不支持迭代器</td>
+</tr>
+<tr>
+<td><code>priority_queue</code></td>
+<td>不支持迭代器</td>
+</tr>
+</tbody>
+</table>
+<p>​    例如，<code>vector</code>的迭代器是随机迭代器，因此遍历<code>vector</code>容器有以下几种做法。下面的程序中，每个循环演示了一种做法。</p>
+<p> 【实例】遍历<code>vector</code>容器。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="number">100</span>); <span class="comment">//v被初始化成有100个元素</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; v.size() ; ++i) <span class="comment">//size返回元素个数</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; v[i]; <span class="comment">//像普通数组一样使用vector容器</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator i;</span><br><span class="line">    <span class="keyword">for</span>(i = v.begin(); i != v.end (); ++i) <span class="comment">//用 != 比较两个迭代器</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * i;</span><br><span class="line">    <span class="keyword">for</span>(i = v.begin(); i &lt; v.end ();++i) <span class="comment">//用 &lt; 比较两个迭代器</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * i;</span><br><span class="line">    i = v.begin();</span><br><span class="line">    <span class="keyword">while</span>(i &lt; v.end()) &#123; <span class="comment">//间隔一个输出</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * i;</span><br><span class="line">        i += <span class="number">2</span>; <span class="comment">// 随机访问迭代器支持 "+= 整数"  的操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    <code>list</code>容器的迭代器是双向迭代器。假设<code>v</code>和<code>i</code>的定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::const_iterator i;</span><br></pre></td></tr></table></figure>
+<p>​    则以下代码是合法的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(i=v.begin(); i!=v.end(); ++i)</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *i;</span><br></pre></td></tr></table></figure>
+<p>​    以下代码则不合法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(i=v.begin(); i&lt;v.end(); ++i)</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *i;</span><br></pre></td></tr></table></figure>
+<p>​    因为双向迭代器不支持用<code>“&lt;”</code>进行比较。以下代码也不合法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;v.size(); ++i)</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; v[i];</span><br></pre></td></tr></table></figure>
+<p>​    因为<code>list</code>不支持随机访问迭代器的容器，也不支持用下标随机访问其元素。</p>
+<pre><code>在`C++`中，数组也是容器。数组的迭代器就是指针，而且是随机访问迭代器。例如，对于数组` int a[10]`，`int * `类型的指针就是其迭代器。则` a`、`a+1`、`a+2`都是`a`的迭代器。
+</code></pre><h3 id="迭代器的辅助函数"><a href="#迭代器的辅助函数" class="headerlink" title="迭代器的辅助函数"></a>迭代器的辅助函数</h3><p><code>STL</code>中有用于操作迭代器的三个函数模板，它们是：</p>
+<ul>
+<li><code>advance(p, n)</code>：使迭代器<code>p</code>向前或向后移动<code>n</code>个元素。</li>
+<li><code>distance(p, q)</code>：计算两个迭代器之间的距离，即迭代器<code>p</code>经过多少次<code>+ +</code>操作后和迭代器<code>q</code>相等。如果调用时<code>p</code>已经指向<code>q</code>的后面，则这个函数会陷入死循环。</li>
+<li><code>iter_swap(p, q)</code>：用于交换两个迭代器<code>p</code>、<code>q</code>指向的值。</li>
+</ul>
+<p> 要使用上述模板，需要包含头文件<code>algorithm</code>。下面的程序演示了这三个函数模板的 用法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt; 	//要使用操作迭代器的函数模板，需要包含此文件</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">    <span class="built_in">list</span> &lt;<span class="keyword">int</span>&gt; lst(a, a+<span class="number">5</span>);</span><br><span class="line">    <span class="built_in">list</span> &lt;<span class="keyword">int</span>&gt;::iterator p = lst.begin();</span><br><span class="line">    advance(p, <span class="number">2</span>);  				<span class="comment">//p向后移动两个元素，指向3</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"1)"</span> &lt;&lt; *p &lt;&lt; <span class="built_in">endl</span>;  	<span class="comment">//输出 1)3</span></span><br><span class="line">    advance(p, <span class="number">-1</span>);  				<span class="comment">//p向前移动一个元素，指向2</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"2)"</span> &lt;&lt; *p &lt;&lt; <span class="built_in">endl</span>;  	<span class="comment">//输出 2)2</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator q = lst.end();</span><br><span class="line">    q--;  										<span class="comment">//q 指向 5</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"3)"</span> &lt;&lt; distance(p, q) &lt;&lt; <span class="built_in">endl</span>;  	<span class="comment">//输出 3)3</span></span><br><span class="line">    iter_swap(p, q); 							<span class="comment">//交换 2 和 5</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"4)"</span>;</span><br><span class="line">    <span class="keyword">for</span> (p = lst.begin(); p != lst.end(); ++p)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *p &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>1) 3</code><br><code>2) 2</code><br><code>3) 3</code><br><code>4) 1 5 3 4 2</code></p>
+<h2 id="STL容器使用时机"><a href="#STL容器使用时机" class="headerlink" title="STL容器使用时机"></a><code>STL</code>容器使用时机</h2><table>
+<thead>
+<tr>
+<th></th>
+<th><code>vector</code></th>
+<th><code>deque</code></th>
+<th><code>list</code></th>
+<th><code>set</code></th>
+<th><code>multiset</code></th>
+<th><code>map</code></th>
+<th><code>multimap</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>典型内存结构</td>
+<td>单端数组</td>
+<td>双端数组</td>
+<td>双向链表</td>
+<td>二叉树</td>
+<td>二叉树</td>
+<td>二叉树</td>
+<td>二叉树</td>
+</tr>
+<tr>
+<td>可随机存取</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>对<code>key</code>而言：不是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>元素搜寻速度</td>
+<td>慢</td>
+<td>慢</td>
+<td>非常慢</td>
+<td>快</td>
+<td>快</td>
+<td>对<code>key</code>而言：快</td>
+<td>对key而言：快</td>
+</tr>
+<tr>
+<td>元素安插移除</td>
+<td>尾端</td>
+<td>头尾两端</td>
+<td>任何位置</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>vector</code>的使用场景：比如软件历史操作记录的存储，我们经常要查看历史记录，比如上一次的记录，上上次的记录，但却不会去删除记录，因为记录是事实的描述。</p>
+</li>
+<li><p><code>deque</code>的使用场景：比如排队购票系统，对排队者的存储可以采用<code>deque</code>，支持头端的快速移除，尾端的快速添加。如果采用<code>vector</code>，则头端移除时，会移动大量的数据，速度慢。  </p>
+<p><code>vector</code>与<code>deque</code>的比较：</p>
+<ul>
+<li><p><code>vector.at()</code>比<code>deque.at()</code>效率高，比如<code>vector.at(0)</code>是固定的，<code>deque</code>的开始位置却是不固定的。</p>
+</li>
+<li><p>如果有大量释放操作的话，<code>vector</code>花的时间更少，这跟二者的内部实现有关。</p>
+</li>
+<li><p><code>deque</code>支持头部的快速插入与快速移除，这是<code>deque</code>的优点。</p>
+</li>
+</ul>
+</li>
+<li><p><code>list</code>的使用场景：比如公交车乘客的存储，随时可能有乘客下车，支持频繁的不确实位置元素的移除插入。</p>
+</li>
+<li><p><code>set</code>的使用场景：比如对手机游戏的个人得分记录的存储，存储要求从高分到低分的顺序排列。 </p>
+</li>
+<li><p><code>map</code>的使用场景：比如按<code>ID</code>号存储十万个用户，想要快速要通过<code>ID</code>查找对应的用户。二叉树的查找效率，这时就体现出来了。如果是<code>vector</code>容器，最坏的情况下可能要遍历完整个容器才能找到该用户。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/15/c++模板3-类模板/" rel="next" title="c++类模板">
+                <i class="fa fa-chevron-left"></i> c++类模板
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/18/c++-STL库函数vector/" rel="prev" title="c++STL库函数vector">
+                c++STL库函数vector <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#STL概论"><span class="nav-number">1.</span> <span class="nav-text">STL概论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#STL基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">STL基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL六大组件简介"><span class="nav-number">1.2.</span> <span class="nav-text">STL六大组件简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL优点"><span class="nav-number">1.3.</span> <span class="nav-text">STL优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STL三大组件"><span class="nav-number">2.</span> <span class="nav-text">STL三大组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器"><span class="nav-number">2.1.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">2.2.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代器"><span class="nav-number">2.3.</span> <span class="nav-text">迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器用法示例"><span class="nav-number">2.3.1.</span> <span class="nav-text">迭代器用法示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器的功能分类"><span class="nav-number">2.3.2.</span> <span class="nav-text">迭代器的功能分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器的辅助函数"><span class="nav-number">2.3.3.</span> <span class="nav-text">迭代器的辅助函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL容器使用时机"><span class="nav-number">2.4.</span> <span class="nav-text">STL容器使用时机</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

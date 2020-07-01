@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="typeid运算符：获取类型信息​    typeid运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：  对于基本类型（int、float 等C++内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。 对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++typpeid运算符：获取类型信息">
+<meta property="og:url" content="http://yoursite.com/2018/07/28/c++多态2-typeid运算符：获取类型信息/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="typeid运算符：获取类型信息​    typeid运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：  对于基本类型（int、float 等C++内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。 对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:37:30.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++typpeid运算符：获取类型信息">
+<meta name="twitter:description" content="typeid运算符：获取类型信息​    typeid运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：  对于基本类型（int、float 等C++内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。 对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/28/c++多态2-typeid运算符：获取类型信息/">
+
+
+
+
+
+  <title>c++typpeid运算符：获取类型信息 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/c++多态2-typeid运算符：获取类型信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++typpeid运算符：获取类型信息</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T00:00:00+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/28/c++多态2-typeid运算符：获取类型信息/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" class="leancloud_visitors" data-flag-title="c++typpeid运算符：获取类型信息">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="typeid运算符：获取类型信息"><a href="#typeid运算符：获取类型信息" class="headerlink" title="typeid运算符：获取类型信息"></a><code>typeid</code>运算符：获取类型信息</h2><p>​    <code>typeid</code>运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：</p>
+<ul>
+<li>对于基本类型（<code>int</code>、<code>float</code> 等<code>C++</code>内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。</li>
+<li>对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。</li>
+</ul>
+<a id="more"></a>
+<p><strong>类型信息是创建数据的模板，数据占用多大内存、能进行什么样的操作、该如何操作等，这些都由它的类型信息决定。</strong></p>
+<p>​    <code>typeid</code>的操作对象既可以是表达式，也可以是数据类型，下面是它的两种使用方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeid</span>( dataType )</span><br><span class="line"><span class="keyword">typeid</span>( expression )</span><br></pre></td></tr></table></figure>
+<p>​    <code>dataType</code>是数据类型，<code>expression</code>是表达式，这和<code>sizeof</code>运算符非常类似，只不过<code>sizeof</code> 有时候可以省略括号<code>( )</code>，而<code>typeid</code>必须带上括号。</p>
+<p>​    <code>typeid</code>会把获取到的类型信息保存到一个<code>type_info</code>类型的对象里面，并返回该对象的常引用；当需要具体的类型信息时，可以通过成员函数来提取。<code>typeid</code>的使用非常灵活，请看下面的例子（只能在<code>VC/VS</code>下运行）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;typeinfo&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">STU</span>&#123;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//获取一个普通变量的类型信息</span></span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">const</span> type_info &amp;nInfo = <span class="keyword">typeid</span>(n);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;nInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;nInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;nInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个字面量的类型信息</span></span><br><span class="line">    <span class="keyword">const</span> type_info &amp;dInfo = <span class="keyword">typeid</span>(<span class="number">25.65</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;dInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;dInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;dInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个对象的类型信息</span></span><br><span class="line">    Base obj;</span><br><span class="line">    <span class="keyword">const</span> type_info &amp;objInfo = <span class="keyword">typeid</span>(obj);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;objInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;objInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;objInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个类的类型信息</span></span><br><span class="line">    <span class="keyword">const</span> type_info &amp;baseInfo = <span class="keyword">typeid</span>(Base);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;baseInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;baseInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;baseInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个结构体的类型信息</span></span><br><span class="line">    <span class="keyword">const</span> type_info &amp;stuInfo = <span class="keyword">typeid</span>(struct STU);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;stuInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;stuInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;stuInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个普通类型的类型信息</span></span><br><span class="line">    <span class="keyword">const</span> type_info &amp;charInfo = <span class="keyword">typeid</span>(<span class="keyword">char</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;charInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;charInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;charInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取一个表达式的类型信息</span></span><br><span class="line">    <span class="keyword">const</span> type_info &amp;expInfo = <span class="keyword">typeid</span>(<span class="number">20</span> * <span class="number">45</span> / <span class="number">4.5</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;expInfo.name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;expInfo.raw_name()&lt;&lt;<span class="string">" | "</span>&lt;&lt;expInfo.hash_code()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>int | .H | 529034928</code><br><code>double | .N | 667332678</code><br><code>class Base | .?AVBase@@ | 1035034353</code><br><code>class Base | .?AVBase@@ | 1035034353</code><br><code>struct STU | .?AUSTU@@ | 734635517</code><br><code>char | .D | 4140304029</code><br><code>double | .N | 667332678</code></p>
+<p>​    从本例可以看出，<code>typeid</code>的使用非常灵活，它的操作数可以是普通变量、对象、内置类型（<code>int</code>、<code>float</code>等）、自定义类型（结构体和类），还可以是一个表达式。</p>
+<p>本例中还用到了<code>type_info</code>类的几个成员函数，下面是对它们的介绍：</p>
+<ul>
+<li><code>name()</code>用来返回类型的名称。</li>
+<li><code>raw_name()</code>用来返回名字编码（<code>Name Mangling</code>）算法产生的新名称。</li>
+<li><code>hash_code()</code>用来返回当前类型对应的<code>hash</code> 值。<code>hash</code>值是一个可以用来标志当前类型的整数，有点类似学生的学号、公民的身份证号、银行卡号等。不过<code>hash</code>值有赖于编译器的实现，在不同的编译器下可能会有不同的整数，但它们都能唯一地标识某个类型。</li>
+</ul>
+<p>遗憾的是，<code>C++</code>标准只对<code>type_info</code>类做了很有限的规定，不仅成员函数少，功能弱，而且各个平台的实现不一致。例如上面代码中的<code>name()</code>函数，<code>nInfo.name()</code>、<code>objInfo.name()</code>在<code>VC/VS</code>下的输出结果分别是<code>int</code>和<code>class Base</code>，而在<code>GCC</code>下的输出结果分别是<code>i</code>和<code>4Base</code>。</p>
+<p>​    <code>C++</code>标准规定，<code>type_info</code>类至少要有如下所示的<code>4</code>个 <code>public</code> 属性的成员函数，其他的扩展函数编译器开发者可以自由发挥，不做限制。</p>
+<h4 id="1-原型：const-char-name-const"><a href="#1-原型：const-char-name-const" class="headerlink" title="1) 原型：const char* name() const;"></a>1) 原型：<code>const char* name() const;</code></h4><p>​    返回一个能表示类型名称的字符串。但是<code>C++</code>标准并没有规定这个字符串是什么形式的，例如对于上面的<code>objInfo.name()</code>语句，<code>VC/VS</code>下返回<code>“class Base”</code>，但<code>GCC</code>下返回<code>“4Base”</code>。</p>
+<h4 id="2-原型：bool-before-const-type-info-amp-rhs-const"><a href="#2-原型：bool-before-const-type-info-amp-rhs-const" class="headerlink" title="2) 原型：bool before (const type_info&amp; rhs) const;"></a>2) 原型：<code>bool before (const type_info&amp; rhs) const;</code></h4><p>​    判断一个类型是否位于另一个类型的前面，<code>rhs</code>参数是一个<code>type_info</code>  对象的引用。但是<code>C++</code>标准并没有规定类型的排列顺序，不同的编译器有不同的排列规则，程序员也可以自定义。要特别注意的是，这个排列顺序和继承顺序没有关系，基类并不一定位于派生类的前面。</p>
+<h4 id="3-原型：bool-operator-const-type-info-amp-rhs-const"><a href="#3-原型：bool-operator-const-type-info-amp-rhs-const" class="headerlink" title="3) 原型：bool operator== (const type_info&amp; rhs) const;"></a>3) 原型：<code>bool operator== (const type_info&amp; rhs) const;</code></h4><p>​    重载运算符<code>“==”</code>，判断两个类型是否相同，<code>rhs</code>参数是一个<code>type_info</code>对象的引用。</p>
+<h4 id="4-原型：bool-operator-const-type-info-amp-rhs-const"><a href="#4-原型：bool-operator-const-type-info-amp-rhs-const" class="headerlink" title="4) 原型：bool operator!= (const type_info&amp; rhs) const;"></a>4) 原型：<code>bool operator!= (const type_info&amp; rhs) const;</code></h4><p>​    重载运算符<code>“!=”</code>，判断两个类型是否不同，<code>rhs</code>参数是一个<code>type_info</code>对象的引用。</p>
+<p><code>raw_name()</code>是<code>VC/VS</code>独有的一个成员函数，<code>hash_code()</code>在<code>VC/VS</code>和较新的<code>GCC</code>下有效。</p>
+<p>可以发现，<code>C++</code>能获取到的类型信息非常有限，也没有统一的标准，如同“鸡肋”一般，大部分情况下我们只是使用重载过的<code>“==”</code>运算符来判断两个类型是否相同。</p>
+<h3 id="判断类型是否相等"><a href="#判断类型是否相等" class="headerlink" title="判断类型是否相等"></a>判断类型是否相等</h3><p>​    <code>typeid</code>运算符经常被用来判断两个类型是否相等。</p>
+<h4 id="1-内置类型的比较"><a href="#1-内置类型的比较" class="headerlink" title="1) 内置类型的比较"></a>1) 内置类型的比较</h4><p>例如有下面的定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">float</span> f;</span><br></pre></td></tr></table></figure>
+<p>类型判断结果为：</p>
+<table>
+<thead>
+<tr>
+<th>类型比较</th>
+<th>结果</th>
+<th>类型比较</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typeid(int) == typeid(int)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(int) == typeid(char)</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>typeid(char*) == typeid(char)</code></td>
+<td><code>false</code></td>
+<td><code>typeid(str) == typeid(char*)</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>typeid(a) == typeid(int)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(b) == typeid(int)</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>typeid(a) == typeid(a)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(a) == typeid(b)</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>typeid(a) == typeid(f)</code></td>
+<td><code>false</code></td>
+<td><code>typeid(a/b) == typeid(int)</code></td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p>​    <code>typeid</code>返回<code>type_info</code>对象的引用，而表达式<code>typeid(a) == typeid(b)</code>的结果为<code>true</code>，可以说明，一个类型不管使用了多少次，编译器都只为它创建一个对象，所有<code>typeid</code>都返回这个对象的引用。</p>
+<p>​    需要提醒的是，为了减小编译后文件的体积，编译器不会为所有的类型创建<code>type_info</code>对象，只会为使用了<code>typeid</code>运算符的类型创建。不过有一种特殊情况，就是带虚函数的类（包括继承来的），不管有没有使用<code>typeid</code>运算符，编译器都会为带虚函数的类创建<code>type_info</code>对象。</p>
+<h4 id="2-类的比较"><a href="#2-类的比较" class="headerlink" title="2) 类的比较"></a>2) 类的比较</h4><p>​    例如有下面的定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base&#123;&#125;;</span><br><span class="line"></span><br><span class="line">Base obj1;</span><br><span class="line">Base *p1;</span><br><span class="line">Derived obj2;</span><br><span class="line">Derived *p2 = <span class="keyword">new</span> Derived;</span><br><span class="line">p1 = p2;</span><br></pre></td></tr></table></figure>
+<p>类型判断结果为：</p>
+<table>
+<thead>
+<tr>
+<th>类型比较</th>
+<th>结果</th>
+<th>类型比较</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typeid(obj1) == typeid(p1)</code></td>
+<td><code>false</code></td>
+<td><code>typeid(obj1) == typeid(*p1)</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>typeid(&amp;obj1) == typeid(p1)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(obj1) == typeid(obj2)</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>typeid(obj1) == typeid(Base)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(*p1) == typeid(Base)</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>typeid(p1) == typeid(Base*)</code></td>
+<td><code>true</code></td>
+<td><code>typeid(p1) == typeid(Derived*)</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p>​    表达式<code>typeid(*p1) == typeid(Base)</code>和<code>typeid(p1) == typeid(Base*)</code>的结果为<code>true</code>可以说明：即使将派生类指针<code>p2</code>赋值给基类指针<code>p1</code>，<code>p1</code>的类型仍然为<code>Base*</code>。</p>
+<h3 id="type-info类的声明"><a href="#type-info类的声明" class="headerlink" title="type_info类的声明"></a><code>type_info</code>类的声明</h3><p>​    最后我们再来看一下<code>type_info</code>类的声明，以进一步了解它所包含的成员函数以及这些函数的访问权限。<code>type_info</code>类位于<code>typeinfo</code>头文件，声明形式类似于：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">type_info</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~type_info();</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> type_info&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> type_info&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">before</span><span class="params">(<span class="keyword">const</span> type_info&amp; rhs)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">name</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">raw_name</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">void</span> *_m_data;</span><br><span class="line">    <span class="keyword">char</span> _m_d_name[<span class="number">1</span>];</span><br><span class="line">    type_info(<span class="keyword">const</span> type_info&amp; rhs);</span><br><span class="line">    type_info&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> type_info&amp; rhs);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​    它的构造函数是<code>private</code>属性的，所以不能在代码中直接实例化，只能由编译器在内部实例化（借助友元）。而且还重载了<code>“=”</code>运算符，也是<code>private</code>属性的，所以也不能赋值。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/25/c++多态1-虚函数和纯虚函数/" rel="next" title="c++虚函数和纯虚函数">
+                <i class="fa fa-chevron-left"></i> c++虚函数和纯虚函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" rel="prev" title="c++运行时类型识别(RTTI)">
+                c++运行时类型识别(RTTI) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#typeid运算符：获取类型信息"><span class="nav-number">1.</span> <span class="nav-text">typeid运算符：获取类型信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-原型：const-char-name-const"><span class="nav-number">1.0.1.</span> <span class="nav-text">1) 原型：const char* name() const;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-原型：bool-before-const-type-info-amp-rhs-const"><span class="nav-number">1.0.2.</span> <span class="nav-text">2) 原型：bool before (const type_info&amp; rhs) const;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-原型：bool-operator-const-type-info-amp-rhs-const"><span class="nav-number">1.0.3.</span> <span class="nav-text">3) 原型：bool operator== (const type_info&amp; rhs) const;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-原型：bool-operator-const-type-info-amp-rhs-const"><span class="nav-number">1.0.4.</span> <span class="nav-text">4) 原型：bool operator!= (const type_info&amp; rhs) const;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断类型是否相等"><span class="nav-number">1.1.</span> <span class="nav-text">判断类型是否相等</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内置类型的比较"><span class="nav-number">1.1.1.</span> <span class="nav-text">1) 内置类型的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-类的比较"><span class="nav-number">1.1.2.</span> <span class="nav-text">2) 类的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type-info类的声明"><span class="nav-number">1.2.</span> <span class="nav-text">type_info类的声明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

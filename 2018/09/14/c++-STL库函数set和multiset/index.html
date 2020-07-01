@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="set/multiset容器set/multiset容器基本概念set容器基本概念​    Set的特性是：所有元素都会根据元素的键值自动被排序。Set的元素不像map那样可以同时拥有实值和键值，set的元素即是键值又是实值。Set不允许两个元素有相同的键值。 ​    我们可以通过set的迭代器改变set元素的值吗？不行，因为set元素值就是其键值，关系到set元素的排序规则。如果任意改变set">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++STL库函数set">
+<meta property="og:url" content="http://yoursite.com/2018/09/14/c++-STL库函数set和multiset/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="set/multiset容器set/multiset容器基本概念set容器基本概念​    Set的特性是：所有元素都会根据元素的键值自动被排序。Set的元素不像map那样可以同时拥有实值和键值，set的元素即是键值又是实值。Set不允许两个元素有相同的键值。 ​    我们可以通过set的迭代器改变set元素的值吗？不行，因为set元素值就是其键值，关系到set元素的排序规则。如果任意改变set">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片9.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片8.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片7.png">
+<meta property="og:updated_time" content="2020-07-01T09:41:51.584Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++STL库函数set">
+<meta name="twitter:description" content="set/multiset容器set/multiset容器基本概念set容器基本概念​    Set的特性是：所有元素都会根据元素的键值自动被排序。Set的元素不像map那样可以同时拥有实值和键值，set的元素即是键值又是实值。Set不允许两个元素有相同的键值。 ​    我们可以通过set的迭代器改变set元素的值吗？不行，因为set元素值就是其键值，关系到set元素的排序规则。如果任意改变set">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片9.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/14/c++-STL库函数set和multiset/">
+
+
+
+
+
+  <title>c++STL库函数set | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/c++-STL库函数set和multiset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++STL库函数set</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T00:00:00+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/14/c++-STL库函数set和multiset/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/14/c++-STL库函数set和multiset/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/14/c++-STL库函数set和multiset/" class="leancloud_visitors" data-flag-title="c++STL库函数set">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="set-multiset容器"><a href="#set-multiset容器" class="headerlink" title="set/multiset容器"></a><code>set/multiset</code>容器</h2><h3 id="set-multiset容器基本概念"><a href="#set-multiset容器基本概念" class="headerlink" title="set/multiset容器基本概念"></a><code>set/multiset</code>容器基本概念</h3><h4 id="set容器基本概念"><a href="#set容器基本概念" class="headerlink" title="set容器基本概念"></a><code>set</code>容器基本概念</h4><p>​    <code>Set</code>的特性是：所有元素都会根据元素的键值自动被排序。<code>Set</code>的元素不像<code>map</code>那样可以同时拥有实值和键值，<code>set</code>的元素即是键值又是实值。<code>Set</code>不允许两个元素有相同的键值。</p>
+<p>​    我们可以通过<code>set</code>的迭代器改变<code>set</code>元素的值吗？不行，因为<code>set</code>元素值就是其键值，关系到<code>set</code>元素的排序规则。如果任意改变<code>set</code>元素值，会严重破坏<code>set</code>组织。换句话说，<code>set</code>的<code>iterator</code>是一种<code>const_iterator</code>。</p>
+<a id="more"></a>
+<p>​    <code>set</code>拥有和<code>list</code>某些相同的性质，当对容器中的元素进行插入操作或者删除操作的时候，操作之前所有的迭代器，在操作完成之后依然有效，被删除的那个元素的迭代器必然是一个例外。</p>
+<h4 id="multiset容器基本概念"><a href="#multiset容器基本概念" class="headerlink" title="multiset容器基本概念"></a><code>multiset</code>容器基本概念</h4><p>​    <code>multiset</code>特性及用法和<code>set</code>完全相同，唯一的差别在于它允许键值重复。</p>
+<h3 id="set-multiset定义"><a href="#set-multiset定义" class="headerlink" title="set/multiset定义"></a><code>set/multiset</code>定义</h3><h4 id="multiset定义"><a href="#multiset定义" class="headerlink" title="multiset定义"></a><code>multiset</code>定义</h4><p>​    不能直接修改<code>multiset</code>容器中元素的值。因为元素被修改后，容器并不会自动重新调整顺序，于是容器的有序性就会被破坏，再在其上进行查找等操作就会得到错误的结果。因此，如果要修改<code>multiset</code>容器中某个元素的值，正确的做法是先删除该元素，再插入新元素。</p>
+<p>​    使用<code>multiset</code>必须包含头文件<code>&lt;set&gt;</code>。<code>multiset</code>类模板的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Pred</span> = <span class="title">less</span>&lt;Key&gt;, <span class="title">class</span> <span class="title">B</span> = <span class="title">allocator</span>&lt;Key&gt; &gt; <span class="title">class</span> <span class="title">multiset</span> &#123;</span></span><br><span class="line">   ...</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>​    该模板有三个类型参数：<code>Key</code>、<code>Pred</code>和<code>B</code>。类型参数可以有默认值，默认值就是某种类型。例如，<code>Pred</code>类型参数的默认值就是<code>less&lt;Key&gt;</code>类型，<code>B</code>的默认值就是<code>allocator&lt;Key&gt;</code>类型。第三个类型参数极少用到，一般都用默认值，因此这里不做介绍。</p>
+<p>​    第一个类型参数说明<code>multiset</code>容器中的每个元素都是<code>Key</code>类型的。第二个类型参数<code>Pred</code>用于指明容器中元素的排序规则，在被实例化后，<code>Pred</code> 可以是函数对象类，也可以是函数指针类型。</p>
+<p>​    <code>multiset</code>内部在排序时定义了一个变量<code>Pred op</code>，根据表达式<code>op(x, y)</code>来比较两个元素<code>x</code>、<code>y</code>的大小。该表达式的值为<code>true</code>，则说明<code>x</code>比<code>y</code>小。<code>Pred</code>的默认值是<code>less&lt;Key&gt;</code>，<code>less</code>是<code>STL</code>中的函数对象类模板，其定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;class_Tp&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">less</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> _Tp &amp;__x, <span class="keyword">const</span> _Tp &amp;__y)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> __x &lt; __y; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​    这说明，在默认情况下，<code>multiset</code>容器中的元素是用<code>&lt;</code>运算符比较大小的。例如，假设<code>A</code>是一个类的名字，可以定义一个如下的容器对象：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">multiset</span> &lt;A&gt; s;</span><br></pre></td></tr></table></figure></p>
+<p>​    由于<code>multiset</code>的类型参数可以使用默认值，因此上面的语句等价于：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">multiset</span> &lt; <span class="keyword">int</span>, less&lt;A&gt;, allocator&lt;A&gt; &gt; s;</span><br></pre></td></tr></table></figure></p>
+<p>​    模板类<code>multiset &lt; A, less&lt;A&gt;, allocator&lt;A&gt; &gt;</code>的<code>insert</code>成员函数可以用来插入一个元素。 插入过程中需要进行元素之间的比较，可以认为<code>insert</code>成员函数中定义了一个变量<code>less &lt;A&gt; op</code>，用<code>op(x, y)</code>来比较元素<code>x</code>、<code>y</code>的大小。归根到底，还是用<code>&lt;</code>运算符比较<code>x</code>、<code>y</code>的大小。 因此，<code>&lt;</code>运算符必须经过适当重载，才可以向<code>multiset &lt;A&gt;</code>容器中插人元素。</p>
+<p>​     下面的程序 会编译出错：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">multiset</span> &lt;A&gt; a;</span><br><span class="line">    a.insert( A() );  <span class="comment">//编译出错，因为不能用“&lt;”运算符比较两个A对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="set定义"><a href="#set定义" class="headerlink" title="set定义"></a><code>set</code>定义</h4><p>​    使用<code>set</code>必须包含头文件<code>&lt;set&gt;</code>。<code>set</code>的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Pred</span> = <span class="title">less</span>&lt;Key&gt;, <span class="title">class</span> <span class="title">A</span> = <span class="title">allocator</span>&lt;Key&gt; &gt; <span class="title">class</span> <span class="title">set</span> &#123;</span>...&#125;</span><br></pre></td></tr></table></figure></p>
+<p>​    由于不能有重复元素，所以<code>set</code>中插入单个元素的<code>insert</code>成员函数与<code>multiset</code>中的有所不同，其原型如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;iterator, <span class="keyword">bool</span>&gt; insert(<span class="keyword">const</span> T &amp; val);</span><br></pre></td></tr></table></figure></p>
+<p>​    如果<code>set</code>的<code>insert</code>成员函数的返回值是<code>pair</code>模板类对象<code>x</code>，如果<code>x.second</code>为<code>true</code>，则说明插入成功，此时<code>x.first</code>就是指向被插入元素的迭代器；如果<code>x.second</code>为<code>false</code>，则说明要插入的元素已在容器中，此时<code>x.first</code>就是指向原有那个元素的迭代器。</p>
+<p>​    关联容器的<code>equal_range</code>成员函数的返回值也是<code>pair</code>模板类对象，其原型如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;iterator, iterator&gt; equal_range(<span class="keyword">const</span> T &amp; val);</span><br></pre></td></tr></table></figure></p>
+<p>​    返回值对象中的<code>first</code>就是<code>lower_bound</code>的值，<code>second</code>就是<code>upper_bound</code>的值。</p>
+<h3 id="set-multiset实现原理"><a href="#set-multiset实现原理" class="headerlink" title="set/multiset实现原理"></a><code>set/multiset</code>实现原理</h3><p><code>set</code>和<code>multiset</code>的底层实现是红黑树，红黑树为平衡二叉树的一种。</p>
+<p>树的简单知识：</p>
+<p>​    二叉树就是任何节点最多只允许有两个子节点。分别是左子结点和右子节点。</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片9.png" style="zoom:67%;"></p>
+<p>​    二叉搜索树，是指二叉树中的节点按照一定的规则进行排序，使得对二叉树中元素访问更加高效。<strong>二叉搜索树的放置规则是：任何节点的元素值一定大于其左子树中的每一个节点的元素值，并且小于其右子树的值。</strong>因此从根节点一直向左走，一直到无路可走，即得到最小值，一直向右走，直至无路可走，可得到最大值。那么在二叉搜索树中找到最大元素和最小元素是非常简单的事情。下图为二叉搜索树：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片8.png" style="zoom: 80%;"></p>
+<pre><code>上面我们介绍了二叉搜索树，那么当一个二叉搜索树的左子树和右子树不平衡的时候，那么搜索依据上图表示，搜索`9`所花费的时间要比搜索`17`所花费的时间要多，由于我们的输入或者经过我们插入或者删除操作，二叉树失去平衡，造成搜索效率降低。
+</code></pre><p>​    所以我们有了一个平衡二叉树的概念，所谓的平衡不是指的完全平衡。</p>
+<p> <img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/图片7.png" style="zoom:67%;"> </p>
+<p>​    <code>RB-tree</code>(红黑树)为二叉树的一种。</p>
+<h3 id="set-multiset常用API"><a href="#set-multiset常用API" class="headerlink" title="set/multiset常用API"></a><code>set/multiset</code>常用<code>API</code></h3><table>
+<thead>
+<tr>
+<th>成员函数或成员函数模板</th>
+<th>作  用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iterator find (const T &amp; val);</code></td>
+<td>在容器中查找值为<code>val</code>的元素，返回其迭代器。如果找不到，返 回<code>end()</code></td>
+</tr>
+<tr>
+<td><code>iterator insert( const T &amp; val);</code></td>
+<td>将<code>val</code>插入容器中并返回其迭代器</td>
+</tr>
+<tr>
+<td><code>void insert(iterator first, iterator last);</code></td>
+<td>将区间<code>[first, last)</code>中的元素插人容器</td>
+</tr>
+<tr>
+<td><code>int count( const T &amp; val);</code></td>
+<td>统计有多少个元素的值和<code>val</code>相等</td>
+</tr>
+<tr>
+<td><code>iterator lower_bound( const T &amp; val);</code></td>
+<td>查找一个最大的位置 <code>it</code>，使得<code>[begin(), it)</code>中所有的元素者比<code>val</code>小</td>
+</tr>
+<tr>
+<td><code>iterator upper_bound( const T &amp; val);</code></td>
+<td>查找一个最小的位置<code>it</code>，使得<code>[it, end())</code>中所有的元素都比<code>val</code>大</td>
+</tr>
+<tr>
+<td><code>pair &lt;iterator, iterator &gt; equal_range (const T &amp; val);</code></td>
+<td>同时求得<code>lower_bound</code> 和<code>upper_bound</code></td>
+</tr>
+<tr>
+<td><code>iterator erase(iterator it);</code></td>
+<td>删除<code>it</code>指向的元素，返回其后面的元素的迭代器（<code>Visual Studio 2010</code>中如此，但是在<code>C++</code>标准和<code>Dev C++</code>中，返回值不是这样）</td>
+</tr>
+<tr>
+<td><code>iterator erase(iterator first, iterator last);</code></td>
+<td>删除区间<code>[first, last)</code>，返回<code>last</code>（<code>Visual Studio 2010</code>中如此，但是在 <code>C++</code>标准和 <code>Dev C++</code>中，返回值不是这样）<code>multiset</code>及 <code>set</code>中的<code>find</code>和 <code>count</code>并不是用<code>==</code>运算符比较元素是否和待查找的值相等的。它们进行比较的原则是：如果<code>x</code>比<code>y</code>小和<code>y</code>比<code>x</code>小同时为假，就认为<code>x</code>和<code>y</code>相等。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="set-multiset构造函数"><a href="#set-multiset构造函数" class="headerlink" title="set/multiset构造函数"></a><code>set/multiset</code>构造函数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>&lt;T&gt; st;			<span class="comment">//set默认构造函数：</span></span><br><span class="line">mulitset&lt;T&gt; mst; 	<span class="comment">//multiset默认构造函数: </span></span><br><span class="line"><span class="built_in">set</span>(<span class="keyword">const</span> <span class="built_in">set</span> &amp;st);	<span class="comment">//拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+<h4 id="set-multiset赋值操作"><a href="#set-multiset赋值操作" class="headerlink" title="set/multiset赋值操作"></a><code>set/multiset</code>赋值操作</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> <span class="built_in">set</span> &amp;st);	<span class="comment">//重载等号操作符</span></span><br><span class="line">swap(st);						<span class="comment">//交换两个集合容器</span></span><br></pre></td></tr></table></figure>
+<h4 id="set-multiset大小操作"><a href="#set-multiset大小操作" class="headerlink" title="set/multiset大小操作"></a><code>set/multiset</code>大小操作</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">size();		<span class="comment">//返回容器中元素的数目</span></span><br><span class="line">empty();	<span class="comment">//判断容器是否为空</span></span><br></pre></td></tr></table></figure>
+<h4 id="set-multiset插入和删除操作"><a href="#set-multiset插入和删除操作" class="headerlink" title="set/multiset插入和删除操作"></a><code>set/multiset</code>插入和删除操作</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert(elem);	<span class="comment">//在容器中插入元素。</span></span><br><span class="line">clear();		<span class="comment">//清除所有元素</span></span><br><span class="line">erase(pos);		<span class="comment">//删除pos迭代器所指的元素，返回下一个元素的迭代器。</span></span><br><span class="line">erase(beg, end);<span class="comment">//删除区间[beg,end)的所有元素 ，返回下一个元素的迭代器。</span></span><br><span class="line">erase(elem);	<span class="comment">//删除容器中值为elem的元素。</span></span><br></pre></td></tr></table></figure>
+<h4 id="set-multiset查找操作"><a href="#set-multiset查找操作" class="headerlink" title="set/multiset查找操作"></a><code>set/multiset</code>查找操作</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">find(key);		<span class="comment">//查找键key是否存在,若存在，返回该键的元素的迭代器；若不存在，返回set.end();</span></span><br><span class="line">count(key);		<span class="comment">//查找键key的元素个数</span></span><br><span class="line">lower_bound(keyElem);	<span class="comment">//返回第一个key&gt;=keyElem元素的迭代器。</span></span><br><span class="line">upper_bound(keyElem);	<span class="comment">//返回第一个key&gt;keyElem元素的迭代器。</span></span><br><span class="line">equal_range(keyElem);	<span class="comment">//返回容器中key与keyElem相等的上下限的两个迭代器。</span></span><br></pre></td></tr></table></figure>
+<h3 id="multiset的用法"><a href="#multiset的用法" class="headerlink" title="multiset的用法"></a><code>multiset</code>的用法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;  //使用multiset须包含此头文件</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Print</span>(<span class="title">T</span> <span class="title">first</span>, <span class="title">T</span> <span class="title">last</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">for</span> (; first != last; ++first)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *first &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> n_) &#123; n = n_; &#125;</span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> A &amp; a1, <span class="keyword">const</span> A &amp; a2)</span><br><span class="line">    &#123; <span class="keyword">return</span> a1.n &lt; a2.n; &#125;</span><br><span class="line">    <span class="keyword">friend</span> ostream &amp; <span class="keyword">operator</span> &lt;&lt; (ostream &amp; o, <span class="keyword">const</span> A &amp; a2)</span><br><span class="line">    &#123; o &lt;&lt; a2.n; <span class="keyword">return</span> o; &#125;</span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">MyLess</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyLess</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> A &amp; a1, <span class="keyword">const</span> A &amp; a2)</span>  <span class="comment">//按个位数比较大小</span></span></span><br><span class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> (a1.n % <span class="number">10</span>) &lt; (a2.n % <span class="number">10</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">multiset</span> &lt;A&gt; MSET1;  <span class="comment">//MSET1 用“&lt;”运算符比较大小</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">multiset</span> &lt;A, MyLess&gt; MSET2;  <span class="comment">//MSET2 用 MyLess::operator() 比较大小</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> SIZE = <span class="number">6</span>;</span><br><span class="line">    A a[SIZE] = &#123; <span class="number">4</span>, <span class="number">22</span>, <span class="number">19</span>, <span class="number">8</span>, <span class="number">33</span>, <span class="number">40</span> &#125;;</span><br><span class="line">    MSET1 m1;</span><br><span class="line">    m1.insert(a, a + SIZE);</span><br><span class="line">    m1.insert(<span class="number">22</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"1)"</span> &lt;&lt; m1.count(<span class="number">22</span>) &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//输出 1)2</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"2)"</span>; Print(m1.begin(), m1.end());  <span class="comment">//输出 2)4 8 19 22 22 33 40</span></span><br><span class="line">    </span><br><span class="line">    MSET1::iterator pp = m1.find(<span class="number">19</span>);</span><br><span class="line">    <span class="keyword">if</span> (pp != m1.end())  <span class="comment">//条件为真说明找到</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"found"</span> &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//本行会被执行，输出 found</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"3)"</span>; <span class="built_in">cout</span> &lt;&lt; *m1.lower_bound(<span class="number">22</span>)</span><br><span class="line">        &lt;&lt; <span class="string">","</span> &lt;&lt; *m1.upper_bound(<span class="number">22</span>) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出 3)22,33</span></span><br><span class="line">    </span><br><span class="line">    pp = m1.erase(m1.lower_bound(<span class="number">22</span>), m1.upper_bound(<span class="number">22</span>));</span><br><span class="line">    <span class="comment">//pp指向被删元素的下一个元素</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"4)"</span>; Print(m1.begin(), m1.end());  <span class="comment">//输出 4)4 8 19 33 40</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"5)"</span>; <span class="built_in">cout</span> &lt;&lt; *pp &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">//输出 5)33</span></span><br><span class="line">    </span><br><span class="line">    MSET2 m2;  <span class="comment">//m2中的元素按n的个位数从小到大排序</span></span><br><span class="line">    m2.insert(a, a + SIZE);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"6)"</span>; Print(m2.begin(), m2.end());  <span class="comment">//输出 6)40 22 33 4 8 19</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    第<code>33</code>行，<code>MSET2</code>类的排序规则和<code>MSET1</code>不同。<code>MSET2</code>用<code>MyLess</code>定义排序规则，即<code>n</code>的个位数小的元素排在前面。</p>
+<p>​    第<code>49</code>、<code>50</code>行，<code>lower_bound</code>返回的迭代器指向第一个<code>22</code>，<code>upper_bound</code>返回的迭代器指向 33。</p>
+<p>​    第<code>52</code>行，删除所有值为<code>22</code> 的元素。<code>erase</code>成员函数删除一个元素后，返回下一个元素的迭代器应该是很合理的，但是<code>C++</code>标准委员会认为，返回下一个元素的迭代器也是需要时间开销的，如果程序员不想要这个返回值，那么这个开销就是浪费的——因此在遵循<code>C++</code>标准的<code>Dev C++</code> 中，本行无法编译通过。但是微软公司认为应该对这一点做出改进，因此<code>Visual Studio 2010</code>将<code>erase</code> 成员函数处理成返回被删元素下一个元素的迭代器。</p>
+<h3 id="set的用法"><a href="#set的用法" class="headerlink" title="set的用法"></a><code>set</code>的用法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;  //使用set须包含此文件</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt;::iterator IT;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">2</span> &#125;;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; st(a,a+<span class="number">5</span>);    <span class="comment">// st里是 1 2 3 4 6</span></span><br><span class="line">    pair&lt; IT,<span class="keyword">bool</span>&gt; result;</span><br><span class="line">    result = st.insert(<span class="number">5</span>); <span class="comment">// st变成  1 2 3 4 5 6</span></span><br><span class="line">    <span class="keyword">if</span>(result.second)    <span class="comment">//插入成功则输出被插入元素</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * result.first  &lt;&lt; <span class="string">" inserted"</span> &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出: 5 inserted</span></span><br><span class="line">    <span class="keyword">if</span>(st.insert(<span class="number">5</span>).second)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * result.first  &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; * result.first &lt;&lt; <span class="string">" already exists"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">//输出 5 already exists</span></span><br><span class="line">    pair&lt;IT,IT&gt; bounds = st.equal_range(<span class="number">4</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; * bounds.first &lt;&lt; <span class="string">","</span> &lt;&lt; * bounds.second ;  <span class="comment">//输出：4,5</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>5 inserted</code><br><code>5 already exists</code><br><code>4,5</code></p>
+<h4 id="指定set排序规则"><a href="#指定set排序规则" class="headerlink" title="指定set排序规则"></a>指定<code>set</code>排序规则</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//插入操作返回值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">	pair&lt;<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt;::iterator,<span class="keyword">bool</span>&gt; ret = s.insert(<span class="number">10</span>);</span><br><span class="line">	<span class="keyword">if</span> (ret.second)&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入成功:"</span> &lt;&lt; *ret.first &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入失败:"</span> &lt;&lt; *ret.first &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	ret = s.insert(<span class="number">10</span>);</span><br><span class="line">	<span class="keyword">if</span>(ret.second)&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入成功:"</span> &lt;&lt; *ret.first &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入失败:"</span> &lt;&lt; *ret.first &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyCompare02</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> v1,<span class="keyword">int</span> v2)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> v1 &gt; v2;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//set从大到小</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	srand((<span class="keyword">unsigned</span> <span class="keyword">int</span>)time(<span class="literal">NULL</span>));</span><br><span class="line">	<span class="comment">//我们发现set容器的第二个模板参数可以设置排序规则，默认规则是less&lt;_Kty&gt;</span></span><br><span class="line">	<span class="built_in">set</span>&lt;<span class="keyword">int</span>, MyCompare02&gt; s;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>;i++)&#123;</span><br><span class="line">		s.insert(rand() % <span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">set</span>&lt;<span class="keyword">int</span>, MyCompare02&gt;::iterator it = s.begin(); it != s.end(); it ++)&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//set容器中存放对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Person(<span class="built_in">string</span> name,<span class="keyword">int</span> age)&#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;mName = name;</span><br><span class="line">		<span class="keyword">this</span>-&gt;mAge = age;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">string</span> mName;</span><br><span class="line">	<span class="keyword">int</span> mAge;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyCompare03</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> Person&amp; p1,<span class="keyword">const</span> Person&amp; p2)</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> p1.mAge &gt; p2.mAge;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test03</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">set</span>&lt;Person, MyCompare03&gt; s;</span><br><span class="line"></span><br><span class="line">	<span class="function">Person <span class="title">p1</span><span class="params">(<span class="string">"aaa"</span>, <span class="number">20</span>)</span></span>;</span><br><span class="line">	<span class="function">Person <span class="title">p2</span><span class="params">(<span class="string">"bbb"</span>, <span class="number">30</span>)</span></span>;</span><br><span class="line">	<span class="function">Person <span class="title">p3</span><span class="params">(<span class="string">"ccc"</span>, <span class="number">40</span>)</span></span>;</span><br><span class="line">	<span class="function">Person <span class="title">p4</span><span class="params">(<span class="string">"ddd"</span>, <span class="number">50</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	s.insert(p1);</span><br><span class="line">	s.insert(p2);</span><br><span class="line">	s.insert(p3);</span><br><span class="line">	s.insert(p4);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">set</span>&lt;Person, MyCompare03&gt;::iterator it = s.begin(); it != s.end(); it++)&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Name:"</span> &lt;&lt; it-&gt;mName &lt;&lt; <span class="string">" Age:"</span> &lt;&lt; it-&gt;mAge &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/11/c++-STL库函数map和multimap/" rel="next" title="c++STL库函数map">
+                <i class="fa fa-chevron-left"></i> c++STL库函数map
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/c++高级-类型转换/" rel="prev" title="c++类型转换">
+                c++类型转换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#set-multiset容器"><span class="nav-number">1.</span> <span class="nav-text">set/multiset容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set-multiset容器基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">set/multiset容器基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set容器基本概念"><span class="nav-number">1.1.1.</span> <span class="nav-text">set容器基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multiset容器基本概念"><span class="nav-number">1.1.2.</span> <span class="nav-text">multiset容器基本概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-multiset定义"><span class="nav-number">1.2.</span> <span class="nav-text">set/multiset定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#multiset定义"><span class="nav-number">1.2.1.</span> <span class="nav-text">multiset定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set定义"><span class="nav-number">1.2.2.</span> <span class="nav-text">set定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-multiset实现原理"><span class="nav-number">1.3.</span> <span class="nav-text">set/multiset实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-multiset常用API"><span class="nav-number">1.4.</span> <span class="nav-text">set/multiset常用API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set-multiset构造函数"><span class="nav-number">1.4.1.</span> <span class="nav-text">set/multiset构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-multiset赋值操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">set/multiset赋值操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-multiset大小操作"><span class="nav-number">1.4.3.</span> <span class="nav-text">set/multiset大小操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-multiset插入和删除操作"><span class="nav-number">1.4.4.</span> <span class="nav-text">set/multiset插入和删除操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-multiset查找操作"><span class="nav-number">1.4.5.</span> <span class="nav-text">set/multiset查找操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multiset的用法"><span class="nav-number">1.5.</span> <span class="nav-text">multiset的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set的用法"><span class="nav-number">1.6.</span> <span class="nav-text">set的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定set排序规则"><span class="nav-number">1.6.1.</span> <span class="nav-text">指定set排序规则</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

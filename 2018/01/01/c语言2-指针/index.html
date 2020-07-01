@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C语言,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="指针详解​    这段时间在看Linux内核，深觉C语言功底不扎实，很多代码都看不太懂，深入学习巩固C语言的知识很有必要。先从指针开始。">
+<meta name="keywords" content="C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言之指针">
+<meta property="og:url" content="http://yoursite.com/2018/01/01/c语言2-指针/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="指针详解​    这段时间在看Linux内核，深觉C语言功底不扎实，很多代码都看不太懂，深入学习巩固C语言的知识很有必要。先从指针开始。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/765389-20180918115659254-712651853.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/765389-20180921154218407-1813012241.png">
+<meta property="og:updated_time" content="2020-07-01T09:42:48.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言之指针">
+<meta name="twitter:description" content="指针详解​    这段时间在看Linux内核，深觉C语言功底不扎实，很多代码都看不太懂，深入学习巩固C语言的知识很有必要。先从指针开始。">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/765389-20180918115659254-712651853.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/01/c语言2-指针/">
+
+
+
+
+
+  <title>C语言之指针 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/01/c语言2-指针/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言之指针</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T00:00:00+08:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C语言/" itemprop="url" rel="index">
+                    <span itemprop="name">C语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/01/c语言2-指针/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/01/c语言2-指针/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/01/01/c语言2-指针/" class="leancloud_visitors" data-flag-title="C语言之指针">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  26
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="指针详解"><a href="#指针详解" class="headerlink" title="指针详解"></a>指针详解</h2><p>​    这段时间在看<code>Linux</code>内核，深觉<code>C</code>语言功底不扎实，很多代码都看不太懂，深入学习巩固<code>C</code>语言的知识很有必要。先从指针开始。</p>
+<a id="more"></a>
+<h3 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h3><p>​    <code>C</code>语言里，变量存放在内存中，而<strong>内存其实就是一组有序字节组成的数组</strong>，每个字节有唯一的内存地址。<code>CPU</code>通过内存寻址对存储在内存中的某个指定数据对象的地址进行定位。这里，<strong>数据对象是指存储在内存中的一个指定数据类型的数值或字符串，它们都有一个自己的地址，而指针便是保存这个地址的变量。</strong>也就是说：<strong>指针是一种保存变量地址的变量</strong>。</p>
+<p>​    前面已经提到内存其实就是一组有序字节组成的数组，数组中，每个字节大大小固定，都是 <code>8bit</code>。对这些连续的字节从<code>0</code>开始进行编号，每个字节都有唯一的一个编号，这个编号就是内存地址。示意如下图：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/765389-20180918115659254-712651853.png" alt></p>
+<p>​    这是一个 <code>4GB</code> 的内存，可以存放 <code>2^32</code> 个字节的数据。左侧的连续的十六进制编号就是内存地址，每个内存地址对应一个字节的内存空间。而指针变量保存的就是这个编号，也即内存地址。</p>
+<h3 id="为什么要使用指针"><a href="#为什么要使用指针" class="headerlink" title="为什么要使用指针"></a>为什么要使用指针</h3><p>​    在<code>C</code>语言中，指针的使用非常广泛，因为使用指针往往可以生成更高效、更紧凑的代码。总的来说，使用指针有如下好处：</p>
+<p>1）指针的使用使得不同区域的代码可以轻易的共享内存数据，这样可以使程序更为快速高效；</p>
+<p>2）<code>C</code>语言中一些复杂的数据结构往往需要使用指针来构建，如链表、二叉树等；</p>
+<p>3）<code>C</code>语言是传值调用，而有些操作传值调用是无法完成的，如通过被调函数修改调用函数的对象，但是这种操作可以由指针来完成，而且并不违背传值调用。</p>
+<h3 id="如何声明一个指针"><a href="#如何声明一个指针" class="headerlink" title="如何声明一个指针"></a>如何声明一个指针</h3><h4 id="声明并初始化一个指针"><a href="#声明并初始化一个指针" class="headerlink" title="声明并初始化一个指针"></a>声明并初始化一个指针</h4><p>​    指针其实就是一个变量，指针的声明方式与一般的变量声明方式没太大区别：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p;        <span class="comment">// 声明一个 int 类型的指针 p</span></span><br><span class="line"><span class="keyword">char</span> *p        <span class="comment">// 声明一个 char 类型的指针 p</span></span><br><span class="line"><span class="keyword">int</span> *arr[<span class="number">10</span>]   <span class="comment">// 声明一个指针数组，该数组有10个元素，其中每个元素都是一个指向 int 类型对象的指针</span></span><br><span class="line"><span class="keyword">int</span> (*arr)[<span class="number">10</span>] <span class="comment">// 声明一个数组指针，该指针指向一个 int 类型的一维数组</span></span><br><span class="line"><span class="keyword">int</span> **p;       <span class="comment">// 声明一个指针 p ，该指针指向一个 int 类型的指针</span></span><br></pre></td></tr></table></figure>
+<p>​    指针的声明比普通变量的声明多了一个一元运算符 <code>“*”</code>。运算符 <code>“*”</code>  是间接寻址或者间接引用运算符。当它作用于指针时，将访问指针所指向的对象。在上述的声明中：<strong><code>p</code> 是一个指针，保存着一个地址，该地址指向内存中的一个变量； <code>*p</code>则会访问这个地址所指向的变量。</strong></p>
+<p>​    声明一个指针变量并不会自动分配任何内存。在对指针进行间接访问之前，指针必须进行初始化：或是使他指向现有的内存，或者给他动态分配内存，否则我们并不知道指针指向哪儿，这将是一个很严重的问题，稍后会讨论这个问题。初始化操作如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 方法1：使指针指向现有的内存 */</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;x;　　<span class="comment">// 指针 p 被初始化，指向变量 x ，其中取地址符 &amp; 用于产生操作数内存地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 方法2：动态分配内存给指针 */</span></span><br><span class="line"><span class="keyword">int</span> *p;</span><br><span class="line">p = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) * <span class="number">10</span>);　　　　<span class="comment">// malloc 函数用于动态分配内存</span></span><br><span class="line"><span class="built_in">free</span>(p);　　　　</span><br><span class="line"><span class="comment">// free 函数用于释放一块已经分配的内存，常与 malloc 函数一起使用，要使用这两个函数需要头文件 stdlib.h</span></span><br></pre></td></tr></table></figure>
+<p>​    指针的初始化<strong>实际上就是给指针一个合法的地址，让程序能够清楚地知道指针指向哪儿。</strong></p>
+<h4 id="未初始化和非法的指针"><a href="#未初始化和非法的指针" class="headerlink" title="未初始化和非法的指针"></a>未初始化和非法的指针</h4><p>​    如果一个指针没有被初始化，那么程序就不知道它指向哪里。它可能指向一个非法地址，这时，程序会报错，在<code>Linux</code>上，错误类型是<code>Segmentation fault（core  dumped）</code>，提醒我们段违例或内存错误。它也可能指向一个合法地址，实际上，这种情况更严重，你的程序或许能正常运行，但是这个没有被初始化的指针所指向的那个位置的值将会被修改，而你并无意去修改它。用一个例子简单的演示一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p;</span><br><span class="line">    *p = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,*p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    这个程序可以编译通过，但是运行的话会报错，报错信息如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point point.c </span><br><span class="line">[root@hly_centos learn]# ./point </span><br><span class="line">Segmentation fault</span><br><span class="line">[root@hly_centos learn]#</span><br></pre></td></tr></table></figure>
+<p>​    要想使这个程序运行起来，需要先对指针<code>p</code>进行初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;  </span><br><span class="line">    <span class="keyword">int</span> *p = &amp;x;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,*p);</span><br><span class="line">　  *p = <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,*p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    这段代码的输出结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point point.c </span><br><span class="line">[root@hly_centos learn]# ./point </span><br><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<p>​    可以看到，对指针进行初始化后，便可以正常对指针进行赋值了。 </p>
+<h4 id="NULL指针"><a href="#NULL指针" class="headerlink" title="NULL指针"></a><code>NULL</code>指针</h4><p>​    <strong><code>NULL</code>指针是一个特殊的指针变量，表示不指向任何东西</strong>。可以通过给一个指针赋一个零值来生成一个<code>NULL</code>指针。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *p = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p的地址为%d\n"</span>,p);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/***************</span></span><br><span class="line"><span class="comment"> * 程序输出：</span></span><br><span class="line"><span class="comment"> * p的地址为0</span></span><br><span class="line"><span class="comment">***************/</span></span><br></pre></td></tr></table></figure>
+<p>​    可以看到指针指向内存地址<code>0</code>。在大多数的操作系统上，程序不允许访问地址为<code>0</code>的内存，因为该内存是为操作系统保留的。但是，<strong>内存地址<code>0</code>有一个特别重要的意义，它表明该指针指向一个不可访问的内存位置。</strong></p>
+<h3 id="指针的运算"><a href="#指针的运算" class="headerlink" title="指针的运算"></a>指针的运算</h3><p>​    <code>C</code>指针的算术运算只限于两种形式：</p>
+<h4 id="指针-整数-："><a href="#指针-整数-：" class="headerlink" title="指针+/-整数 ："></a>指针<code>+/-</code>整数 ：</h4><p>​    可以对指针变量<code>p</code>进行<code>p++</code>、<code>p--</code>、<code>p + i</code>等操作，所得结果也是一个指针，只是指针所指向的内存地址相比于<code>p</code>所指的内存地址前进或者后退了<code>i</code>个操作数。用一张图来说明一下：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/765389-20180921154218407-1813012241.png" alt></p>
+<p>​    在上图中，<code>10000000</code>等是内存地址的十六进制表示（数值是假定的），<code>p</code>是一个<code>int</code>类型的指针，指向内存地址  <code>0x10000008</code> 处。则<code>p++</code>将指向与<code>p</code>相邻的下一个内存地址，由于<code>int</code>型数据占<code>4</code>个字节，因此<code>p++</code>所指的内存地址为  <code>1000000b</code>。其余类推。不过要注意的是，这种运算并不会改变指针变量<code>p</code>自身的地址，只是改变了它所指向的地址。</p>
+<h4 id="指针-指针"><a href="#指针-指针" class="headerlink" title="指针-指针"></a>指针<code>-</code>指针</h4><p>​    只有当两个指针都指向同一个数组中的元素时，才允许从一个指针减去另一个指针。两个指针相减的结果的类型是  <code>ptrdiff_t</code>，它是一种有符号整数类型。<strong>减法运算的值是两个指针在内存中的距离（以数组元素的长度为单位，而不是以字节为单位），因为减法运算的结果将除以数组元素类型的长度。</strong>举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> sub;</span><br><span class="line">    <span class="keyword">int</span> *p1 = &amp;a[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">int</span> *p2 = &amp;a[<span class="number">8</span>];</span><br><span class="line"></span><br><span class="line">    sub = p2-p1;                                                                            </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,sub);　　　　<span class="comment">// 输出结果为 6</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h3><p>​    在<code>C</code>语言中，指针与数组之间的关系十分密切。实际上，许多可以用数组完成的工作都可以使用指针来完成。一般来说，用指针编写的程序比用数组编写的程序执行速度快，但另一方面，用指针实现的程序理解起来稍微困难一些。</p>
+<h4 id="指针与数组的关系"><a href="#指针与数组的关系" class="headerlink" title="指针与数组的关系"></a>指针与数组的关系</h4><p>​    我们先声明一个数组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>];        <span class="comment">// 声明一个int类型的数组，这个数组有10个元素</span></span><br></pre></td></tr></table></figure>
+<p>​    我们可以用<code>a[0]</code>、<code>a[1]</code>、<code>...</code>、<code>a[9]</code>来表示这个数组中的<code>10</code>个元素，这<code>10</code>个元素是存储在一段连续相邻的内存区域中的。</p>
+<p>​    接下来，我们再声明一个指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p;           <span class="comment">// 声明一个int类型的指针变量</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>p</code>是一个指针变量，指向内存中的一个区域。如果我们对指针<code>p</code>做如下的初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = &amp;a[<span class="number">0</span>];        <span class="comment">// 对指针进行初始化，p将指向数组 a 的第 1 个元素 a[0]</span></span><br></pre></td></tr></table></figure>
+<p>​    我们知道，对指针进行自增操作会让指针指向与当前元素相邻的下一个元素，即<code>*(p + 1)</code>将指向 <code>a[1]</code> ；同样的，<code>*(p +  i)</code>将指向<code>a[i]</code>。因此，我们可以使用该指针来遍历数组<code>a[10]</code>的所有元素。可以看到，数组下标与指针运算之间的关系是一一对应的。而根据定义，<strong>数组类型的变量或表达式的值是该数组第<code>1</code>个元素的地址，且数组名所代表的的就是该数组第<code>1</code>个元素的地址，</strong>故，上述赋值语句可以直接写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = a;        // a 为数组名，代表该数组最开始的一个元素的地址</span><br></pre></td></tr></table></figure>
+<p>​    很显然，<strong>一个通过数组和下标实现的表达式可以等价地通过指针及其偏移量来实现</strong>，这就是数组和指针的互通之处。但有一点要明确的是，数组和指针并不是完全等价，<strong>指针是一个变量，而数组名不是变量，它数组中第<code>1</code>个元素的地址，数组可以看做是一个用于保存变量的容器。</strong>更直接的方法，我们可以直接看二者的地址，并不一样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span>                                                                          </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x[<span class="number">10</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> *p = x;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"x的地址为：%p\n"</span>,x);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"x[0]的地址为：%p\n"</span>,&amp;x[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"p的地址为：%p\n"</span>,&amp;p);　　　　　　<span class="comment">// 打印指针 p 的地址，并不是指针所指向的地方的地址</span></span><br><span class="line"></span><br><span class="line">    p += <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"*(p+2)的值为：%d\n"</span>,*p);　　　　<span class="comment">// 输出结果为 3，*(p+2)指向了 x[2]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point point.c </span><br><span class="line">[root@hly_centos learn]# ./point </span><br><span class="line">x的地址为：0x7ffe02b98a60</span><br><span class="line">x[0]的地址为：0x7ffe02b98a60</span><br><span class="line">p的地址为：0x7ffe02b98a58</span><br><span class="line">*(p+2)的值为：3</span><br></pre></td></tr></table></figure>
+<p>​    可以看到，<code>x</code>的值与<code>x[0]</code>的地址是一样的，也就是说数组名即为数组中第<code>1</code>个元素的地址。实际上，打印<code>&amp;x</code>后发现，<code>x</code>的地址也是这个值。而<code>x</code>的地址与指针变量<code>p</code>的地址是不一样的。故而数组和指针并不能完全等价。</p>
+<p>（笔者注：上述输出结果是在 <code>centos7 64bit</code> 的环境下使用 <code>gcc</code>  编译器得到的，可以看到地址是一个<code>12</code>位的十六进制数，转换成二进制是<code>48</code>位，也就是说寻址空间有 <code>256TB</code>，但是笔者的电脑只有 <code>8GB</code>  内存，猜测是不是由于 <code>linux</code> 系统开启了内存分页机制，这里寻址的是虚拟地址<code>？</code>另外，在Windows下使用 <code>vs2015</code>编译运行的话，则输出结果是一个<code>8</code>位的十六进制数，也就是<code>32</code>位二进制，寻址空间为 <code>4GB</code>） </p>
+<h4 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h4><p>​    指针是一个变量，而数组是用于存储变量的容器，因此，指针也可以像其他变量一样存储在数组中，也就是指针数组。 <strong>指针数组是一个数组，数组中的每一个元素都是指针</strong>。声明一个指针数组的方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">10</span>];    <span class="comment">// 声明一个指针数组，该数组有10个元素，其中每个元素都是一个指向int类型的指针</span></span><br></pre></td></tr></table></figure>
+<p>​    在上述声明中，由于<code>[]</code>的优先级比<code>*</code>高，故<code>p</code>先与<code>[]</code>结合，成为一个数组<code>p[]</code>；再由<code>int *</code>指明这是一个<code>int</code>类型的指针数组，数组中的元素都是<code>int</code>类型的指针。数组的第<code>i</code>个元素是<code>*p[i]</code>，而 <strong><code>p[i]</code>是一个指针</strong>。由于指针数组中存放着多个指针，操作灵活，在一些需要操作大量数据的程序中使用，可以使程序更灵活快速。</p>
+<h4 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h4><p>​    <strong>数组指针是一个指针，它指向一个数组</strong>。声明一个数组指针的方法如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*p)[<span class="number">10</span>];        <span class="comment">// 声明一个数组指针 p ，该指针指向一个数组</span></span><br></pre></td></tr></table></figure>
+<p>​    由于<code>()</code>的优先级最高，所以<code>p</code>是一个指针，指向一个<code>int</code>类型的一维数组，这个一维数组的长度是<code>10</code>，这也是指针<code>p</code>的步长。也就是说，执行<code>p+1</code>时，<code>p</code>要跨过<code>1</code>个<code>int</code>型数据的长度。数组指针与二维数组联系密切，可以用数组指针来指向一个二维数组，如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">2</span>][<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;     <span class="comment">// 定义一个二维数组并初始化</span></span><br><span class="line">    <span class="keyword">int</span> (*p)[<span class="number">3</span>];                       <span class="comment">// 定义一个数组指针，指针指向一个含有3个元素的一维数组</span></span><br><span class="line"></span><br><span class="line">    p = arr;        <span class="comment">// 将二维数组的首地址赋给 p，此时 p 指向 arr[0] 或 &amp;arr[0][0]</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(*p)[<span class="number">0</span>]);　　　　　　　<span class="comment">// 输出结果为 1</span></span><br><span class="line">    p++;　　　　　　　<span class="comment">// 对 p 进行算术运算，此时 p 将指向二维数组的下一行的首地址，即 &amp;arr[1][0]</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(*p)[<span class="number">1</span>]);           <span class="comment">// 输出结果为5</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;                                                                               </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指针与结构"><a href="#指针与结构" class="headerlink" title="指针与结构"></a>指针与结构</h3><h4 id="简单介绍一下结构"><a href="#简单介绍一下结构" class="headerlink" title="简单介绍一下结构"></a>简单介绍一下结构</h4><p>​    结构是一个或多个变量的集合，这些变量可能为不同的类型，为了处理的方便而将这些变量组织在一个名字之下。由于结构将一组相关的变量看做一个单元而不是各自独立的实体，因此结构有助于组织复杂的数据，特别是在大型的程序中。声明一个结构的方式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">message</span>&#123;</span>　　　　　　      <span class="comment">// 声明一个结构 message</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">10</span>];             <span class="comment">// 成员</span></span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">int</span> score;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">message</span> <span class="title">s_message</span>;</span>　　　　 <span class="comment">// 类型定义符 typedef</span></span><br><span class="line"></span><br><span class="line">s_message mess = &#123;<span class="string">"tongye"</span>,<span class="number">23</span>,<span class="number">83</span>&#125;;　　　　<span class="comment">// 声明一个 struct message 类型的变量 mess,并对其进行初始化　</span></span><br><span class="line">----------------------------------------------------------------------------------</span><br><span class="line"><span class="comment">/* 另一种更简便的声明方法 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">　　<span class="keyword">char</span> name[<span class="number">10</span>];</span><br><span class="line">　　<span class="keyword">int</span> age;</span><br><span class="line">　　<span class="keyword">int</span> score;</span><br><span class="line">&#125;message;</span><br></pre></td></tr></table></figure>
+<p>​    可以使用 <strong>结构名.成员</strong> 的方式来访问结构中的成员，如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">　　<span class="built_in">printf</span>(<span class="string">"%s\n"</span>,mess.name);　　　　<span class="comment">// 输出结果：tongye</span></span><br><span class="line">　　<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,mess.age);　　　　 <span class="comment">// 输出结果：23</span></span><br><span class="line"></span><br><span class="line">　　<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="结构指针"><a href="#结构指针" class="headerlink" title="结构指针"></a>结构指针</h4><p>​    结构指针是指向结构的指针，以上面的结构为例，可以这样定义一个结构指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s_message *p;        <span class="comment">// 声明一个结构指针 p ，该指针指向一个 s_message 类型的结构</span></span><br><span class="line">p = &amp;mess;　　　　　　<span class="comment">// 对结构指针的初始化与普通指针一样，也是使用取地址符 &amp;</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>C</code>语言中使用<code>-&gt;</code>操作符来访问结构指针的成员，举个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">int</span> score;  </span><br><span class="line">&#125;message;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    message mess = &#123;<span class="string">"tongye"</span>,<span class="number">23</span>,<span class="number">83</span>&#125;;</span><br><span class="line">    message *p = &amp;mess;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,p-&gt;mess);　　　　　　<span class="comment">// 输出结果为：tongye</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,p-&gt;score);         <span class="comment">// 输出结果为：83</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指针与函数"><a href="#指针与函数" class="headerlink" title="指针与函数"></a>指针与函数</h3><p>​    <strong><code>C</code>语言的所有参数均是以“传值调用”的方式进行传递的，这意味着函数将获得参数值的一份拷贝。</strong>这样，函数可以放心修改这个拷贝值，而不必担心会修改调用程序实际传递给它的参数。 </p>
+<h4 id="指针作为函数的参数"><a href="#指针作为函数的参数" class="headerlink" title="指针作为函数的参数"></a>指针作为函数的参数</h4><p>​    传值调用的好处是是被调函数不会改变调用函数传过来的值，可以放心修改。但是有时候需要被调函数回传一个值给调用函数，这样的话，传值调用就无法做到。为了解决这个问题，可以使用传指针调用。<strong>指针参数使得被调函数能够访问和修改主调函数中对象的值。</strong>用一个例子来说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap1</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span>　　　　　　  <span class="comment">// 参数为普通的 int 变量</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">　　<span class="keyword">int</span> temp;</span><br><span class="line">　　temp = a;</span><br><span class="line">　　a = b;</span><br><span class="line">　　b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap2</span><span class="params">(<span class="keyword">int</span> *a,<span class="keyword">int</span> *b)</span>　　　　　　<span class="comment">// 参数为指针，接受调用函数传递过来的变量地址作为参数，对所指地址处的内容进行操作</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">　　<span class="keyword">int</span> temp;　　　　                <span class="comment">// 最终结果是，地址本身并没有改变，但是这一地址所对应的内存段中的内容发生了变化，即x,y的值发生了变化</span></span><br><span class="line">　　temp = *a;</span><br><span class="line">　　*a = *b;</span><br><span class="line">　　*b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">　　<span class="keyword">int</span> x = <span class="number">1</span>,y = <span class="number">2</span>;</span><br><span class="line">　　swap1(x,y);                     <span class="comment">// 将 x,y 的值本身作为参数传递给了被调函数</span></span><br><span class="line">　　<span class="built_in">printf</span>(<span class="string">"%d %5d\n"</span>,x,y);         <span class="comment">// 输出结果为：1     2</span></span><br><span class="line"></span><br><span class="line">　　swap(&amp;x,&amp;y);                    <span class="comment">// 将 x,y 的地址作为参数传递给了被调函数，传递过去的也是一个值，与传值调用不冲突</span></span><br><span class="line">　　<span class="built_in">printf</span>(<span class="string">"%d %5d\n"</span>,x,y);         <span class="comment">// 输出结果为：2     1</span></span><br><span class="line">　　<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="指针函数"><a href="#指针函数" class="headerlink" title="指针函数"></a>指针函数</h4><p>​    <strong>指针函数</strong>： <strong>顾名思义，它的本质是一个函数，不过它的返回值是一个指针</strong>。其声明的形式如下所示：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ret *<span class="title">func</span><span class="params">(args, ...)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    其中，<code>func</code>是一个函数，<code>args</code>是形参列表，<code>ret *</code>作为一个整体，是 <code>func</code>函数的返回值，是一个指针的形式。<br>​    下面举一个具体的实例来做说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">文件：pointer_func.c</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> * <span class="title">func_sum</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error:n must be &gt; 0\n"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> *p = &amp;sum;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"please input one number:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;num);</span><br><span class="line">    <span class="keyword">int</span> *p = func_sum(num); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum:%d\n"</span>, *p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    上例就是一个指针函数的例子，其中，<code>int * func_sum(int n)</code>就是一个指针函数， 其功能十分简单，是根据传入的参数<code>n</code>，来计算从<code>0</code>到<code>n</code>的所有自然数的和，其结果通过指针的形式返回给调用方。<br>​    以上代码的运行结果如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point_func point_func.c </span><br><span class="line">[root@hly_centos learn]# ./point_func </span><br><span class="line">please input one number:100</span><br><span class="line">sum:4950</span><br></pre></td></tr></table></figure>
+<p>​    如果上述代码使用普通的局部变量来实现，也是可以的，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">文件：pointer_func2.c</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func_sum2</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error:n must be &gt; 0\n"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;   </span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"please input one number:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;num);</span><br><span class="line">    <span class="keyword">int</span> ret = func_sum2(num);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum2:%d\n"</span>, ret);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    本案例中，<code>func_sum2</code>函数的功能与指针函数所实现的功能完全一样。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point_func point_func.c </span><br><span class="line">[root@hly_centos learn]# ./point_func </span><br><span class="line">please input one number:100</span><br><span class="line">sum:4950</span><br></pre></td></tr></table></figure>
+<p>​    不过在使用指针函数时，需要注意一点，相信细心地读者已经发现了，对比<code>func_sum</code>和<code>func_sum2</code>函数，除了返回值不一样之外，还有一个不同的地方在于，在<code>func_sum</code>中，变量<code>sum</code>使用的是静态局部变量，而<code>func_sum2</code>函数中，变量<code>sum</code>使用的则是普通的变量。<br>​    如果我们把指针函数的<code>sum</code>定义为普通的局部变量，会是什么结果呢？不妨来试验一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">文件：pointer_func3.c</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> * <span class="title">func_sum</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error:n must be &gt; 0\n"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> *p = &amp;sum;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"please input one number:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;num);</span><br><span class="line">    <span class="keyword">int</span> *p = func_sum(num); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum:%d\n"</span>, *p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    执行以上程序，发现仍然能得到正确的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point_func point_func.c </span><br><span class="line">[root@hly_centos learn]# ./point_func </span><br><span class="line">please input one number:100</span><br><span class="line">sum:4950</span><br></pre></td></tr></table></figure>
+<p>​    可如果我们把<code>main</code>函数里面稍微改动一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"please input one number:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;num);</span><br><span class="line">    <span class="keyword">int</span> *p = func_sum(num);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"wait for a while...\n"</span>);    <span class="comment">//此处加一句打印</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum:%d\n"</span>, *p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    我们在输出<code>sum</code>之前打印一句话，这时看到得到的结果完全不是我们预先想象的样子，得到的并不是我们想要的答案。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o point_func point_func.c </span><br><span class="line">[root@hly_centos learn]# ./point_func </span><br><span class="line">please input one number:100</span><br><span class="line">wait for a while...</span><br><span class="line">sum:0</span><br></pre></td></tr></table></figure>
+<p>​    为什么会出现上面的结果呢？<br>​    其实原因在于，一般的局部变量是存放于栈区的，当函数结束，栈区的变量就会释放掉，如果我们在函数内部定义一个变量，在使用一个指针去指向这个变量，当函数调用结束时，这个变量的空间就已经被释放，这时就算返回了该地址的指针，也不一定会得到正确的值。上面的示例中，在返回该指针后，立即访问，的确是得到了正确的结果，但这只是十分巧合的情况，如果我们等待一会儿再去访问该地址，很有可能该地址已经被其他的变量所占用，这时候得到的就不是我们想要的结果。甚至更严重的是，如果因此访问到了不可访问的内容，很有可能造成段错误等程序崩溃的情况。<br>​    因此，在使用指针函数的时候，一定要避免出现返回局部变量指针的情况。<br>​    那么为什么用了<code>static</code>就可以避免这个问题呢？<br>​    原因是一旦使用了<code>static</code>去修饰变量，那么该变量就变成了静态变量。而静态变量是存放在数据段的，它的生命周期存在于整个程序运行期间，只要程序没有结束，该变量就会一直存在，所以该指针就能一直访问到该变量。<br>​    因此，还有一种解决方案是使用全局变量，因为全局变量也是放在数据段的，但是并不推荐使用全局变量。</p>
+<h4 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h4><p>​    与指针函数不同，函数指针的本质是一个指针，该指针的地址指向了一个函数，所以它是指向函数的指针。<br>​    我们知道，函数的定义是存在于代码段，因此，每个函数在代码段中，也有着自己的入口地址，函数指针就是指向代码段中函数入口地址的指针。<br>​    其声明形式如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ret (*p)(args, ...);</span><br></pre></td></tr></table></figure>
+<p>​    其中，<code>ret</code>为返回值，<code>*p</code>作为一个整体，代表的是指向该函数的指针，<code>args</code>为形参列表。其中p被称为<strong>函数指针变量</strong> 。<br>​        关于函数指针的初始化与数组类似，在数组中，数组名即代表着该数组的首地址，函数也是一样，函数名即是该数组的入口地址，因此，函数名就是该函数的函数指针。<br>​    因此，我们可以采用如下的初始化方式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">函数指针变量 =  函数名;</span><br></pre></td></tr></table></figure>
+<p>​    下面还是以一个简单的例子来具体说明一下函数指针的应用：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">文件：func_pointer.c</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> (*p)(<span class="keyword">int</span>, <span class="keyword">int</span>); <span class="comment">//函数指针的定义</span></span><br><span class="line">    <span class="comment">//int (*p)();       //函数指针的另一种定义方式，不过不建议使用</span></span><br><span class="line">    <span class="comment">//int (*p)(int a, int b);   //也可以使用这种方式定义函数指针</span></span><br><span class="line">    </span><br><span class="line">    p = max;    <span class="comment">//函数指针初始化</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ret = p(<span class="number">10</span>, <span class="number">15</span>);    <span class="comment">//函数指针的调用</span></span><br><span class="line">    <span class="comment">//int ret = (*max)(10,15);</span></span><br><span class="line">    <span class="comment">//int ret = (*p)(10,15);</span></span><br><span class="line">    <span class="comment">//以上两种写法与第一种写法是等价的，不过建议使用第一种方式</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"max = %d \n"</span>, ret);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>​    上面这个函数的功能也十分简单，就是求两个数中较大的一个数。值得注意的是通过函数指针调用的方式。<br>​    首先代码里提供了<code>3</code>种函数指针定义的方式，这三种方式都是正确的，比较推荐第一种和第三种定义方式。然后对函数指针进行初始化，前面已经提到过了，直接将函数名赋值给函数指针变量名即可。<br>​    上述代码运行的结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o func_point func_point.c </span><br><span class="line">[root@hly_centos learn]# ./func_point </span><br><span class="line">max = 15</span><br></pre></td></tr></table></figure>
+<p>​    <strong>调用的时候，既可以直接使用函数指针调用，也可以通过函数指针所指向的值去调用。<code>(*p)</code>所代表的就是函数指针所指向的值，也就是函数本身，这样调用自然不会有问题。</strong><br>​    为什么要使用函数指针？</p>
+<p>​    那么，有不少人就觉得，本来很简单的函数调用，搞那么复杂干什么？其实在这样比较简单的代码实现中不容易看出来，当项目比较大，代码变得复杂了以后，函数指针就体现出了其优越性。<br>​    举个例子，如果我们要实现数组的排序，我们知道，常用的数组排序方法有很多种，比如快排，插入排序，冒泡排序，选择排序等，如果不管内部实现，你会发现，除了函数名不一样之外，返回值，包括函数入参都是相同的，这时候如果要调用不同的排序方法，就可以使用指针函数来实现，我们只需要修改函数指针初始化的地方，而不需要去修改每个调用的地方（特别是当调用特别频繁的时候）。</p>
+<h4 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h4><p>​    函数指针的一个非常典型的应用就是<strong>回调函数</strong>。<br>​    什么是回调函数？<br>​    <strong>回调函数就是一个通过指针函数调用的函数。其将函数指针作为一个参数，传递给另一个函数。</strong><br>​    回调函数并不是由实现方直接调用，而是在特定的事件或条件发生时由另外一方来调用的。同样我们来看一个回调函数的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">文件：callback.c</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//函数功能：实现累加求和</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func_sum</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"n must be &gt; 0\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">                sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这个函数是回调函数，其中第二个参数为一个函数指针，通过该函数指针来调用求和函数，并把结果返回给主调函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">callback</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> (*p)(<span class="keyword">int</span>))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> p(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"please input number:"</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"the sum from 0 to %d is %d\n"</span>, n, callback(n, func_sum));       <span class="comment">//此处直接调用回调函数，而不是直接调用func_sum函数</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    上面这个简单的<code>demo</code>就是一个比较典型的回调函数的例子。在这个程序中，回调函数<code>callback</code>无需关心<code>func_sum</code>是怎么实现的，只需要去调用即可。</p>
+<p>​    这样的好处就是，如果以后对求和函数有优化，比如新写了个<code>func_sum2</code>函数的实现，我们只需要在调用回调函数的地方将函数指针指向<code>func_sum2</code>即可，而无需去修改<code>callback</code>函数内部。<br>​    以上代码的输出结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hly_centos learn]# gcc -o call_back call_back.c </span><br><span class="line">[root@hly_centos learn]# ./call_back </span><br><span class="line">please input number:10</span><br><span class="line">the sum from 0 to 10 is 45</span><br></pre></td></tr></table></figure>
+<p>​    回调函数广泛用于开发场景中，比如信号函数、线程函数等，都使用到了回调函数的知识。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag"><i class="fa fa-tag"></i> C语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/08/c语言1-大端和小端/" rel="prev" title="C语言之大端和小端">
+                C语言之大端和小端 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#指针详解"><span class="nav-number">1.</span> <span class="nav-text">指针详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是指针"><span class="nav-number">1.1.</span> <span class="nav-text">什么是指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要使用指针"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要使用指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何声明一个指针"><span class="nav-number">1.3.</span> <span class="nav-text">如何声明一个指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明并初始化一个指针"><span class="nav-number">1.3.1.</span> <span class="nav-text">声明并初始化一个指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未初始化和非法的指针"><span class="nav-number">1.3.2.</span> <span class="nav-text">未初始化和非法的指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NULL指针"><span class="nav-number">1.3.3.</span> <span class="nav-text">NULL指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针的运算"><span class="nav-number">1.4.</span> <span class="nav-text">指针的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指针-整数-："><span class="nav-number">1.4.1.</span> <span class="nav-text">指针+/-整数 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针-指针"><span class="nav-number">1.4.2.</span> <span class="nav-text">指针-指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针与数组"><span class="nav-number">1.5.</span> <span class="nav-text">指针与数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指针与数组的关系"><span class="nav-number">1.5.1.</span> <span class="nav-text">指针与数组的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针数组"><span class="nav-number">1.5.2.</span> <span class="nav-text">指针数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组指针"><span class="nav-number">1.5.3.</span> <span class="nav-text">数组指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针与结构"><span class="nav-number">1.6.</span> <span class="nav-text">指针与结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单介绍一下结构"><span class="nav-number">1.6.1.</span> <span class="nav-text">简单介绍一下结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构指针"><span class="nav-number">1.6.2.</span> <span class="nav-text">结构指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针与函数"><span class="nav-number">1.7.</span> <span class="nav-text">指针与函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指针作为函数的参数"><span class="nav-number">1.7.1.</span> <span class="nav-text">指针作为函数的参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针函数"><span class="nav-number">1.7.2.</span> <span class="nav-text">指针函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数指针"><span class="nav-number">1.7.3.</span> <span class="nav-text">函数指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回调函数"><span class="nav-number">1.7.4.</span> <span class="nav-text">回调函数</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

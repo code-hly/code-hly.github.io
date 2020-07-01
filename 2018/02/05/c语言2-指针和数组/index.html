@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C语言,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="数组和指针的不同​    通过前面的讲解，相信很多读者都会认为数组和指针是等价的，数组名表示数组的首地址。不幸的是，这是一种非常危险的想法，并不完全正确，前面我们将数组和指针等价起来是为了方便大家理解（在大多数情况下数组名确实可以当做指针使用），不至于被指针难倒，这节请大家放弃这种观念，我将会颠覆你的认知。">
+<meta name="keywords" content="C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言之指针和数组">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/c语言2-指针和数组/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="数组和指针的不同​    通过前面的讲解，相信很多读者都会认为数组和指针是等价的，数组名表示数组的首地址。不幸的是，这是一种非常危险的想法，并不完全正确，前面我们将数组和指针等价起来是为了方便大家理解（在大多数情况下数组名确实可以当做指针使用），不至于被指针难倒，这节请大家放弃这种观念，我将会颠覆你的认知。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:42:52.185Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言之指针和数组">
+<meta name="twitter:description" content="数组和指针的不同​    通过前面的讲解，相信很多读者都会认为数组和指针是等价的，数组名表示数组的首地址。不幸的是，这是一种非常危险的想法，并不完全正确，前面我们将数组和指针等价起来是为了方便大家理解（在大多数情况下数组名确实可以当做指针使用），不至于被指针难倒，这节请大家放弃这种观念，我将会颠覆你的认知。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/05/c语言2-指针和数组/">
+
+
+
+
+
+  <title>C语言之指针和数组 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/c语言2-指针和数组/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言之指针和数组</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T00:00:00+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C语言/" itemprop="url" rel="index">
+                    <span itemprop="name">C语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/05/c语言2-指针和数组/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/02/05/c语言2-指针和数组/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/02/05/c语言2-指针和数组/" class="leancloud_visitors" data-flag-title="C语言之指针和数组">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数组和指针的不同"><a href="#数组和指针的不同" class="headerlink" title="数组和指针的不同"></a>数组和指针的不同</h2><p>​    通过前面的讲解，相信很多读者都会认为数组和指针是等价的，数组名表示数组的首地址。不幸的是，这是一种非常危险的想法，并不完全正确，前面我们将数组和指针等价起来是为了方便大家理解（在大多数情况下数组名确实可以当做指针使用），不至于被指针难倒，这节请大家放弃这种观念，我将会颠覆你的认知。</p>
+<a id="more"></a>
+<p>​    <strong>数组和指针不等价的一个典型案例就是求数组的长度，这个时候只能使用数组名，不能使用数组指针。</strong>前面我们已经强调过了，这里不妨再来演示一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">6</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> *p = a;</span><br><span class="line">    <span class="keyword">int</span> len_a = <span class="keyword">sizeof</span>(a) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">int</span> len_p = <span class="keyword">sizeof</span>(p) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"len_a = %d, len_p = %d\n"</span>, len_a, len_p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    运行结果：</p>
+<p><code>len_a = 6, len_p = 1</code></p>
+<p>​    数组是一系列数据的集合，没有开始和结束标志，<code>p</code>仅仅是一个指向<code>int</code>类型的指针，编译器不知道它指向的是一个整数还是一堆整数，对<code>p</code>使用<code>sizeof</code>求得的是指针变量本身的长度。也就是说，编译器并没有把<code>p</code>和数组关联起来，<code>p</code>仅仅是一个指针变量，不管它指向哪里，<code>sizeof</code>求得的永远是它本身所占用的字节数。</p>
+<p>​    站在编译器的角度讲，变量名、数组名都是一种符号，它们最终都要和数据绑定起来。<strong>变量名用来指代一份数据，数组名用来指代一组数据（数据集合），它们都是有类型的，以便推断出所指代的数据的长度。</strong></p>
+<p>​    对，数组也有类型，这是很多读者没有意识到的，大部分<code>C</code>语言书籍对这一点也含糊其辞！我们可以将 <code>int</code>、<code>float</code>、<code>char</code>等理解为基本类型，将数组理解为由基本类型派生得到的稍微复杂一些的类型。<code>sizeof</code>就是根据符号的类型来计算长度的。</p>
+<p>​    对于数组<code>a</code>，它的类型是<code>int [6]</code>，表示这是一个拥有<code>6</code>个<code>int</code>数据的集合，<code>1</code>个<code>int</code>的长度为<code>4</code>，<code>6</code>个<code>int</code> 的长度为<code>4×6 = 24</code>，<code>sizeof</code>很容易求得。</p>
+<p>​    对于指针变量<code>p</code>，它的类型是<code>int *</code>，在<code>32</code>位环境下长度为<code>4</code>，在<code>64</code>位环境下长度为<code>8</code>。</p>
+<p>​    归根结底，<code>a</code>和<code>p</code>这两个符号的类型不同，指代的数据也不同，它们不是一码事，<code>sizeof</code>是根据符号类型来求长度的，<code>a</code>和<code>p</code>的类型不同，求得的长度自然也不一样。</p>
+<p>​    对于二维数组，也是类似的道理，例如<code>int a[3][3]={1, 2, 3, 4, 5, 6, 7, 8, 9};</code>，它的类型是<code>int [3][3]</code>，长度是<code>4×3×3 = 36</code>。</p>
+<h2 id="站在哲学的高度看问题"><a href="#站在哲学的高度看问题" class="headerlink" title="站在哲学的高度看问题"></a>站在哲学的高度看问题</h2><p>​    编程语言的目的是为了将计算机指令（机器语言）抽象成人类能够理解的自然语言，让程序员能够更加容易地管理和操作各种计算机资源，这些计算机资源最终表现为编程语言中的各种符号和语法规则。</p>
+<p>​    整数、小数、数组、指针等不同类型的数据都是对内存的抽象，它们的名字用来指代不同的内存块，程序员在编码过程中不需要直接面对内存，使用这些名字将更加方便。</p>
+<p>​    编译器在编译过程中会创建一张专门的表格用来保存名字以及名字对应的数据类型、地址、作用域等信息，<code>sizeof</code>是一个操作符，不是函数，使用<code>sizeof</code>时可以从这张表格中查询到符号的长度。</p>
+<p>​    与普通变量名相比，<strong>数组名既有一般性也有特殊性：一般性表现在数组名也用来指代特定的内存块，也有类型和长度；特殊性表现在数组名有时候会转换为一个指针，而不是它所指代的数据本身的值。</strong></p>
+<h2 id="数组什么时候转换为指针"><a href="#数组什么时候转换为指针" class="headerlink" title="数组什么时候转换为指针"></a>数组什么时候转换为指针</h2><p>​    数组名的本意是表示一组数据的集合，它和普通变量一样，都用来指代一块内存，但在使用过程中，数组名有时候会转换为指向数据集合的指针（地址），而不是表示数据集合本身，这在前面的例子中已经被多次证实。</p>
+<p>​    数据集合包含了多份数据，直接使用一个集合没有明确的含义，将数组名转换为指向数组的指针后，可以很容易地访问其中的任何一份数据，使用时的语义更加明确。</p>
+<p>​    <strong><code>C</code>语言标准规定，当数组名作为数组定义的标识符（也就是定义或声明数组时）、<code>sizeof</code>或<code>&amp;</code>的操作数时，它才表示整个数组本身，在其他的表达式中，数组名会被转换为指向第<code>0</code>个元素的指针（地址）。</strong></p>
+<p>​    数组和指针的关系颇像诗和词的关系，它们都是一种文学形式，有不少共同之处，但在实际的表现手法上又各有特色。</p>
+<h2 id="再谈数组下标"><a href="#再谈数组下标" class="headerlink" title="再谈数组下标[]"></a>再谈数组下标<code>[]</code></h2><p>​    <code>C</code>语言标准还规定，数组下标与指针的偏移量相同。通俗地理解，就是对数组下标的引用总是可以写成“一个指向数组的起始地址的指针加上偏移量”。假设现在有一个数组<code>a</code>和指针变量<code>p</code>，它们的定义形式为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;, *p, i = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>​    读者可以通过以下任何一种方式来访问<code>a[i]</code>：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p = a;  		p[i]; </span><br><span class="line">p = a;  		*(p + i); </span><br><span class="line">p = a + i;  	*p;</span><br></pre></td></tr></table></figure></p>
+<p>​    对数组的引用<code>a[i]</code>在编译时总是被编译器改写成<code>*(a+i)</code>的形式，<code>C</code>语言标准也要求编译器必须具备这种行为。</p>
+<p>​    取下标操作符<code>[]</code>是建立在指针的基础上，它的作用是使一个指针和一个整数相加，产生出一个新的指针，然后从这个新指针（新地址）上取得数据；假设指针的类型为<code>T *</code>，所产生的结果的类型就是<code>T</code>。</p>
+<p>​    取下标操作符的两个操作数是可以交换的，它并不在意操作数的先后顺序，就像在加法中<code>3+5</code>和<code>5+3</code>并没有什么不一样。以上面的数组<code>a</code>为例，如果希望访问第<code>3</code>个元素，那么可以写作<code>a[3]</code>，也可以写作<code>3[a]</code>，这两种形式都是正确的，只不过后面的形式从不曾使用，它除了可以把初学者搞晕之外，实在没有什么实际的意义。</p>
+<blockquote>
+<p><code>a[3]</code>等价于<code>*(a + 3)</code>，<code>3[a]</code>等价于<code>*(3 + a)</code>，仅仅是把加法的两个操作数调换了位置。</p>
+</blockquote>
+<p>​    使用下标时，编译器会自动把下标的步长调整到数组元素的大小。数组<code>a</code>中每个元素都是<code>int</code>类型，长度为<code>4</code>个字节，那么<code>a[i+1]</code>和<code>a[i]</code>在内存中的距离是<code>4</code>（而不是<code>1</code>）。</p>
+<h2 id="数组作函数参数"><a href="#数组作函数参数" class="headerlink" title="数组作函数参数"></a>数组作函数参数</h2><p>​    <strong><code>C</code>语言标准规定，作为“类型的数组”的形参应该调整为“类型的指针”。</strong>在函数形参定义这个特殊情况下，编译器必须把数组形式改写成指向数组第<code>0</code>个元素的指针形式。编译器只向函数传递数组的地址，而不是整个数组的拷贝。</p>
+<p>​    这种隐式转换意味着下面三种形式的函数定义是完全等价的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> *parr)</span></span>&#123; ...... &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> arr[])</span></span>&#123; ...... &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> arr[<span class="number">5</span>])</span></span>&#123; ...... &#125;</span><br></pre></td></tr></table></figure>
+<p>​    <strong>在函数内部，<code>arr</code>会被转换成一个指针变量，编译器为<code>arr</code>分配<code>4</code>个字节的内存，用<code>sizeof(arr)</code>求得的是指针变量的长度，而不是数组长度。要想在函数内部获得数组长度必须额外增加一个参数，在调用函数之前求得数组长度。</strong></p>
+<p>​    参数传递是一次赋值的过程，赋值也是一个表达式，函数调用时不管传递的是数组名还是数组指针，效果都是一样的，相当于给一个指针变量赋值。</p>
+<p>​    把作为形参的数组和指针等同起来是出于效率方面的考虑。数组是若干类型相同的数据的集合，数据的数目没有限制，可能只有几个，也可能成千上万，如果要传递整个数组，无论在时间还是内存空间上的开销都可能非常大。而且绝大部分情况下，我们其实并不需要整个数组的拷贝，我们只想告诉函数在那一时刻对哪个特定的数组感兴趣。</p>
+<h2 id="关于数组和指针可交换性的总结"><a href="#关于数组和指针可交换性的总结" class="headerlink" title="关于数组和指针可交换性的总结"></a>关于数组和指针可交换性的总结</h2><p>​    1) 用<code>a[i]</code>这样的形式对数组进行访问总是会被编译器改写成（或者说解释为）像<code>*(a+i)</code>这样的指针形式。</p>
+<p>​    2) 指针始终是指针，它绝不可以改写成数组。你可以用下标形式访问指针，一般都是指针作为函数参数时，而且你知道实际传递给函数的是一个数组。</p>
+<p>​    3) 在特定的环境中，也就是数组作为函数形参，也只有这种情况，一个数组可以看做是一个指针。作为函数形参的数组始终会被编译器修改成指向数组第一个元素的指针。</p>
+<p>​    4) 当希望向函数传递数组时，可以把函数参数定义为数组形式（可以指定长度也可以不指定长度），也可以定义为指针。不管哪种形式，在函数内部都要作为指针变量对待。</p>
+<h2 id="解析指针和数组"><a href="#解析指针和数组" class="headerlink" title="解析指针和数组"></a>解析指针和数组</h2><p>​    前面我们讲解了指针数组、二维数组指针、函数指针等几种较为复杂的指针，它们的定义形式分别是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1[<span class="number">6</span>];  <span class="comment">//指针数组</span></span><br><span class="line"><span class="keyword">int</span> *(p2[<span class="number">6</span>]);  <span class="comment">//指针数组，和上面的形式等价</span></span><br><span class="line"><span class="keyword">int</span> (*p3)[<span class="number">6</span>];  <span class="comment">//二维数组指针</span></span><br><span class="line"><span class="keyword">int</span> (*p4)(<span class="keyword">int</span>, <span class="keyword">int</span>);  <span class="comment">//函数指针</span></span><br></pre></td></tr></table></figure>
+<p>​    我相信大部分初学者对上面几种形式的指针都非常迷惑，不知道该从哪里入手去理解，为什么<code>p1</code>、<code>p2</code>是数组，而<code>p3</code>却是指针呢，它们仅仅是一个括号的区别。</p>
+<p>​    指针是<code>C</code>语言中最强大最灵活的一部分，也是最难以理解的一部分，它是学习<code>C</code>语言的重点，没有学会指针就无从谈学会<code>C</code>语言。如果大家觉得上面几种形式的指针还能勉强接受，那么下面两个指针是不是让人抓狂呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *(* c[<span class="number">10</span>])(<span class="keyword">int</span> **p);</span><br><span class="line"><span class="keyword">int</span> (*(*(*pfunc)(<span class="keyword">int</span> *))[<span class="number">5</span>])(<span class="keyword">int</span> *);</span><br></pre></td></tr></table></figure>
+<p>​    只要找到了窍门，再复杂的指针也是可以理解的，这节我们就来戳破这层窗户纸！</p>
+<p>​    <code>C</code>语言标准规定，对于一个符号的定义，编译器总是从它的名字开始读取，然后按照优先级顺序依次解析。对，从名字开始，不是从开头也不是从末尾，这是理解复杂指针的关键！</p>
+<p>​    对于初学者，有几种运算符的优先级非常容易混淆，它们的优先级从高到低依次是：</p>
+<ul>
+<li>定义中被括号<code>()</code>括起来的那部分。</li>
+<li>后缀操作符：括号<code>()</code>表示这是一个函数，方括号<code>[]</code>表示这是一个数组。</li>
+<li>前缀操作符：星号<code>*</code>表示<code>“指向xxx的指针”</code>。</li>
+</ul>
+<p> 学会了“绝杀招式”，接下来我们就由浅入深，逐个击破上面的指针定义。</p>
+<h3 id="1-int-p1-6"><a href="#1-int-p1-6" class="headerlink" title="1)int *p1[6];"></a>1)<code>int *p1[6];</code></h3><p>​    从<code>p1</code>开始理解，它的左边是<code>*</code>，右边是<code>[]</code>，<code>[]</code>的优先级高于<code>*</code>，所以编译器先解析<code>p1[6]</code>，<code>p1</code>首先是一个拥有<code>6</code>个元素的数组，然后再解析<code>int *</code>，它用来说明数组元素的类型。从整体上讲，<code>p1</code>是一个拥有<code>6</code>个<code>int *</code>元素的数组，也即指针数组。</p>
+<h3 id="2-int-p3-6"><a href="#2-int-p3-6" class="headerlink" title="2)int (*p3)[6];"></a>2)<code>int (*p3)[6];</code></h3><p>​    从<code>p3</code>开始理解，<code>()</code>的优先级最高，编译器先解析<code>(*p3)</code>，<code>p3</code>首先是一个指针，剩下的<code>int [6]</code>是<code>p3</code>指向的数据的类型，它是一个拥有<code>6</code>个元素的一维数组。从整体上讲，<code>p3</code>是一个指向拥有<code>6</code>个<code>int</code>元素数组的指针，也即二维数组指针。</p>
+<blockquote>
+<p>​    为了能够通过指针来遍历数组元素，在定义数组指针时需要进行降维处理，例如三维数组指针实际指向的数据类型是二维数组，二维数组指针实际指向的数据类型是一维数组，一维数组指针实际指向的是一个基本类型；在表达式中，数组名也会进行同样的转换（下降一维）。</p>
+</blockquote>
+<h3 id="3-int-p4-int-int"><a href="#3-int-p4-int-int" class="headerlink" title="3) int (*p4)(int, int);"></a>3) <code>int (*p4)(int, int);</code></h3><p>​    从<code>p4</code>开始理解，<code>()</code>的优先级最高，编译器先解析<code>(*p4)</code>，<code>p4</code>首先是一个指针，它后边的<code>()</code>说明<code>p4</code>指向的是一个函数，括号中的<code>int, int</code>是参数列表，开头的<code>int</code>用来说明函数的返回值类型。整体来看，<code>p4</code>是一个指向原型为<code>int func(int, int);</code>的函数的指针。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag"><i class="fa fa-tag"></i> C语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/23/c语言2-函数返回值/" rel="next" title="C语言之函数返回值">
+                <i class="fa fa-chevron-left"></i> C语言之函数返回值
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/12/c语言3-栈区/" rel="prev" title="C语言之栈区">
+                C语言之栈区 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组和指针的不同"><span class="nav-number">1.</span> <span class="nav-text">数组和指针的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#站在哲学的高度看问题"><span class="nav-number">2.</span> <span class="nav-text">站在哲学的高度看问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组什么时候转换为指针"><span class="nav-number">3.</span> <span class="nav-text">数组什么时候转换为指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再谈数组下标"><span class="nav-number">4.</span> <span class="nav-text">再谈数组下标[]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组作函数参数"><span class="nav-number">5.</span> <span class="nav-text">数组作函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于数组和指针可交换性的总结"><span class="nav-number">6.</span> <span class="nav-text">关于数组和指针可交换性的总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析指针和数组"><span class="nav-number">7.</span> <span class="nav-text">解析指针和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-int-p1-6"><span class="nav-number">7.1.</span> <span class="nav-text">1)int *p1[6];</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-int-p3-6"><span class="nav-number">7.2.</span> <span class="nav-text">2)int (*p3)[6];</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-int-p4-int-int"><span class="nav-number">7.3.</span> <span class="nav-text">3) int (*p4)(int, int);</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

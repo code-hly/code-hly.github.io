@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="函数模板函数模板的重载​    当需要对不同的类型使用同一种算法（同一个函数体）时，为了避免定义多个功能重复的函数，可以使用模板。然而，并非所有的类型都使用同一种算法，有些特定的类型需要单独处理，为了满足这种需求，C++允许对函数模板进行重载，程序员可以像重载常规函数那样重载模板定义。">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++函数模板">
+<meta property="og:url" content="http://yoursite.com/2018/08/10/c++模板2-函数模板/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="函数模板函数模板的重载​    当需要对不同的类型使用同一种算法（同一个函数体）时，为了避免定义多个功能重复的函数，可以使用模板。然而，并非所有的类型都使用同一种算法，有些特定的类型需要单独处理，为了满足这种需求，C++允许对函数模板进行重载，程序员可以像重载常规函数那样重载模板定义。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:40:58.597Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++函数模板">
+<meta name="twitter:description" content="函数模板函数模板的重载​    当需要对不同的类型使用同一种算法（同一个函数体）时，为了避免定义多个功能重复的函数，可以使用模板。然而，并非所有的类型都使用同一种算法，有些特定的类型需要单独处理，为了满足这种需求，C++允许对函数模板进行重载，程序员可以像重载常规函数那样重载模板定义。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/10/c++模板2-函数模板/">
+
+
+
+
+
+  <title>c++函数模板 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/c++模板2-函数模板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++函数模板</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/10/c++模板2-函数模板/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/c++模板2-函数模板/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/10/c++模板2-函数模板/" class="leancloud_visitors" data-flag-title="c++函数模板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  32
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h2><h3 id="函数模板的重载"><a href="#函数模板的重载" class="headerlink" title="函数模板的重载"></a>函数模板的重载</h3><p>​    当需要对不同的类型使用同一种算法（同一个函数体）时，为了避免定义多个功能重复的函数，可以使用模板。然而，并非所有的类型都使用同一种算法，有些特定的类型需要单独处理，为了满足这种需求，<strong><code>C++</code>允许对函数模板进行重载</strong>，程序员可以像重载常规函数那样重载模板定义。</p>
+<a id="more"></a>
+<p>​    前面我们定义了<code>Swap()</code>函数用来交换两个变量的值，一种方案是使用指针，另外一种方案是使用引用，请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方案①：使用指针</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T *a, T *b)</span></span>&#123;</span><br><span class="line">    T temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方案②：使用引用</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Swap</span>(<span class="title">T</span> &amp;<span class="title">a</span>, <span class="title">T</span> &amp;<span class="title">b</span>)&#123;</span></span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    这两种方案都可以交换<code>int</code>、<code>float</code>、<code>char</code>、<code>bool</code>等基本类型变量的值，但是却不能交换两个数组。</p>
+<pre><code>对于方案`①`，调用函数时传入的是数组指针，或者说是指向第` 0  `个元素的指针，这样交换的仅仅是数组的第` 0 `个元素，而不是整个数组。数组和指针本来是不等价的，只是当函数的形参为指针时，传递的数组也会隐式地转换为指针。
+</code></pre><p>​    对于方案<code>②</code>，假设传入的是一个长度为<code>5</code>的<code>int</code>类型数组（该数组的类型是<code>int [5]</code>），那么<code>T</code>的真实类型为<code>int [5]</code>，<code>T temp</code>会被替换为<code>int [5] temp</code>，这显然是错误的。另外一方面，语句<code>a=b;</code>尝试对数组<code>a</code>赋值，而数组名是常量，它的值不允许被修改，所以也会产生错误。总起来说，方案<code>②</code>会有两处语法错误。</p>
+<p>​    交换两个数组唯一的办法就是逐个交换所有的数组元素，请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T a[], T b[], <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    T temp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        temp = a[i];</span><br><span class="line">        a[i] = b[i];</span><br><span class="line">        b[i] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    在该函数模板中，最后一个参数的类型为具体类型（<code>int</code>），而不是泛型。并不是所有的模板参数都必须被泛型化。</p>
+<p>​    下面是一个重载函数模板的完整示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Swap</span>(<span class="title">T</span> &amp;<span class="title">a</span>, <span class="title">T</span> &amp;<span class="title">b</span>);</span>  <span class="comment">//模板①：交换基本类型的值</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T a[], T b[], <span class="keyword">int</span> len)</span></span>;  <span class="comment">//模板②：交换两个数组</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> len)</span></span>;  <span class="comment">//打印数组元素</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//交换基本类型的值</span></span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">10</span>, n = <span class="number">99</span>;</span><br><span class="line">    Swap(m, n);  <span class="comment">//匹配模板①</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;m&lt;&lt;<span class="string">", "</span>&lt;&lt;n&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//交换两个数组</span></span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> b[<span class="number">5</span>] = &#123; <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="keyword">sizeof</span>(a) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>);  <span class="comment">//数组长度</span></span><br><span class="line">    Swap(a, b, len);  <span class="comment">//匹配模板②</span></span><br><span class="line">    printArray(a, len);</span><br><span class="line">    printArray(b, len);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Swap</span>(<span class="title">T</span> &amp;<span class="title">a</span>, <span class="title">T</span> &amp;<span class="title">b</span>)&#123;</span></span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T a[], T b[], <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    T temp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        temp = a[i];</span><br><span class="line">        a[i] = b[i];</span><br><span class="line">        b[i] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == len<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">", "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>99, 10</code><br><code>10, 20, 30, 40, 50</code><br><code>1, 2, 3, 4, 5</code></p>
+<h3 id="函数模板的实参推断"><a href="#函数模板的实参推断" class="headerlink" title="函数模板的实参推断"></a>函数模板的实参推断</h3><p>​    在使用类模板创建对象时，程序员需要显式的指明实参（也就是具体的类型）。例如对于下面的<code>Point</code>类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt; <span class="class"><span class="keyword">class</span> <span class="title">Point</span>;</span></span><br></pre></td></tr></table></figure>
+<p>​    我们可以在栈上创建对象，也可以在堆上创建对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);  <span class="comment">//在栈上创建对象</span></span><br><span class="line">Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; *p = <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>);  <span class="comment">//在堆上创建对象</span></span><br></pre></td></tr></table></figure>
+<p>​    因为已经显式地指明了<code>T1</code>、<code>T2</code>的具体类型，所以编译器就不用再自己推断了，直接拿来使用即可。</p>
+<p>​    而对于函数模板，调用函数时可以不显式地指明实参（也就是具体的类型）。请看下面的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数声明</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数调用</span></span><br><span class="line"><span class="keyword">int</span> n1 = <span class="number">100</span>, n2 = <span class="number">200</span>;</span><br><span class="line">Swap(n1, n2);</span><br><span class="line"><span class="keyword">float</span> f1 = <span class="number">12.5</span>, f2 = <span class="number">56.93</span>;</span><br><span class="line">Swap(f1, f2);</span><br></pre></td></tr></table></figure>
+<p>​    虽然没有显式地指明<code>T</code>的具体类型，但是编译器会根据<code>n1</code>和<code>n2</code>、<code>f1</code>和<code>f2</code>的类型自动推断出<code>T</code>的类型。<strong>这种通过函数实参来确定模板实参（也就是类型参数的具体类型）的过程称为模板实参推断。</strong></p>
+<p>​    在模板实参推断过程中，编译器使用函数调用中的实参类型来寻找类型参数的具体类型。</p>
+<h4 id="模板实参推断过程中的类型转换"><a href="#模板实参推断过程中的类型转换" class="headerlink" title="模板实参推断过程中的类型转换"></a>模板实参推断过程中的类型转换</h4><h5 id="普通函数"><a href="#普通函数" class="headerlink" title="普通函数"></a>普通函数</h5><p>​    对于普通函数（非模板函数），发生函数调用时会对实参的类型进行适当的转换，以适应形参的类型。这些转换包括：</p>
+<ul>
+<li>算数转换：例如<code>int</code>转换为<code>float</code>，<code>char</code>转换为<code>int</code>，<code>double</code>转换为<code>int</code>等。</li>
+<li>派生类向基类的转换：也就是向上转型。</li>
+<li><code>const</code>转换：也即将非<code>const</code>类型转换为<code>const</code>类型，例如将<code>char *</code>转换为<code>const char *</code>。</li>
+<li>数组或函数指针转换：如果函数形参不是引用类型，那么数组名会转换为数组指针，函数名也会转换为函数指针。</li>
+<li>用户自定的类型转换。</li>
+</ul>
+<p> 例如有下面两个函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">float</span> f)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span> *arr, <span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    它们具体的调用形式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nums[<span class="number">5</span>];</span><br><span class="line"><span class="keyword">char</span> *url = <span class="string">"http://c.biancheng.net"</span>;</span><br><span class="line">func1(<span class="number">12.5</span>, <span class="number">45</span>);</span><br><span class="line">func2(nums, url);</span><br></pre></td></tr></table></figure>
+<p>​    对于<code>func1()</code>，<code>12.5</code>会从<code>double</code>转换为<code>int</code>，45 会从<code>int</code>转换为<code>float</code>；对于<code>func2()</code>，<code>nums</code>会从<code>int [5]</code>转换为<code>int *</code>，<code>url</code>会从<code>char *</code>转换为<code>const char *</code>。</p>
+<h5 id="函数模板-1"><a href="#函数模板-1" class="headerlink" title="函数模板"></a>函数模板</h5><p>​    <strong>对于函数模板，类型转换则受到了更多的限制，仅能进行「<code>const</code>转换」和「数组或函数指针转换」，其他的都不能应用于函数模板。</strong>例如有下面几个函数模板：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">(T *buffer)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">(<span class="keyword">const</span> T &amp;stu)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func4</span><span class="params">(T a)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func5</span><span class="params">(T &amp;a)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    它们具体的调用形式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> name[<span class="number">20</span>];</span><br><span class="line"><span class="function">Student <span class="title">stu1</span><span class="params">(<span class="string">"张华"</span>, <span class="number">20</span>, <span class="number">96.5</span>)</span></span>;  <span class="comment">//创建一个Student类型的对象</span></span><br><span class="line"></span><br><span class="line">func1(<span class="number">12.5</span>, <span class="number">30</span>);  <span class="comment">//Error</span></span><br><span class="line">func2(name);  <span class="comment">//name的类型从 int [20] 换转换为 int *，所以 T 的真实类型为 int</span></span><br><span class="line">func3(stu1);  <span class="comment">//非const转换为const，T 的真实类型为 Student</span></span><br><span class="line">func4(name);  <span class="comment">//name的类型从 int [20] 换转换为 int *，所以 T 的真实类型为 int *</span></span><br><span class="line">func5(name);  <span class="comment">//name的类型依然为 int [20]，不会转换为 int *，所以 T 的真实类型为 int [20]</span></span><br></pre></td></tr></table></figure>
+<p>​    对于<code>func1(12.5, 30)</code>，<code>12.5</code>的类型为<code>double</code>，<code>30</code>的类型为<code>int</code>，编译器不知道该将<code>T</code> 实例化为 <code>double</code>还是<code>int</code>，也不会尝试将<code>int</code>转换为<code>double</code>，或者将<code>double</code>转换为<code>int</code>，所以调用失败。</p>
+<p> 请读者注意<code>name</code>，它本来的类型是<code>int [20]</code>：</p>
+<ul>
+<li>对于<code>func2(name)</code>和<code>func4(name)</code>，<code>name</code>的类型会从<code>int [20]</code>转换为<code>int *</code>，也即将数组转换为指针，所以 <code>T</code>的类型分别为<code>int *</code> 和<code>int</code>。</li>
+<li>对于<code>func5(name)</code>，<code>name</code>的类型依然为<code>int [20]</code>，不会转换为<code>int *</code>，所以<code>T</code>的类型为<code>int [20]</code>。</li>
+</ul>
+<p>可以发现，<strong>当函数形参是引用类型时，数组不会转换为指针。</strong>这个时候读者要注意下面这样的函数模板：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T &amp;a, T &amp;b)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    如果它的具体调用形式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> str1[<span class="number">20</span>];</span><br><span class="line"><span class="keyword">int</span> str2[<span class="number">10</span>];</span><br><span class="line">func(str1, str2);</span><br></pre></td></tr></table></figure>
+<p>​    由于<code>str1</code>、<code>str2</code>的类型分别为<code>int [20]</code>和<code>int [10]</code>，在函数调用过程中又不会转换为指针，所以编译器不知道应该将<code>T</code>实例化为<code>int [20]</code>还是<code>int [10]</code>，导致调用失败。</p>
+<h4 id="为函数模板显式地指明实参（也就是具体的类型）"><a href="#为函数模板显式地指明实参（也就是具体的类型）" class="headerlink" title="为函数模板显式地指明实参（也就是具体的类型）"></a>为函数模板显式地指明实参（也就是具体的类型）</h4><p>​    函数模板的实参推断是指「在函数调用过程中根据实参的类型来寻找类型参数的具体类型」的过程，这在大部分情况下是奏效的，但是<strong>当类型参数的个数较多时，就会有个别的类型无法推断出来，这个时候就必须显式地指明实参。</strong></p>
+<p>​    下面是一个实参推断失败的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt; <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T1 a)</span></span>&#123;</span><br><span class="line">    T2 b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func(<span class="number">10</span>);  <span class="comment">//函数调用</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>func()</code>有两个类型参数，分别是<code>T1</code>和<code>T2</code>，但是编译器只能从函数调用中推断出<code>T1</code>的类型来，不能推断出<code>T2</code>的类型来，所以这种调用是失败的，这个时候就必须显式地指明<code>T1</code>、<code>T2</code>的具体类型。</p>
+<p>​    「为函数模板显式地指明实参」和「为类模板显式地指明实参」的形式是类似的，就是在函数名后面添加尖括号<code>&lt; &gt;</code>，里面包含具体的类型。例如对于上面的<code>func()</code>，我们要这样来指明实参：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+<p>​    显式指明的模板实参会按照从左到右的顺序与对应的模板参数匹配：第一个实参与第一个模板参数匹配，第二个实参与第二个模板参数匹配，以此类推。只有尾部（最右）的类型参数的实参可以省略，而且前提是它们可以从传递给函数的实参中推断出来。</p>
+<p>​    对于上面的<code>func()</code>，虽然只有<code>T2</code>的类型不能自动推断出来，但是由于它位于类型参数列表的尾部（最右），所以必须同时指明<code>T1</code>和<code>T2</code>的类型。对代码稍微做出修改：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span> T2&gt; <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T2 a)</span></span>&#123;</span><br><span class="line">    T1 b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数调用</span></span><br><span class="line">func&lt;<span class="keyword">int</span>&gt;(<span class="number">10</span>);  <span class="comment">//省略 T2 的类型</span></span><br><span class="line">func&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">20</span>);  <span class="comment">//指明 T1、T2 的类型</span></span><br></pre></td></tr></table></figure>
+<p>​    由于<code>T2</code>的类型能够自动推断出来，并且它位于参数列表的尾部（最右），所以可以省略。</p>
+<h4 id="显式地指明实参时可以应用正常的类型转换"><a href="#显式地指明实参时可以应用正常的类型转换" class="headerlink" title="显式地指明实参时可以应用正常的类型转换"></a>显式地指明实参时可以应用正常的类型转换</h4><p>​    上面我们提到，函数模板仅能进行「<code>const</code>转换」和「数组或函数指针转换」两种形式的类型转换，但是<strong>当我们显式地指明类型参数的实参（具体类型）时，就可以使用正常的类型转换（非模板函数可以使用的类型转换）了。</strong></p>
+<p>​    例如对于下面的函数模板：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(T a, T b)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    它的具体调用形式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="number">10</span>, <span class="number">23.5</span>);  <span class="comment">//Error</span></span><br><span class="line">func&lt;<span class="keyword">float</span>&gt;(<span class="number">20</span>, <span class="number">93.7</span>);  <span class="comment">//Correct</span></span><br></pre></td></tr></table></figure>
+<p>​    在第二种调用形式中，我们已经显式地指明了<code>T</code>的类型为<code>float</code>，编译器不会再为「<code>T</code>的类型到底是<code>int</code>还是<code>double</code>」而纠结了，所以可以从容地使用正常的类型转换了。</p>
+<h3 id="函数模板的显式具体化"><a href="#函数模板的显式具体化" class="headerlink" title="函数模板的显式具体化"></a>函数模板的显式具体化</h3><p>​    下面的函数模板，它用来获取两个变量中较大的一个：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">Max</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">b</span>)&#123;</span></span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    请读者注意<code>a &gt; b</code>这条语句，<code>&gt;</code>能够用来比较 <code>int</code>、<code>float</code>、<code>char</code>等基本类型数据的大小，但是却不能用来比较结构体变量、对象以及数组的大小，因为我们并没有针对结构体、类和数组重载<code>&gt;</code>。另外，该函数模板虽然可以用于指针，但比较的是地址大小，而不是指针指向的数据，所以也没有现实的意义。</p>
+<p>​    模板是一种泛型技术，它能接受的类型是宽泛的、没有限制的，并且对这些类型使用的算法都是一样的（函数体或类体一样）。但是现在我们希望改变这种“游戏规则”，让模板能够针对某种具体的类型使用不同的算法（函数体或类体不同），这在<code>C++</code>中是可以做到的，这种技术称为模板的<strong>显示具体化（<code>Explicit Specialization</code>）</strong>。</p>
+<p>​    函数模板和类模板都可以显示具体化。</p>
+<p>在讲解函数模板的显示具体化语法之前，我们先来看一个显示具体化的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">float</span> score;</span><br><span class="line">&#125; STU;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数模板</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">Max</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">b</span>);</span></span><br><span class="line"><span class="comment">//函数模板的显示具体化（针对STU类型的显示具体化）</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="keyword">const</span> STU&amp; Max&lt;STU&gt;(<span class="keyword">const</span> STU&amp; a, <span class="keyword">const</span> STU&amp; b);</span><br><span class="line"><span class="comment">//重载&lt;&lt;</span></span><br><span class="line">ostream &amp; <span class="keyword">operator</span>&lt;&lt;(ostream &amp;out, <span class="keyword">const</span> STU &amp;stu);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">20</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;Max(a, b)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    STU stu1 = &#123; <span class="string">"王明"</span>, <span class="number">16</span>, <span class="number">95.5</span>&#125;;</span><br><span class="line">    STU stu2 = &#123; <span class="string">"徐亮"</span>, <span class="number">17</span>, <span class="number">90.0</span>&#125;;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;Max(stu1, stu2)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">Max</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">b</span>)&#123;</span></span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="keyword">const</span> STU&amp; Max&lt;STU&gt;(<span class="keyword">const</span> STU&amp; a, <span class="keyword">const</span> STU&amp; b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a.score &gt; b.score ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ostream &amp; <span class="keyword">operator</span>&lt;&lt;(ostream &amp;out, <span class="keyword">const</span> STU &amp;stu)&#123;</span><br><span class="line">    out&lt;&lt;stu.name&lt;&lt;<span class="string">" , "</span>&lt;&lt;stu.age &lt;&lt;<span class="string">" , "</span>&lt;&lt;stu.score;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>20</code><br><code>王明 , 16 , 95.5</code></p>
+<p> 本例中，<code>STU</code>结构体用来表示一名学生(<code>Student</code>)，它有三个成员，分别是姓名(<code>name</code>)、年龄(<code>age</code>)、成绩(<code>score</code>)；<code>Max()</code>函数用来获取两份数据中较大的一份。</p>
+<p>​    要想获取两份数据中较大的一份，必然会涉及到对两份数据的比较。对于<code>int</code>、<code>float</code>、<code>char</code>等基本类型的数据，直接比较它们本身的值即可，而对于<code>STU</code> 类型的数据，直接比较它们本身的值不但会有语法错误，而且毫无意义，这就要求我们设计一套不同的比较方案，从语法和逻辑上都能行得通，所以本例中我们比较的是两名学生的成绩（<code>score</code>）。</p>
+<p>​    不同的比较方案最终导致了算法（函数体）的不同，我们不得不借助模板的显示具体化技术对<code>STU</code>类型进行单独处理。第<code>14</code>行代码就是显示具体化的声明，第<code>34</code>行代码进行了定义。</p>
+<p>​    请读者注意第<code>34</code>行代码，<code>Max</code>中的<code>STU</code>表明了要将类型参数<code>T</code>具体化为<code>STU</code>类型，原来使用<code>T</code>的位置都应该使用<code>STU</code>替换，包括返回值类型、形参类型、局部变量的类型。</p>
+<p>​    <code>Max</code>只有一个类型参数<code>T</code>，并且已经被具体化为<code>STU</code>了，这样<strong>整个模板就不再有类型参数了，类型参数列表也就为空了，所以模板头应该写作<code>template&lt;&gt;</code>。</strong></p>
+<p>​    另外，<code>Max</code>中的<code>STU</code>是可选的，因为函数的形参已经表明，这是<code>STU</code>类型的一个具体化，编译器能够逆推出<code>T</code>的具体类型。简写后的函数声明为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="function"><span class="keyword">const</span> STU&amp; <span class="title">Max</span><span class="params">(<span class="keyword">const</span> STU&amp; a, <span class="keyword">const</span> STU&amp; b)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="函数的调用规则"><a href="#函数的调用规则" class="headerlink" title="函数的调用规则"></a>函数的调用规则</h4><p>​    回顾一下前面学习到的知识，在<code>C++</code>中，对于给定的函数名，可以有非模板函数、模板函数、显示具体化模板函数以及它们的重载版本，在调用函数时，显示具体化优先于常规模板，而非模板函数优先于显示具体化和常规模板。</p>
+<h3 id="函数模板中使用非类型参数"><a href="#函数模板中使用非类型参数" class="headerlink" title="函数模板中使用非类型参数"></a>函数模板中使用非类型参数</h3><p>​    <strong>模板是一种泛型技术，目的是将数据的类型参数化，以增强<code>C++</code>语言（强类型语言）的灵活性。<code>C++</code>对模板的支持非常自由，模板中除了可以包含类型参数，还可以包含非类型参数，</strong>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt; <span class="class"><span class="keyword">class</span> <span class="title">Demo</span>&#123;</span> &#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">int</span> <span class="title">N</span>&gt; <span class="title">void</span> <span class="title">func</span>(<span class="title">T</span> (&amp;<span class="title">arr</span>)[<span class="title">N</span>]);</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>T</code>是一个类型参数，它通过<code>class</code>或<code>typename</code>关键字指定。<code>N</code>是一个非类型参数，用来传递数据的值，而不是类型，它和普通函数的形参一样，都需要指明具体的类型。类型参数和非类型参数都可以用在函数体或者类体中。</p>
+<p>​    当调用一个函数模板或者通过一个类模板创建对象时，非类型参数会被用户提供的、或者编译器推断出的值所取代。</p>
+<p>​    之前我们通过<code>Swap()</code>函数来交换两个数组的值，其原型为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T a[], T b[], <span class="keyword">int</span> len)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    形参<code>len</code>用来指明要交换的数组的长度，调用<code>Swap()</code>函数之前必须先通过<code>sizeof</code>求得数组长度再传递给它。</p>
+<p>​    有读者可能会疑惑，为什么在函数内部不能求得数组长度，一定要通过形参把数组长度传递进去呢？这是因为数组在作为函数参数时会自动转换为数组指针，而<code>sizeof</code>只能通过数组名求得数组长度，不能通过数组指针求得数组长度。</p>
+<p>​    多出来的形参<code>len</code>给编码带来了不便，我们可以借助模板中的非类型参数将它消除，请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">unsigned</span> N&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T (&amp;a)[N], T (&amp;b)[N])</span></span>&#123;</span><br><span class="line">    T temp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++)&#123;</span><br><span class="line">        temp = a[i];</span><br><span class="line">        a[i] = b[i];</span><br><span class="line">        b[i] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    <code>T (&amp;a)[N]</code>表明<code>a</code>是一个引用，它引用的数据的类型是<code>T [N]</code>，也即一个数组；<code>T (&amp;b)[N]</code>也是类似的道理。分析一个引用和分析一个指针的方法类似，编译器总是从它的名字开始读取，然后按照优先级顺序依次解析。</p>
+<p>​    调用<code>Swap()</code>函数时，需要将数组名字传递给它：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> b[<span class="number">5</span>] = &#123; <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span> &#125;;</span><br><span class="line">Swap(a, b);</span><br></pre></td></tr></table></figure>
+<p>​    编译器会使用数组类型<code>int</code>来代替类型参数<code>T</code>，使用数组长度<code>5</code>来代替非类型参数<code>N</code>。</p>
+<p>​    下面是一个完整的示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Swap</span>(<span class="title">T</span> &amp;<span class="title">a</span>, <span class="title">T</span> &amp;<span class="title">b</span>);</span>  <span class="comment">//模板①：交换基本类型的值</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">unsigned</span> N&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T (&amp;a)[N], T (&amp;b)[N])</span></span>;  <span class="comment">//模板②：交换两个数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">unsigned</span> N&gt; <span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(T (&amp;arr)[N])</span></span>;  <span class="comment">//打印数组元素</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//交换基本类型的值</span></span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">10</span>, n = <span class="number">99</span>;</span><br><span class="line">    Swap(m, n);  <span class="comment">//匹配模板①</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;m&lt;&lt;<span class="string">", "</span>&lt;&lt;n&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//交换两个数组</span></span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">5</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> b[<span class="number">5</span>] = &#123; <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span> &#125;;</span><br><span class="line">    Swap(a, b);  <span class="comment">//匹配模板②</span></span><br><span class="line">    printArray(a);</span><br><span class="line">    printArray(b);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Swap</span>(<span class="title">T</span> &amp;<span class="title">a</span>, <span class="title">T</span> &amp;<span class="title">b</span>)&#123;</span></span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">unsigned</span> N&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T (&amp;a)[N], T (&amp;b)[N])</span></span>&#123;</span><br><span class="line">    T temp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++)&#123;</span><br><span class="line">        temp = a[i];</span><br><span class="line">        a[i] = b[i];</span><br><span class="line">        b[i] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">unsigned</span> N&gt; <span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(T (&amp;arr)[N])</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == N<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">", "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>99, 10</code><br><code>10, 20, 30, 40, 50</code><br><code>1, 2, 3, 4, 5</code></p>
+<p>​    <code>printArray()</code>也使用了非类型参数，这样只传递数组名字就能够打印数组元素了。</p>
+<h4 id="非类型参数的限制"><a href="#非类型参数的限制" class="headerlink" title="非类型参数的限制"></a>非类型参数的限制</h4><p>​    非类型参数的类型不能随意指定，它受到了严格的限制，只能是一个整数，或者是一个指向对象或函数的指针（也可以是引用）。</p>
+<p>​    1) 当非类型参数是一个整数时，传递给它的实参，或者由编译器推导出的实参必须是一个常量表达式，例如<code>10</code>、<code>2 * 30</code>、<code>18 + 23 - 4</code>等，但不能是<code>n</code>、<code>n + 10</code>、<code>n + m</code>等（<code>n</code>和<code>m</code>都是变量）。</p>
+<p> 对于上面的<code>Swap()</code>函数，下面的调用就是错误的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;len;</span><br><span class="line"><span class="keyword">int</span> a[len];</span><br><span class="line"><span class="keyword">int</span> b[len];</span><br><span class="line">Swap(a, b);</span><br></pre></td></tr></table></figure>
+<p>这种情况，编译器推导出来的实参是<code>len</code>，是一个变量，而不是常量。</p>
+<p> 2) 当非类型参数是一个指针（引用）时，绑定到该指针的实参必须具有静态的生存期；换句话说，实参必须存储在虚拟地址空间中的静态数据区。局部变量位于栈区，动态创建的对象位于堆区，它们都不能用作实参。</p>
+<h3 id="函数模板实例化"><a href="#函数模板实例化" class="headerlink" title="函数模板实例化"></a>函数模板实例化</h3><p>​    <strong>模板（<code>Templet</code>）并不是真正的函数或类，它仅仅是编译器用来生成函数或类的一张“图纸”。模板不会占用内存，最终生成的函数或者类才会占用内存。由模板生成函数或类的过程叫做模板的实例化（<code>Instantiate</code>），相应地，针对某个类型生成的特定版本的函数或类叫做模板的一个实例（<code>Instantiation</code>）。</strong></p>
+<p>​    模板也可以看做是编译器的一组指令，它命令编译器生成我们想要的代码。</p>
+<p>​    <strong>模板的实例化是按需进行的，用到哪个类型就生成针对哪个类型的函数或类，不会提前生成过多的代码。也就是说，编译器会根据传递给类型参数的实参（也可以是编译器自己推演出来的实参）来生成一个特定版本的函数或类，并且相同的类型只生成一次。实例化的过程也很简单，就是将所有的类型参数用实参代替。</strong></p>
+<p>​    例如，给定下面的函数模板和函数调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>&#123;</span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = <span class="number">100</span>, n2 = <span class="number">200</span>, n3 = <span class="number">300</span>, n4 = <span class="number">400</span>;</span><br><span class="line">    <span class="keyword">float</span> f1 = <span class="number">12.5</span>, f2 = <span class="number">56.93</span>;</span><br><span class="line">   </span><br><span class="line">    Swap(n1, n2);  <span class="comment">//T为int，实例化出 void Swap(int &amp;a, int &amp;b);</span></span><br><span class="line">    Swap(f1, f2);  <span class="comment">//T为float，实例化出 void Swap(float &amp;a, float &amp;b);</span></span><br><span class="line">    Swap(n3, n4);  <span class="comment">//T为int，调用刚才生成的 void Swap(int &amp;a, int &amp;b);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    编译器会根据不同的实参实例化出不同版本的<code>Swap()</code>函数。对于<code>Swap(n1, n2)</code>调用，编译器会生成并编译一个<code>Swap()</code>版本，其中<code>T</code>被替换为<code>int</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    对于<code>Swap(f1, f2)</code>调用，编译器会生成另一个<code>Swap()</code>版本，其中<code>T</code>被替换为<code>float</code>。对于<code>Swap(n3, n4)</code>调用，编译器不会再生成新版本的 <code>Swap()</code>了，因为刚才已经针对<code>int</code>生成了一个版本，直接拿来使用即可。</p>
+<h3 id="将函数模板的声明和定义分散到不同的文件"><a href="#将函数模板的声明和定义分散到不同的文件" class="headerlink" title="将函数模板的声明和定义分散到不同的文件"></a>将函数模板的声明和定义分散到不同的文件</h3><p>​    <strong>总起来说，不管是函数还是类，声明和定义（实现）的分离其实是一回事，都是将函数定义放到其他文件中，最终要解决的问题也只有一个，就是把函数调用和函数定义对应起来（找到函数定义的地址，并填充到函数调用处），而保证完成这项工作的就是链接器。</strong></p>
+<p>​    基于传统的编程思维，初学者往往也会将模板（函数模板和类模板）的声明和定义分散到不同的文件中，以期达到「模块化编程」的目的。但事实证明这种做法是不对的，<strong>程序员惯用的做法是将模板的声明和定义都放到头文件中。</strong></p>
+<p>​    模板并不是真正的函数或类，它仅仅是用来生成函数或类的一张“图纸”，在这个生成过程中有三点需要明确：</p>
+<ul>
+<li>模板的实例化是按需进行的，用到哪个类型就生成针对哪个类型的函数或类，不会提前生成过多的代码；</li>
+<li>模板的实例化是由编译器完成的，而不是由链接器完成的；</li>
+<li>在实例化过程中需要知道模板的所有细节，包含声明和定义。</li>
+</ul>
+<p>为了更加深入地说明问题，现在有一个反面教材，它将函数模板的声明和实现分别放到了头文件和源文件。</p>
+<p>​    <code>func.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//交换两个数的值</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>&#123;</span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n<span class="number">-1</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">bool</span> isSorted = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;n<span class="number">-1</span>-i; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j] &gt; arr[j+<span class="number">1</span>])&#123;</span><br><span class="line">                isSorted = <span class="literal">false</span>;</span><br><span class="line">                Swap(arr[j], arr[j+<span class="number">1</span>]);  <span class="comment">//调用Swap()函数</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(isSorted) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    <code>func.h</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _FUNC_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _FUNC_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>​    <code>main.cpp</code>源码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = <span class="number">10</span>, n2 = <span class="number">20</span>;</span><br><span class="line">    Swap(n1, n2);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">double</span> f1 = <span class="number">23.8</span>, f2 = <span class="number">92.6</span>;</span><br><span class="line">    Swap(f1, f2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    该工程包含了两个源文件和一个头文件，<code>func.cpp</code>中定义了两个函数，<code>func.h</code>中对函数进行了声明，<code>main.cpp</code>中对函数进行了调用，这是典型的将函数的声明和实现分离的编程模式。</p>
+<p>​    运行上面的程序，会产生一个链接错误，意思是无法找到<code>void Swap(double &amp;, double &amp;)</code>这个函数。主函数<code>main()</code>中共调用了两个版本的<code>Swap()</code>函数，它们的原型分别是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Swap&lt;<span class="keyword">double</span>&gt;(<span class="keyword">int</span> &amp;, <span class="keyword">int</span> &amp;);</span><br><span class="line"> <span class="keyword">void</span> Swap&lt;<span class="keyword">double</span>&gt;(<span class="keyword">double</span> &amp;, <span class="keyword">double</span> &amp;);</span><br></pre></td></tr></table></figure></p>
+<p>​    为什么针对<code>int</code>的版本能够找到定义，而针对<code>double</code>的版本就找不到呢？</p>
+<p>​    我们先来说针对<code>double</code>的版本为什么找不到定义。当编译器编译<code>main.cpp</code>时，发现使用到了<code>double</code>版本的<code>Swap()</code>函数，于是尝试生成一个<code>double</code>版本的实例，但是由于只有声明没有定义，所以生成失败。不过这个时候编译器不会报错，而是对该函数的调用做一个记录，希望等到链接程序时在其他目标文件（<code>.obj</code>文件或<code>.o</code>文件）中找到该函数的定义。很明显，本例需要到<code>func.obj</code>中寻找。但是遗憾的是，<code>func.cpp</code>中没有调用<code>double</code> 版本的<code>Swap()</code>函数，编译器不会生成<code>double</code>版本的实例，所以链接器最终也找不到<code>double</code>版本的函数定义，只能抛出一个链接错误，让程序员修改代码。</p>
+<p>​    那么，针对<code>int</code>的版本为什么能够找到定义呢？请读者注意<code>bubble_sort()</code>函数，该函数用来对数组元素进行排序，在排序过程中需要频繁的交换两个元素的值，所以调用了<code>Swap()</code>函数，这样做的结果是：编译生成的<code>func.obj</code>中会有一个<code>int</code>版本的<code>Swap()</code>函数定义。编译器在编译<code>main.cpp</code>时虽然找不到<code>int</code>版本的实例，但是等到链接程序时，链接器在<code>func.obj</code>中找到了，所以针对<code>int</code>版本的调用就不会出错。</p>
+<h3 id="函数模板的显式实例化"><a href="#函数模板的显式实例化" class="headerlink" title="函数模板的显式实例化"></a>函数模板的显式实例化</h3><p>​    前面讲到的模板的实例化是在调用函数或者创建对象时由编译器自动完成的，不需要程序员引导，因此称为<strong>隐式实例化</strong>。相对应的，我们也可以通过代码明确地告诉编译器需要针对哪个类型进行实例化，这称为<strong>显式实例化</strong>。</p>
+<p>​    编译器在实例化的过程中需要知道模板的所有细节：对于函数模板，也就是函数定义；对于类模板，需要同时知道类声明和类定义。我们必须将显式实例化的代码放在包含了模板定义的源文件中，而不是仅仅包含了模板声明的头文件中。</p>
+<p>​    <strong>显式实例化的一个好处是，可以将模板的声明和定义（实现）分散到不同的文件中了。</strong></p>
+<p>​    以上节讲到的<code>compare()</code>函数为例，针对<code>double</code>类型的显式实例化代码为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span> <span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">double</span> &amp;a, <span class="keyword">double</span> &amp;b)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    这条语言由两部分组成，前边是一个<code>template</code>关键字（后面不带<code>&lt; &gt;</code>），后面是一个普通的函数原型，组合在一起的意思是：<strong>将模板实例化成和函数原型对应的一个具体版本。</strong></p>
+<p> 将该代码放到<code>func.cpp</code>文件的最后，再运行程序就不会出错了。</p>
+<p> 另外，还可以在包含了函数调用的源文件（<code>main.cpp</code>）中再增加下面的一条语句：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">double</span> &amp;a, <span class="keyword">double</span> &amp;b)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    该语句在前面增加了<code>extern</code>关键字，它的作用是明确地告诉编译器，该版本的函数实例在其他文件中，请在链接期间查找。不过这条语句是多余的，即使不写，编译器发现当前文件中没有对应的模板定义，也会自动去其他文件中查找。</p>
+<pre><code>上节我们展示了一个反面教材，告诉大家不能把函数模板的声明和定义分散到不同的文件中，但是现在有了显式实例化，这一点就可以做到了，下面就对上节的代码进行修复。
+</code></pre><p><code>func.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//交换两个数的值</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>&#123;</span><br><span class="line">    T temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//冒泡排序算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n<span class="number">-1</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">bool</span> isSorted = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;n<span class="number">-1</span>-i; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j] &gt; arr[j+<span class="number">1</span>])&#123;</span><br><span class="line">                isSorted = <span class="literal">false</span>;</span><br><span class="line">                Swap(arr[j], arr[j+<span class="number">1</span>]);  <span class="comment">//调用Swap()函数</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(isSorted) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span> <span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">double</span> &amp;a, <span class="keyword">double</span> &amp;b)</span></span>;  <span class="comment">//显式实例化定义</span></span><br></pre></td></tr></table></figure>
+<p><code>func.h</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _FUNC_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _FUNC_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(T &amp;a, T &amp;b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><code>main.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"func.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//显示实例化声明（也可以不写）</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">double</span> &amp;a, <span class="keyword">double</span> &amp;b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n1 = <span class="number">10</span>, n2 = <span class="number">20</span>;</span><br><span class="line">    Swap(n1, n2);</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">double</span> f1 = <span class="number">23.8</span>, f2 = <span class="number">92.6</span>;</span><br><span class="line">    Swap(f1, f2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    显式实例化也包括声明和定义，定义要放在模板定义（实现）所在的源文件，声明要放在模板声明所在的头文件（当然也可以不写）。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>​    函数模板和类模板的实例化语法是类似的，我们不妨对它们做一下总结：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">template</span> declaration;  <span class="comment">//实例化声明</span></span><br><span class="line"><span class="keyword">template</span> declaration;  <span class="comment">//实例化定义</span></span><br></pre></td></tr></table></figure></p>
+<p>​    对于函数模板来说，<code>declaration</code>就是一个函数原型；对于类模板来说，<code>declaration</code>就是一个类声明。</p>
+<h4 id="显式实例化的缺陷"><a href="#显式实例化的缺陷" class="headerlink" title="显式实例化的缺陷"></a>显式实例化的缺陷</h4><p>​    <code>C++</code>支持显式实例化的目的是为「模块化编程」提供一种解决方案，这种方案虽然有效，但是也有明显的缺陷：程序员必须要在模板的定义文件（实现文件）中对所有使用到的类型进行实例化。这就意味着，每次更改了模板使用文件（调用函数模板的文件，或者通过类模板创建对象的文件），也要相应地更改模板定义文件，以增加对新类型的实例化，或者删除无用类型的实例化。</p>
+<p>​     一个模板可能会在多个文件中使用到，要保持这些文件的同步更新是非常困难的。而对于库的开发者来说，他不能提前假设用户会使用哪些类型，所以根本就无法使用显式实例化，只能将模板的声明和定义（实现）全部放到头文件中；<code>C++</code>标准库几乎都是用模板来实现的，这些模板的代码也都位于头文件中。</p>
+<p>​    总起来说，如果我们开发的模板只有我们自己使用，那也可以勉强使用显式实例化；如果希望让其他人使用（例如库、组件等），那只能将模板的声明和定义都放到头文件中了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/07/c++模板1-模板定义/" rel="next" title="c++模板定义">
+                <i class="fa fa-chevron-left"></i> c++模板定义
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/15/c++-STL函数对象/" rel="prev" title="c++STL函数对象">
+                c++STL函数对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数模板"><span class="nav-number">1.</span> <span class="nav-text">函数模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板的重载"><span class="nav-number">1.1.</span> <span class="nav-text">函数模板的重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板的实参推断"><span class="nav-number">1.2.</span> <span class="nav-text">函数模板的实参推断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模板实参推断过程中的类型转换"><span class="nav-number">1.2.1.</span> <span class="nav-text">模板实参推断过程中的类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#普通函数"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">普通函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#函数模板-1"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">函数模板</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为函数模板显式地指明实参（也就是具体的类型）"><span class="nav-number">1.2.2.</span> <span class="nav-text">为函数模板显式地指明实参（也就是具体的类型）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显式地指明实参时可以应用正常的类型转换"><span class="nav-number">1.2.3.</span> <span class="nav-text">显式地指明实参时可以应用正常的类型转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板的显式具体化"><span class="nav-number">1.3.</span> <span class="nav-text">函数模板的显式具体化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数的调用规则"><span class="nav-number">1.3.1.</span> <span class="nav-text">函数的调用规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板中使用非类型参数"><span class="nav-number">1.4.</span> <span class="nav-text">函数模板中使用非类型参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非类型参数的限制"><span class="nav-number">1.4.1.</span> <span class="nav-text">非类型参数的限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板实例化"><span class="nav-number">1.5.</span> <span class="nav-text">函数模板实例化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将函数模板的声明和定义分散到不同的文件"><span class="nav-number">1.6.</span> <span class="nav-text">将函数模板的声明和定义分散到不同的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数模板的显式实例化"><span class="nav-number">1.7.</span> <span class="nav-text">函数模板的显式实例化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.7.1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显式实例化的缺陷"><span class="nav-number">1.7.2.</span> <span class="nav-text">显式实例化的缺陷</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

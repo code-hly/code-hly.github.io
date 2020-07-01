@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。c++为了给我们提供这种问题的解决方案，构造函数和析构函数，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。 ​    无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++构造和析构">
+<meta property="og:url" content="http://yoursite.com/2018/07/15/c++封装5-构造和析构/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。c++为了给我们提供这种问题的解决方案，构造函数和析构函数，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。 ​    无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1111.png">
+<meta property="og:updated_time" content="2020-07-01T09:12:56.067Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++构造和析构">
+<meta name="twitter:description" content="对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。c++为了给我们提供这种问题的解决方案，构造函数和析构函数，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。 ​    无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1111.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/15/c++封装5-构造和析构/">
+
+
+
+
+
+  <title>c++构造和析构 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/15/c++封装5-构造和析构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++构造和析构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T00:00:00+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/15/c++封装5-构造和析构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/15/c++封装5-构造和析构/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/15/c++封装5-构造和析构/" class="leancloud_visitors" data-flag-title="c++构造和析构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  9.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  36
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。<code>c++</code>为了给我们提供这种问题的解决方案，<strong>构造函数</strong>和<strong>析构函数</strong>，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。</p>
+<p>​    <strong>无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也会给你增加默认的操作，只是这个默认初始化操作不会做任何事，所以编写类就应该顺便提供初始化函数。</strong></p>
+<a id="more"></a>
+<h1 id="对象的构造和析构"><a href="#对象的构造和析构" class="headerlink" title="对象的构造和析构"></a>对象的构造和析构</h1><h2 id="构造函数和析构函数的定义"><a href="#构造函数和析构函数的定义" class="headerlink" title="构造函数和析构函数的定义"></a>构造函数和析构函数的定义</h2><p>​    构造函数主要作用在于创建对象时为对象的成员属性赋值，构造函数由编译器自动调用，无须手动调用。</p>
+<p>​    析构函数主要用于对象<strong>销毁前</strong>系统自动调用，执行一些清理工作</p>
+<p><strong>构造函数语法：</strong></p>
+<ul>
+<li><p>构造函数函数名和类名相同，没有返回值，不能有<code>void</code>，但可以有参数。</p>
+</li>
+<li><p><code>ClassName(){}</code></p>
+</li>
+</ul>
+<p><strong>析构函数语法：</strong></p>
+<ul>
+<li><p>析构函数函数名是在类名前面加<code>”~”</code>组成,没有返回值，不能有<code>void</code>,不能有参数，不能重载。</p>
+</li>
+<li><p><code>~ClassName(){}</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Person()&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"构造函数调用!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		pName = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="string">"John"</span>));</span><br><span class="line">		<span class="built_in">strcpy</span>(pName, <span class="string">"John"</span>);</span><br><span class="line">		mTall = <span class="number">150</span>;</span><br><span class="line">		mMoney = <span class="number">100</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	~Person()&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"析构函数调用!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">if</span> (pName != <span class="literal">NULL</span>)&#123;</span><br><span class="line">			<span class="built_in">free</span>(pName);</span><br><span class="line">			pName = <span class="literal">NULL</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">char</span>* pName;</span><br><span class="line">	<span class="keyword">int</span> mTall;</span><br><span class="line">	<span class="keyword">int</span> mMoney;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">	Person person;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; person.pName &lt;&lt; person.mTall &lt;&lt; person.mMoney &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="构造函数的分类及调用"><a href="#构造函数的分类及调用" class="headerlink" title="构造函数的分类及调用"></a>构造函数的分类及调用</h2><ul>
+<li><p>按参数类型：分为<strong>无参构造函数</strong>和<strong>有参构造函数</strong></p>
+</li>
+<li><p>按类型分类：<strong>普通构造函数</strong>和<strong>拷贝构造函数(复制构造函数)</strong></p>
+</li>
+</ul>
+<h3 id="普通构造函数"><a href="#普通构造函数" class="headerlink" title="普通构造函数"></a>普通构造函数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//无参构造函数</span></span><br><span class="line">	Person()&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"no param constructor!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		mAge = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//有参构造函数</span></span><br><span class="line">	Person(<span class="keyword">int</span> age)&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"1 param constructor!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		mAge = age;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//打印年龄</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">PrintPerson</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Age:"</span> &lt;&lt; mAge &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> mAge;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1. 无参构造调用方式</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//调用无参构造函数</span></span><br><span class="line">	Person person1; </span><br><span class="line">	person1.PrintPerson();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//调用无参构造函数</span></span><br><span class="line">    Person *person2 = <span class="keyword">new</span> Person();</span><br><span class="line">    person2-&gt;PrintPerson();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//调用有参构造函数</span></span><br><span class="line">    <span class="function">Person <span class="title">person3</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">	person3.PrintPerson();</span><br><span class="line">    </span><br><span class="line">	<span class="comment">//无参构造函数错误调用方式</span></span><br><span class="line">	<span class="comment">//Person person2();</span></span><br><span class="line">	<span class="comment">//person2.PrintPerson();</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><h4 id="拷贝构造函数定义"><a href="#拷贝构造函数定义" class="headerlink" title="拷贝构造函数定义"></a>拷贝构造函数定义</h4><p>​        例如，将<code>Word</code>文档拷贝到<code>U</code>盘去复印店打印，将<code>D</code>盘的图片拷贝到桌面以方便浏览，将重要的文件上传到百度网盘以防止丢失等，都是「创建一份新数据」的意思。</p>
+<p>​        在<code>C++</code>中，拷贝并没有脱离它本来的含义，只是将这个含义进行了“特化”，是<strong>指用已经存在的对象创建出一个新的对象。从本质上讲，对象也是一份数据，因为它会占用内存。</strong></p>
+<p>​        严格来说，对象的创建包括两个阶段，首先要<strong>分配内存空间</strong>，然后再进行<strong>初始化</strong>： </p>
+<ul>
+<li><strong>分配内存</strong>很好理解，就是在堆区、栈区或者全局数据区留出足够多的字节。这个时候的内存还比较“原始”，没有被“教化”，它所包含的数据一般是零值或者随机值，没有实际的意义。</li>
+<li><strong>初始化</strong>就是首次对内存赋值，让它的数据有意义。注意是首次赋值，再次赋值不叫初始化。初始化的时候还可以为对象分配其他的资源（打开文件、连接网络、动态分配内存等），或者提前进行一些计算（根据价格和数量计算出总价、根据长度和宽度计算出矩形的面积等）等。说白了，<strong>初始化就是调用构造函数。</strong></li>
+</ul>
+<p>​      <strong>很明显，这里所说的拷贝是在初始化阶段进行的，也就是用其它对象的数据来初始化新对象的内存。</strong></p>
+<p>​        那么，如何用拷贝的方式来初始化一个对象呢？其实这样的例子比比皆是，<code>string</code>类就是一个典型的例子。 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="built_in">string</span> str)</span></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;str&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s1 = <span class="string">"http://c.biancheng.net"</span>;</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">s2</span><span class="params">(s1)</span></span>;</span><br><span class="line">    <span class="built_in">string</span> s3 = s1;</span><br><span class="line">    <span class="built_in">string</span> s4 = s1 + <span class="string">" "</span> + s2;</span><br><span class="line">    func(s1);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;s1&lt;&lt;<span class="built_in">endl</span>&lt;&lt;s2&lt;&lt;<span class="built_in">endl</span>&lt;&lt;s3&lt;&lt;<span class="built_in">endl</span>&lt;&lt;s4&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 运行结果：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//c.biancheng.net</span></span><br><span class="line">http:<span class="comment">//c.biancheng.net</span></span><br><span class="line">http:<span class="comment">//c.biancheng.net</span></span><br><span class="line">http:<span class="comment">//c.biancheng.net</span></span><br><span class="line">http:<span class="comment">//c.biancheng.net http://c.biancheng.net</span></span><br></pre></td></tr></table></figure></p>
+<p>​        <code>s1</code>、<code>s2</code>、<code>s3</code>、<code>s4</code> 以及 <code>func()</code> 的形参<code>str</code>，都是使用拷贝的方式来初始化的。 </p>
+<blockquote>
+<p> 对于<code>s1</code>，表面上看起来是将一个字符串直接赋值给了<code>s1</code>，实际上在内部进行了类型转换，将<code>const char *</code>类型转换为<code>string</code>类型后才赋值的，<code>s4</code>也是类似的道理。</p>
+</blockquote>
+<p>​        对于<code>s1</code>、<code>s2</code>、<code>s3</code>、<code>s4</code>，都是将其它对象的数据拷贝给当前对象，以完成当前对象的初始化。</p>
+<p>​        对于<code>func()</code> 的形参 <code>str</code>，其实在定义时就为它分配了内存，但是此时并没有初始化，只有等到调用<code>func()</code> 时，才会将其它对象的数据拷贝给 <code>str</code>以完成初始化。</p>
+<p>​        <strong>当以拷贝的方式初始化一个对象时，会调用一个特殊的构造函数，就是拷贝构造函数（<code>Copy Constructor</code>）。</strong></p>
+<p>​        下面的例子演示了拷贝构造函数的定义和使用： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Student(<span class="built_in">string</span> name = <span class="string">""</span>, <span class="keyword">int</span> age = <span class="number">0</span>, <span class="keyword">float</span> score = <span class="number">0.0f</span>);  <span class="comment">//普通构造函数</span></span><br><span class="line">    Student(<span class="keyword">const</span> Student &amp;stu);  <span class="comment">//拷贝构造函数（声明）</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">string</span> m_name;</span><br><span class="line">    <span class="keyword">int</span> m_age;</span><br><span class="line">    <span class="keyword">float</span> m_score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Student::Student(<span class="built_in">string</span> name, <span class="keyword">int</span> age, <span class="keyword">float</span> score): m_name(name), m_age(age), m_score(score)&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//拷贝构造函数（定义）</span></span><br><span class="line">Student::Student(<span class="keyword">const</span> Student &amp;stu)&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_name = stu.m_name;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_age = stu.m_age;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_score = stu.m_score;</span><br><span class="line">   </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Copy constructor was called."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Student::display()&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;m_name&lt;&lt;<span class="string">"的年龄是"</span>&lt;&lt;m_age&lt;&lt;<span class="string">"，成绩是"</span>&lt;&lt;m_score&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Student <span class="title">stu1</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;</span><br><span class="line">    Student stu2 = stu1;  <span class="comment">//调用拷贝构造函数</span></span><br><span class="line">    <span class="function">Student <span class="title">stu3</span><span class="params">(stu1)</span></span>;  <span class="comment">//调用拷贝构造函数</span></span><br><span class="line">    stu1.display();</span><br><span class="line">    stu2.display();</span><br><span class="line">    stu3.display();</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    运行结果：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Copy constructor was called.</span><br><span class="line">Copy constructor was called.</span><br><span class="line">小明的年龄是<span class="number">16</span>，成绩是<span class="number">90.5</span></span><br><span class="line">小明的年龄是<span class="number">16</span>，成绩是<span class="number">90.5</span></span><br><span class="line">小明的年龄是<span class="number">16</span>，成绩是<span class="number">90.5</span></span><br></pre></td></tr></table></figure></p>
+<p>​    第<code>8</code>行是拷贝构造函数的声明，第<code>20</code>行是拷贝构造函数的定义。拷贝构造函数只有一个参数，它的类型是当前类的引用，而且一般都是 <code>const</code>引用。 </p>
+<h5 id="1-为什么必须是当前类的引用呢？"><a href="#1-为什么必须是当前类的引用呢？" class="headerlink" title="1) 为什么必须是当前类的引用呢？"></a>1) 为什么必须是当前类的引用呢？</h5><p>​        如果拷贝构造函数的参数不是当前类的引用，而是当前类的对象，那么在调用拷贝构造函数时，会将另外一个对象直接传递给形参，这本身就是一次拷贝，会再次调用拷贝构造函数，然后又将一个对象直接传递给了形参，将继续调用拷贝构造函数……这个过程会一直持续下去，没有尽头，陷入死循环。</p>
+<p>​        <strong>只有当参数是当前类的引用时，才不会导致再次调用拷贝构造函数，这不仅是逻辑上的要求，也是<code>C++</code>语法的要求。 </strong></p>
+<h5 id="2-为什么是const引用呢？"><a href="#2-为什么是const引用呢？" class="headerlink" title="2) 为什么是const引用呢？"></a>2) 为什么是<code>const</code>引用呢？</h5><p>​        拷贝构造函数的目的是用其它对象的数据来初始化当前对象，并没有期望更改其它对象的数据，添加 <code>const</code> 限制后，这个含义更加明确了。</p>
+<p>​        另外一个原因是，添加 <code>const</code> 限制后，可以将 <code>const</code> 对象和非 <code>const</code> 对象传递给形参了，因为非<code>const</code> 类型可以转换为  <code>const</code> 类型。如果没有 <code>const</code> 限制，就不能将 <code>const</code> 对象传递给形参，因为<code>const</code>类型不能转换为非 <code>const</code>类型，这就意味着，不能使用 <code>const</code>对象来初始化当前对象了。</p>
+<p>​        以上面的 Student 类为例，将<code>const</code> 去掉后，拷贝构造函数的原型变为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Student::Student(Student &amp;stu);</span><br></pre></td></tr></table></figure></p>
+<p>​        此时，下面的代码就会发生错误： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> Student <span class="title">stu1</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;</span><br><span class="line">Student stu2 = stu1;</span><br><span class="line"><span class="function">Student <span class="title">stu3</span><span class="params">(stu1)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​        <code>stu1</code> 是 <code>const</code> 类型，在初始化 <code>stu2</code>、<code>stu3</code> 时，编译器希望调用<code>Student::Student(const Student &amp;stu)</code>，但是这个函数却不存在，又不能将 <code>const Student</code> 类型转换为 Student 类型去调用<code>Student::Student(Student &amp;stu)</code>，所以最终调用失败了。</p>
+<p>​        当然，你也可以再添加一个参数为 <code>const</code> 引用的拷贝构造函数，这样就不会出错了。换句话说，一个类可以同时存在两个拷贝构造函数，一个函数的参数为 <code>const</code>引用，另一个函数的参数为非 <code>const</code> 引用。 </p>
+<h4 id="默认拷贝构造函数"><a href="#默认拷贝构造函数" class="headerlink" title="默认拷贝构造函数"></a>默认拷贝构造函数</h4><p>​        在前面的教程中，我们还没有讲解拷贝构造函数，但是却已经在使用拷贝的方式创建对象了，并且也没有引发什么错误。这是因为，<strong>如果程序员没有显式地定义拷贝构造函数，那么编译器会自动生成一个默认的拷贝构造函数。这个默认的拷贝构造函数很简单，就是使用“老对象”的成员变量对“新对象”的成员变量进行一一赋值，和上面  <code>Student</code>类的拷贝构造函数非常类似。</strong></p>
+<p>​        对于简单的类，默认拷贝构造函数一般是够用的，我们也没有必要再显式地定义一个功能类似的拷贝构造函数。但是当类持有其它资源时，如动态分配的内存、打开的文件、指向其他数据的指针、网络连接等，默认拷贝构造函数就不能拷贝这些资源，我们必须显式地定义拷贝构造函数，以完整地拷贝对象的所有数据</p>
+<h4 id="拷贝构造函数的调用时机"><a href="#拷贝构造函数的调用时机" class="headerlink" title="拷贝构造函数的调用时机"></a>拷贝构造函数的调用时机</h4><p>​        当以拷贝的方式初始化对象时会调用拷贝构造函数。这里有两个关键点，分别是<strong>「以拷贝的方式」</strong>和<strong>「初始化对象」</strong>。 </p>
+<h5 id="初始化对象"><a href="#初始化对象" class="headerlink" title="初始化对象"></a>初始化对象</h5><p>​        <strong>初始化对象是指，为对象分配内存后第一次向内存中填充数据，这个过程会调用构造函数。对象被创建后必须立即被初始化，换句话说，只要创建对象，就会调用构造函数。</strong></p>
+<h6 id="初始化和赋值的区别"><a href="#初始化和赋值的区别" class="headerlink" title="初始化和赋值的区别"></a>初始化和赋值的区别</h6><p>​        <strong>初始化</strong>和<strong>赋值</strong>都是将数据写入内存中，并且从表面上看起来，初始化在很多时候都是以赋值的方式来实现的，所以很容易混淆。请看下面的例子： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">100</span>;  <span class="comment">//以赋值的方式初始化</span></span><br><span class="line">a = <span class="number">200</span>;  <span class="comment">//赋值</span></span><br><span class="line">a = <span class="number">300</span>;  <span class="comment">//赋值</span></span><br><span class="line"><span class="keyword">int</span> b;  <span class="comment">//默认初始化</span></span><br><span class="line">b = <span class="number">29</span>;  <span class="comment">//赋值</span></span><br><span class="line">b = <span class="number">39</span>;  <span class="comment">//赋值</span></span><br></pre></td></tr></table></figure>
+<p>​        <strong>在定义的同时进行赋值叫做初始化（<code>Initialization</code>）</strong>，<strong>定义完成以后再赋值（不管在定义的时候有没有赋值）就叫做赋值（<code>Assignment</code>）</strong>。<strong>初始化只能有一次，赋值可以有多次</strong>。</p>
+<p>​        对于基本类型的数据，我们很少会区分「初始化」和「赋值」这两个概念，即使将它们混淆，也不会出现什么错误。但是对于类，它们的区别就非常重要了，因为<strong>初始化对象时会调用构造函数（以拷贝的方式初始化时会调用拷贝构造函数），而赋值时会调用重载过的赋值运算符。</strong>请看下面的例子： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Student(<span class="built_in">string</span> name = <span class="string">""</span>, <span class="keyword">int</span> age = <span class="number">0</span>, <span class="keyword">float</span> score = <span class="number">0.0f</span>);  <span class="comment">//普通构造函数</span></span><br><span class="line">    Student(<span class="keyword">const</span> Student &amp;stu);  <span class="comment">//拷贝构造函数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Student &amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Student &amp;stu);  <span class="comment">//重载=运算符</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">string</span> m_name;</span><br><span class="line">    <span class="keyword">int</span> m_age;</span><br><span class="line">    <span class="keyword">float</span> m_score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Student::Student(<span class="built_in">string</span> name, <span class="keyword">int</span> age, <span class="keyword">float</span> score): m_name(name), m_age(age), m_score(score)&#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//拷贝构造函数</span></span><br><span class="line">Student::Student(<span class="keyword">const</span> Student &amp;stu)&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_name = stu.m_name;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_age = stu.m_age;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_score = stu.m_score;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Copy constructor was called."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重载=运算符</span></span><br><span class="line">Student &amp; Student::<span class="keyword">operator</span>=(<span class="keyword">const</span> Student &amp;stu)&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_name = stu.m_name;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_age = stu.m_age;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_score = stu.m_score;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"operator=() was called."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Student::display()&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;m_name&lt;&lt;<span class="string">"的年龄是"</span>&lt;&lt;m_age&lt;&lt;<span class="string">"，成绩是"</span>&lt;&lt;m_score&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//stu1、stu2、stu3都会调用普通构造函数Student(string name, int age, float score)</span></span><br><span class="line">    <span class="function">Student <span class="title">stu1</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">stu2</span><span class="params">(<span class="string">"王城"</span>, <span class="number">17</span>, <span class="number">89.0</span>)</span></span>;</span><br><span class="line">    <span class="function">Student <span class="title">stu3</span><span class="params">(<span class="string">"陈晗"</span>, <span class="number">18</span>, <span class="number">98.0</span>)</span></span>;</span><br><span class="line">   </span><br><span class="line">    Student stu4 = stu1;  <span class="comment">//调用拷贝构造函数Student(const Student &amp;stu)</span></span><br><span class="line">    stu4 = stu2;  <span class="comment">//调用operator=()</span></span><br><span class="line">    stu4 = stu3;  <span class="comment">//调用operator=()</span></span><br><span class="line">   </span><br><span class="line">    Student stu5;  <span class="comment">//调用普通构造函数Student()</span></span><br><span class="line">    stu5 = stu1;  <span class="comment">//调用operator=()</span></span><br><span class="line">    stu5 = stu2;  <span class="comment">//调用operator=()</span></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>运行结果：
+</code></pre> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Copy constructor was called.</span><br><span class="line"><span class="keyword">operator</span>=() was called.</span><br><span class="line"><span class="keyword">operator</span>=() was called.</span><br><span class="line"><span class="keyword">operator</span>=() was called.</span><br><span class="line"><span class="keyword">operator</span>=() was called.</span><br></pre></td></tr></table></figure>
+<h5 id="以拷贝的方式初始化对象"><a href="#以拷贝的方式初始化对象" class="headerlink" title="以拷贝的方式初始化对象"></a>以拷贝的方式初始化对象</h5><p>​    初始化对象时会调用构造函数，不同的初始化方式会调用不同的构造函数： </p>
+<ul>
+<li><strong>如果用传递进来的实参初始化对象，那么会调用普通的构造函数，我们不妨将此称为普通初始化；</strong></li>
+<li><strong>如果用其它对象（现有对象）的数据来初始化对象，那么会调用拷贝构造函数，这就是以拷贝的方式初始化。</strong></li>
+</ul>
+<p>在实际编程中，具体有哪些情况是以拷贝的方式来初始化对象呢？ </p>
+<h6 id="1-将其它对象作为实参"><a href="#1-将其它对象作为实参" class="headerlink" title="(1) 将其它对象作为实参"></a>(1) 将其它对象作为实参</h6><p>​    以上面的<code>Student</code>类为例，我们可以这样来创建一个新的对象： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Student <span class="title">stu1</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;  <span class="comment">//普通初始化</span></span><br><span class="line"><span class="function">Student <span class="title">stu2</span><span class="params">(stu1)</span></span>;  <span class="comment">//以拷贝的方式初始化</span></span><br></pre></td></tr></table></figure>
+<p>​    即使我们不在类中显式地定义拷贝构造函数，这种初始化方式也是有效的，因为编译器会生成默认的拷贝构造函数。 </p>
+<h6 id="2-在创建对象的同时赋值"><a href="#2-在创建对象的同时赋值" class="headerlink" title="(2) 在创建对象的同时赋值"></a>(2) 在创建对象的同时赋值</h6><p>​    接着使用 Student 类，请看下面的例子： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Student <span class="title">stu1</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;  <span class="comment">//普通初始化</span></span><br><span class="line">Student stu2 = stu1;  <span class="comment">//以拷贝的方式初始化</span></span><br></pre></td></tr></table></figure>
+<p>​    这是最常见的一种以拷贝的方式初始化对象的情况，非常容易理解，我们也已经多次使用。 </p>
+<h6 id="3-函数的形参为类类型"><a href="#3-函数的形参为类类型" class="headerlink" title="(3) 函数的形参为类类型"></a>(3) 函数的形参为类类型</h6><p>​    如果函数的形参为类类型（也就是一个对象），那么调用函数时要将另外一个对象作为实参传递进来赋值给形参，这也是以拷贝的方式初始化形参对象。请看下面的代码： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(Student s)</span></span>&#123;</span><br><span class="line">    <span class="comment">//<span class="doctag">TODO:</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Student <span class="title">stu</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;  <span class="comment">//普通初始化</span></span><br><span class="line">func(stu);  <span class="comment">//以拷贝的方式初始化</span></span><br></pre></td></tr></table></figure>
+<pre><code>`func() `函数有一个` Student `类型的形参` s`，将实参 `stu `传递给形参` s `就是以拷贝的方式初始化的过程。
+</code></pre><p>​    函数是一段可以重复使用的代码，只有等到真正调用函数时才会为局部数据（形参和局部变量）在栈上分配内存。对于上面的<code>func()</code>，虽然它的形参<code>s</code>是一个对象，但在定义函数时<code>s</code>对象并没有被创建，只有等到调用函数时才会真正地创建<code>s</code>对象，并在栈上为它分配内存。而创建<code>s</code>对象，就是以拷贝的方式进行的，它等价于下面的代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Student s = stu;</span><br></pre></td></tr></table></figure></p>
+<h6 id="4-函数返回值为类类型"><a href="#4-函数返回值为类类型" class="headerlink" title="(4) 函数返回值为类类型"></a>(4) 函数返回值为类类型</h6><p>​    当函数的返回值为类类型时，<code>return</code>语句会返回一个对象，不过为了防止局部对象被销毁，也为了防止通过返回值修改原来的局部对象，编译器并不会直接返回这个对象，而是根据这个对象先创建出一个临时对象（匿名对象），再将这个临时对象返回。而创建临时对象的过程，就是以拷贝的方式进行的，会调用拷贝构造函数。</p>
+<p>​     下面的代码演示了返回一个对象的情形： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Student <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Student <span class="title">s</span><span class="params">(<span class="string">"小明"</span>, <span class="number">16</span>, <span class="number">90.5</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Student stu = func();</span><br></pre></td></tr></table></figure>
+<p>​        理论上讲，运行代码后会调用两次拷贝构造函数，一次是返回<code>s</code>对象时，另外一次是创建<code>stu</code>对象时。</p>
+<h4 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h4><p>​        <strong>对于基本类型的数据以及简单的对象，它们之间的拷贝非常简单，就是按位复制内存。</strong>例如： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Base(): m_a(<span class="number">0</span>), m_b(<span class="number">0</span>)&#123; &#125;</span><br><span class="line">    Base(<span class="keyword">int</span> a, <span class="keyword">int</span> b): m_a(a), m_b(b)&#123; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_a;</span><br><span class="line">    <span class="keyword">int</span> m_b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> b = a;  <span class="comment">//拷贝</span></span><br><span class="line"></span><br><span class="line">    <span class="function">Base <span class="title">obj1</span><span class="params">(<span class="number">10</span>, <span class="number">20</span>)</span></span>;</span><br><span class="line">    Base obj2 = obj1;  <span class="comment">//拷贝</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        <code>b</code>和 <code>obj2</code>都是以拷贝的方式初始化的，具体来说，就是将<code>a</code>和 <code>obj1</code>所在内存中的数据按照二进制位<code>（Bit）</code>复制到<code>b</code>和 <code>obj2</code> 所在的内存，这种默认的拷贝行为就是浅拷贝，这和调用 <code>memcpy()</code>函数的效果非常类似。</p>
+<p>​        对于简单的类，默认的拷贝构造函数一般就够用了，我们也没有必要再显式地定义一个功能类似的拷贝构造函数。但是<strong>当类持有其它资源时，例如动态分配的内存、指向其他数据的指针等，默认的拷贝构造函数就不能拷贝这些资源了，我们必须显式地定义拷贝构造函数，以完整地拷贝对象的所有数据。</strong></p>
+<p>​        下面我们通过一个具体的例子来说明显式定义拷贝构造函数的必要性。我们知道，有些较老的编译器不支持变长数组，例如 <code>VC6.0</code>、<code>VS2010</code> 等，这有时候会给编程带来不便，下面我们通过自定义的 Array 类来实现变长数组。 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//变长数组类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Array(<span class="keyword">int</span> len);</span><br><span class="line">    Array(<span class="keyword">const</span> Array &amp;arr);  <span class="comment">//拷贝构造函数</span></span><br><span class="line">    ~Array();</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>[](<span class="keyword">int</span> i) <span class="keyword">const</span> &#123; <span class="keyword">return</span> m_p[i]; &#125;  <span class="comment">//获取元素（读取）</span></span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="keyword">operator</span>[](<span class="keyword">int</span> i)&#123; <span class="keyword">return</span> m_p[i]; &#125;  <span class="comment">//获取元素（写入）</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> m_len; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_len;</span><br><span class="line">    <span class="keyword">int</span> *m_p;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Array::Array(<span class="keyword">int</span> len): m_len(len)&#123;</span><br><span class="line">    m_p = (<span class="keyword">int</span>*)<span class="built_in">calloc</span>( len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Array::Array(<span class="keyword">const</span> Array &amp;arr)&#123;  <span class="comment">//拷贝构造函数</span></span><br><span class="line">    <span class="keyword">this</span>-&gt;m_len = arr.m_len;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_p = (<span class="keyword">int</span>*)<span class="built_in">calloc</span>( <span class="keyword">this</span>-&gt;m_len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">    <span class="built_in">memcpy</span>( <span class="keyword">this</span>-&gt;m_p, arr.m_p, m_len * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Array::~Array()&#123; <span class="built_in">free</span>(m_p); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印数组元素</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">const</span> Array &amp;arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = arr.length();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == len<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">", "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Array <span class="title">arr1</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++)&#123;</span><br><span class="line">        arr1[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    Array arr2 = arr1;</span><br><span class="line">    arr2[<span class="number">5</span>] = <span class="number">100</span>;</span><br><span class="line">    arr2[<span class="number">3</span>] = <span class="number">29</span>;</span><br><span class="line">   </span><br><span class="line">    printArray(arr1);</span><br><span class="line">    printArray(arr2);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 运行结果：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">29</span>, <span class="number">4</span>, <span class="number">100</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<p>​        本例中我们显式地定义了拷贝构造函数，它除了会将原有对象的所有成员变量拷贝给新对象，还会为新对象再分配一块内存，并将原有对象所持有的内存也拷贝过来。这样做的结果是，原有对象和新对象所持有的动态内存是相互独立的，更改一个对象的数据不会影响另外一个对象，本例中我们更改了  <code>arr2</code>的数据，就没有影响 <code>arr1</code>。</p>
+<p>​        <strong>这种将对象所持有的其它资源一并拷贝的行为叫做深拷贝，我们必须显式地定义拷贝构造函数才能达到深拷贝的目的</strong>。</p>
+<p>​        深拷贝的例子比比皆是，除了上面的变长数组类，标准模板库（<code>STL</code>）中的<code>string</code>、<code>vector</code>、<code>stack</code>、<code>set</code>、<code>map</code>等也都必须使用深拷贝。</p>
+<p>​        读者如果希望亲眼目睹不使用深拷贝的后果，可以将上例中的拷贝构造函数删除，那么运行结果将变为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">29</span>, <span class="number">4</span>, <span class="number">100</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">29</span>, <span class="number">4</span>, <span class="number">100</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<p>​        可以发现，更改<code>arr2</code> 的数据也影响到了 <code>arr1</code>。这是因为，在创建 <code>arr2</code> 对象时，默认拷贝构造函数将 <code>arr1.m_p</code> 直接赋值给了 <code>arr2.m_p</code>，导致 <code>arr2.m_p</code>和 <code>arr1.m_p</code> 指向了同一块内存，所以会相互影响。</p>
+<p>​        另外需要注意的是，<strong><code>printArray()</code>函数的形参为引用类型，这样做能够避免在传参时调用拷贝构造函数；</strong>又因为 <code>printArray()</code> 函数不会修改任何数组元素，所以我们添加了<code>const</code> 限制，以使得语义更加明确。</p>
+<h5 id="到底是浅拷贝还是深拷贝"><a href="#到底是浅拷贝还是深拷贝" class="headerlink" title="到底是浅拷贝还是深拷贝"></a>到底是浅拷贝还是深拷贝</h5><p>​        <strong>如果一个类拥有指针类型的成员变量，那么绝大部分情况下就需要深拷贝，因为只有这样，才能将指针指向的内容再复制出一份来，让原有对象和新生对象相互独立，彼此之间不受影响。如果类的成员变量没有指针，一般浅拷贝足以。</strong></p>
+<p>​        <strong>另外一种需要深拷贝的情况就是在创建对象时进行一些预处理工作，比如统计创建过的对象的数目、记录对象创建的时间等</strong>，请看下面的例子： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;  //在Linux和Mac下要换成 unistd.h 头文件</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Base(<span class="keyword">int</span> a = <span class="number">0</span>, <span class="keyword">int</span> b = <span class="number">0</span>);</span><br><span class="line">    Base(<span class="keyword">const</span> Base &amp;obj);  <span class="comment">//拷贝构造函数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> m_count; &#125;</span><br><span class="line">    <span class="keyword">time_t</span> getTime() <span class="keyword">const</span> &#123; <span class="keyword">return</span> m_time; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_a;</span><br><span class="line">    <span class="keyword">int</span> m_b;</span><br><span class="line">    <span class="keyword">time_t</span> m_time;  <span class="comment">//对象创建时间</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m_count;  <span class="comment">//创建过的对象的数目</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Base::m_count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">Base::Base(<span class="keyword">int</span> a, <span class="keyword">int</span> b): m_a(a), m_b(b)&#123;</span><br><span class="line">    m_count++;</span><br><span class="line">    m_time = time((<span class="keyword">time_t</span>*)<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Base::Base(<span class="keyword">const</span> Base &amp;obj)&#123;  <span class="comment">//拷贝构造函数</span></span><br><span class="line">    <span class="keyword">this</span>-&gt;m_a = obj.m_a;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_b = obj.m_b;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_count++;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_time = time((<span class="keyword">time_t</span>*)<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Base <span class="title">obj1</span><span class="params">(<span class="number">10</span>, <span class="number">20</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"obj1: count = "</span>&lt;&lt;obj1.getCount()&lt;&lt;<span class="string">", time = "</span>&lt;&lt;obj1.getTime()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line">    Sleep(<span class="number">3000</span>);  <span class="comment">//在Linux和Mac下要写作 sleep(3);</span></span><br><span class="line">   </span><br><span class="line">    Base obj2 = obj1;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"obj2: count = "</span>&lt;&lt;obj2.getCount()&lt;&lt;<span class="string">", time = "</span>&lt;&lt;obj2.getTime()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 运行结果：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">obj1: count = <span class="number">1</span>, time = <span class="number">1488344372</span></span><br><span class="line"></span><br><span class="line">obj2: count = <span class="number">2</span>, time = <span class="number">1488344375</span></span><br></pre></td></tr></table></figure></p>
+<p>​        运行程序，先输出第一行结果，等待 3 秒后再输出第二行结果。Base 类中的 m_time 和 m_count  分别记录了对象的创建时间和创建数目，它们在不同的对象中有不同的值，所以需要在初始化对象的时候提前处理一下，这样浅拷贝就不能胜任了，就必须使用深拷贝了。</p>
+<h3 id="重载赋值运算符"><a href="#重载赋值运算符" class="headerlink" title="重载赋值运算符"></a>重载赋值运算符</h3><p>​        我们讲解了初始化和赋值的区别：<strong>在定义的同时进行赋值叫做初始化（<code>Initialization</code>），定义完成以后再赋值（不管在定义的时候有没有赋值）就叫做赋值（<code>Assignment</code>）。初始化只能有一次，赋值可以有多次。</strong></p>
+<p>​        <strong>当以拷贝的方式初始化一个对象时，会调用拷贝构造函数；当给一个对象赋值时，会调用重载过的赋值运算符。</strong></p>
+<p>​        即使我们没有显式的重载赋值运算符，编译器也会以默认地方式重载它。默认重载的赋值运算符功能很简单，就是将原有对象的所有成员变量一一赋值给新对象，这和默认拷贝构造函数的功能类似。</p>
+<p>​        对于简单的类，默认的赋值运算符一般就够用了，我们也没有必要再显式地重载它。但是<strong>当类持有其它资源时，例如动态分配的内存、打开的文件、指向其他数据的指针、网络连接等，默认的赋值运算符就不能处理了，我们必须显式地重载它，这样才能将原有对象的所有数据都赋值给新对象。</strong></p>
+<p>​        仍然以上节的<code>Array</code>类为例，该类拥有一个指针成员，指向动态分配的内存。为了让<code>Array</code>类的对象之间能够正确地赋值，我们必须重载赋值运算符。请看下面的代码： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//变长数组类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Array(<span class="keyword">int</span> len);</span><br><span class="line">    Array(<span class="keyword">const</span> Array &amp;arr);  <span class="comment">//拷贝构造函数</span></span><br><span class="line">    ~Array();</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>[](<span class="keyword">int</span> i) <span class="keyword">const</span> &#123; <span class="keyword">return</span> m_p[i]; &#125;  <span class="comment">//获取元素（读取）</span></span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="keyword">operator</span>[](<span class="keyword">int</span> i)&#123; <span class="keyword">return</span> m_p[i]; &#125;  <span class="comment">//获取元素（写入）</span></span><br><span class="line">    Array &amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Array &amp;arr);  <span class="comment">//重载赋值运算符</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> m_len; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_len;</span><br><span class="line">    <span class="keyword">int</span> *m_p;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Array::Array(<span class="keyword">int</span> len): m_len(len)&#123;</span><br><span class="line">    m_p = (<span class="keyword">int</span>*)<span class="built_in">calloc</span>( len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Array::Array(<span class="keyword">const</span> Array &amp;arr)&#123;  <span class="comment">//拷贝构造函数</span></span><br><span class="line">    <span class="keyword">this</span>-&gt;m_len = arr.m_len;</span><br><span class="line">    <span class="keyword">this</span>-&gt;m_p = (<span class="keyword">int</span>*)<span class="built_in">calloc</span>( <span class="keyword">this</span>-&gt;m_len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">    <span class="built_in">memcpy</span>( <span class="keyword">this</span>-&gt;m_p, arr.m_p, m_len * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Array::~Array()&#123; <span class="built_in">free</span>(m_p); &#125;</span><br><span class="line"></span><br><span class="line">Array &amp;Array::<span class="keyword">operator</span>=(<span class="keyword">const</span> Array &amp;arr)&#123;  <span class="comment">//重载赋值运算符</span></span><br><span class="line">    <span class="keyword">if</span>( <span class="keyword">this</span> != &amp;arr)&#123;  <span class="comment">//判断是否是给自己赋值</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;m_len = arr.m_len;</span><br><span class="line">        <span class="built_in">free</span>(<span class="keyword">this</span>-&gt;m_p);  <span class="comment">//释放原来的内存</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;m_p = (<span class="keyword">int</span>*)<span class="built_in">calloc</span>( <span class="keyword">this</span>-&gt;m_len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">        <span class="built_in">memcpy</span>( <span class="keyword">this</span>-&gt;m_p, arr.m_p, m_len * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印数组元素</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printArray</span><span class="params">(<span class="keyword">const</span> Array &amp;arr)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = arr.length();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i == len<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">", "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Array <span class="title">arr1</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++)&#123;</span><br><span class="line">        arr1[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    printArray(arr1);</span><br><span class="line">   </span><br><span class="line">    <span class="function">Array <span class="title">arr2</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++)&#123;</span><br><span class="line">        arr2[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    printArray(arr2);</span><br><span class="line">    arr2 = arr1;  <span class="comment">//调用operator=()</span></span><br><span class="line">    printArray(arr2);</span><br><span class="line">    arr2[<span class="number">3</span>] = <span class="number">234</span>;  <span class="comment">//修改arr1的数据不会影响arr2</span></span><br><span class="line">    arr2[<span class="number">7</span>] = <span class="number">920</span>;</span><br><span class="line">    printArray(arr1);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 运行结果：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<p>​        将 <code>arr1</code> 赋值给 <code>arr2</code>后，修改 <code>arr2</code> 的数据不会影响 <code>arr1</code>。如果把<code>operator=()</code>注释掉，那么运行结果将变为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span></span><br><span class="line"><span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">234</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">920</span>, <span class="number">8</span>, <span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p> 去掉<code>operator=()</code>后，由于<code>m_p</code>指向的堆内存会被<code>free()</code>两次，所以还会导致内存错误。</p>
+</blockquote>
+<p>下面我们就来分析一下重载过的赋值运算符。</p>
+<ul>
+<li><code>operator=()</code>的返回值类型为<code>Array &amp;</code>，这样不但能够避免在返回数据时调用拷贝构造函数，还能够达到连续赋值的目的。下面的语句就是连续赋值： </li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr4 = arr3 = arr2 = arr1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>if( this != &amp;arr)</code>语句的作用是「判断是否是给同一个对象赋值」：如果是，那就什么也不做；如果不是，那就将原有对象的所有成员变量一一赋值给新对象，并为新对象重新分配内存。下面的语句就是给同一个对象赋值： </li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr1 = arr1;</span><br><span class="line">arr2 = arr2;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>return *this</code>表示返回当前对象（新对象）。</p>
+</li>
+<li><p><code>operator=()</code> 的形参类型为<code>const Array &amp;</code>，这样不但能够避免在传参时调用拷贝构造函数，还能够同时接收<code>const</code> 类型和非 <code>const</code> 类型的实参。</p>
+</li>
+<li><p>赋值运算符重载函数除了能有对象引用这样的参数之外，也能有其它参数。但是其它参数必须给出默认值，例如： </p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array &amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Array &amp;arr, <span class="keyword">int</span> a = <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="多个对象构造和析构"><a href="#多个对象构造和析构" class="headerlink" title="多个对象构造和析构"></a>多个对象构造和析构</h2><h3 id="初始化列表"><a href="#初始化列表" class="headerlink" title="初始化列表"></a>初始化列表</h3><p>​    构造函数和其他函数不同，除了有名字，参数列表，函数体之外还有初始化列表。</p>
+<p>​    初始化列表简单使用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> 0</span></span><br><span class="line">	<span class="comment">//传统方式初始化</span></span><br><span class="line">	Person(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c)&#123;</span><br><span class="line">		mA = a;</span><br><span class="line">		mB = b;</span><br><span class="line">		mC = c;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="comment">//初始化列表方式初始化</span></span><br><span class="line">	Person(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c):mA(a),mB(b),mC(c)&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">PrintPerson</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"mA:"</span> &lt;&lt; mA &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"mB:"</span> &lt;&lt; mB &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"mC:"</span> &lt;&lt; mC &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> mA;</span><br><span class="line">	<span class="keyword">int</span> mB;</span><br><span class="line">	<span class="keyword">int</span> mC;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​         <strong>注意：初始化成员列表(参数列表)只能在构造函数使用。  </strong></p>
+<h3 id="类对象作为成员"><a href="#类对象作为成员" class="headerlink" title="类对象作为成员"></a>类对象作为成员</h3><h4 id="类对象作为成员-1"><a href="#类对象作为成员-1" class="headerlink" title="类对象作为成员"></a>类对象作为成员</h4><p>​    在类中定义的数据成员一般都是基本的数据类型。但是类中的成员也可以是对象，叫做<strong>对象成员</strong>。</p>
+<p>​    <code>C++</code>中对对象的初始化是非常重要的操作，当创建一个对象的时候，<code>c++</code>编译器必须确保调用了所有子对象的构造函数。如果所有的子对象有默认构造函数，编译器可以自动调用他们。但是如果子对象没有默认的构造函数，或者想指定调用某个构造函数怎么办？</p>
+<p>​    那么是否可以在类的构造函数直接调用子类的属性完成初始化呢？但是如果子类的成员属性是私有的，我们是没有办法访问并完成初始化的。</p>
+<p>​    解决办法非常简单：<strong>对于子类调用构造函数，<code>c++</code>为此提供了专门的语法，即构造函数初始化列表。</strong></p>
+<p>​    <strong>当调用构造函数时，首先会先按各对象成员在类定义中的顺序（和参数列表的顺序无关）依次调用它们的构造函数，再调用自己的构造函数，对这些对象初始化。析构函数和构造函数调用顺序相反。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Phone()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"手机的默认构造函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Phone(<span class="built_in">string</span> name)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"手机的有参构造调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		m_PhoneName = name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	~Phone()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"手机的析构函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">string</span> m_PhoneName;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Game()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Game的默认构造函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Game(<span class="built_in">string</span> name)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Game的有参构造调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		m_GameName = name;</span><br><span class="line">	&#125;</span><br><span class="line">	~Game()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Game的析构函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">string</span> m_GameName;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Person()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Person的默认构造函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Person(<span class="built_in">string</span> name, <span class="built_in">string</span> phoneName, <span class="built_in">string</span> gameName) : m_Name(name), m_Phone(phoneName), m_Game(gameName)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Person的有参构造调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="comment">//m_Name = name;</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">playGame</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; m_Name &lt;&lt; <span class="string">" 拿着《"</span> &lt;&lt; m_Phone.m_PhoneName &lt;&lt; <span class="string">"》牌手机 ，玩着《"</span> &lt;&lt; m_Game.m_GameName &lt;&lt; <span class="string">"》游戏"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	~Person()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"Person的析构函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">string</span> m_Name; <span class="comment">//姓名</span></span><br><span class="line">	Phone m_Phone; <span class="comment">//手机</span></span><br><span class="line">	Game m_Game; <span class="comment">//游戏</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类对象作为类成员时候，构造顺序先将类对象一一构造，然后构造自己， 析构的顺序是相反的</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">Person <span class="title">p</span><span class="params">(<span class="string">"狗蛋"</span>,<span class="string">"苹果"</span>,<span class="string">"切水果"</span>)</span></span>;</span><br><span class="line">	p.playGame();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	test01();</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是：<br><code>手机的有参构造调用</code><br><code>Game的有参构造调用</code><br><code>Person的有参构造调用</code><br><code>狗蛋 拿着《苹果》牌手机 ，玩着《切水果》游戏</code><br><code>Person的析构函数调用</code><br><code>Game的析构函数调用</code><br><code>手机的析构函数调用</code></p>
+<h2 id="动态对象创建"><a href="#动态对象创建" class="headerlink" title="动态对象创建"></a>动态对象创建</h2><p>​    当我们创建数组的时候，总是需要提前预定数组的长度，然后编译器分配预定长度的数组空间，在使用数组的时，会有这样的问题，数组也许空间太大了，浪费空间，也许空间不足，所以对于数组来讲，如果能根据需要来分配空间大小再好不过。</p>
+<p>​    所以动态的意思意味着不确定性。</p>
+<p>​    为了解决这个普遍的编程问题，在运行中可以创建和销毁对象是最基本的要求。当然<code>c</code>早就提供了动态内存分配（<code>dynamic memory allocation</code>）,函数<code>malloc</code>和<code>free</code>可以在运行时从堆中分配存储单元。</p>
+<p>​    然而这些函数在<code>c++</code>中不能很好的运行，因为它不能帮我们完成对象的初始化工作。</p>
+<h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3><p>当创建一个<code>c++</code>对象时会发生两件事:</p>
+<ul>
+<li><p>为对象分配内存</p>
+</li>
+<li><p>调用构造函数来初始化那块内存</p>
+</li>
+</ul>
+<p>​    第一步我们能保证实现，需要我们确保第二步一定能发生。<code>c++</code>强迫我们这么做是因为使用未初始化的对象是程序出错的一个重要原因。</p>
+<h4 id="new-operator"><a href="#new-operator" class="headerlink" title="new operator"></a><code>new operator</code></h4><p>​    <code>C++</code>中解决动态内存分配的方案是把创建一个对象所需要的操作都结合在一个称为<code>new</code>的运算符里。当用<code>new</code>创建一个对象时，它就在堆里为对象分配内存并调用构造函数完成初始化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Person()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"默认构造调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Person(<span class="keyword">int</span> a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"有参构造调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	~Person()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"析构函数调用"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//Person p1;  栈区开辟</span></span><br><span class="line"></span><br><span class="line">	Person * p2 = <span class="keyword">new</span> Person; <span class="comment">//堆区开辟</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//所有new出来的对象 都会返回该类型的指针</span></span><br><span class="line">	<span class="comment">//malloc 返回 void* 还要强转</span></span><br><span class="line">	<span class="comment">//malloc会调用构造吗？ 不会  new会调用构造</span></span><br><span class="line">	<span class="comment">// new 运算符  malloc 函数</span></span><br><span class="line">	<span class="comment">//释放 堆区空间</span></span><br><span class="line">	<span class="comment">// delete也是运算符 配合 new用  malloc 配合 free用</span></span><br><span class="line">	<span class="keyword">delete</span> p2;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">void</span> *p = <span class="keyword">new</span> Person(<span class="number">10</span>); </span><br><span class="line">	<span class="comment">//当用void* 接受new出来的指针 ，会出现释放的问题</span></span><br><span class="line">	<span class="keyword">delete</span> p;</span><br><span class="line">	<span class="comment">//无法释放p ，所以避免这种写法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test03</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//通过new开辟数组 一定会调用默认构造函数,所以一定要提供默认构造</span></span><br><span class="line">	Person * pArray = <span class="keyword">new</span> Person[<span class="number">10</span>];</span><br><span class="line">	<span class="comment">//Person pArray2[2] = &#123; Person(1), Person(2) &#125;; //在栈上开辟数组，可以指定有参构造</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//释放数组 delete []</span></span><br><span class="line">	<span class="keyword">delete</span> [] pArray;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//test01();</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//test02();</span></span><br><span class="line"></span><br><span class="line">	test03();</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="delete-operator"><a href="#delete-operator" class="headerlink" title="delete operator"></a><code>delete operator</code></h4><p>​    <code>new</code>表达式的反面是<code>delete</code>表达式。<code>delete</code>表达式先调用析构函数，然后释放内存。正如<code>new</code>表达式返回一个指向对象的指针一样，<code>delete</code>需要一个对象的地址。</p>
+<p>​    <code>delete</code>只适用于由<code>new</code>创建的对象。</p>
+<p>​    如果正在删除的对象的指针是<code>NULL</code>,将不发生任何事，因此建议在删除指针后，立即把指针赋值为<code>NULL</code>，以免对它删除两次，对一些对象删除两次可能会产生某些问题。</p>
+<h4 id="delete-void-可能会出错"><a href="#delete-void-可能会出错" class="headerlink" title="delete void*可能会出错"></a><code>delete void*</code>可能会出错</h4><p>​    如果对一个<code>void*</code>指针执行<code>delete</code>操作，这将可能成为一个程序错误，除非指针指向的内容是非常简单的，因为它将不执行析构函数。未调用析构函数，导致可用内存减少。</p>
+<h4 id="用于数组的new和delete"><a href="#用于数组的new和delete" class="headerlink" title="用于数组的new和delete"></a>用于数组的<code>new</code>和<code>delete</code></h4><p>​    使用<code>new</code>和<code>delete</code>在堆上创建数组非常容易。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建字符数组</span></span><br><span class="line"><span class="keyword">char</span>* pStr = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">100</span>];</span><br><span class="line"><span class="comment">//创建整型数组</span></span><br><span class="line"><span class="keyword">int</span>* pArr1 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>]; </span><br><span class="line"><span class="comment">//创建整型数组并初始化</span></span><br><span class="line"><span class="keyword">int</span>* pArr2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//释放数组内存</span></span><br><span class="line"><span class="keyword">delete</span>[] pStr;</span><br><span class="line"><span class="keyword">delete</span>[] pArr1;</span><br><span class="line"><span class="keyword">delete</span>[] pArr2;</span><br></pre></td></tr></table></figure>
+<p>​    <strong>当创建一个对象数组的时候，必须对数组中的每一个对象调用构造函数，除了在栈上可以聚合初始化，必须提供一个默认的构造函数。</strong></p>
+<h4 id="使用new和delete采用相同形式"><a href="#使用new和delete采用相同形式" class="headerlink" title="使用new和delete采用相同形式"></a>使用<code>new</code>和<code>delete</code>采用相同形式</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person* person = <span class="keyword">new</span> Person[<span class="number">10</span>];    </span><br><span class="line"><span class="keyword">delete</span> person;</span><br></pre></td></tr></table></figure>
+<p>​    以上代码有什么问题吗？(<code>vs</code>下直接中断、<code>qt</code>下析构函数调用一次)</p>
+<p>​    使用了<code>new</code>也搭配使用了<code>delete</code>，问题在于<code>Person</code>有<code>10</code>个对象，那么其他<code>9</code>个对象可能没有调用析构函数，也就是说其他<code>9</code>个对象可能删除不完全，因为它们的析构函数没有被调用。</p>
+<p>​    我们现在清楚使用<code>new</code>的时候发生了两件事: 一、分配内存；二、调用构造函数，那么调用<code>delete</code>的时候也有两件事：一、析构函数；二、释放内存。</p>
+<p>​    那么刚才我们那段代码最大的问题在于：<code>person</code>指针指向的内存中到底有多少个对象，因为这个决定应该有多少个析构函数应该被调用。换句话说，<code>person</code>指针指向的是一个单一的对象还是一个数组对象，由于单一对象和数组对象的内存布局是不同的。更明确的说，数组所用的内存通常还包括“数组大小记录”，使得<code>delete</code>的时候知道应该调用几次析构函数。单一对象的话就没有这个记录。单一对象和数组对象的内存布局可理解为下图:</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/1111.png" alt></p>
+<p>只是为了说明，编译器不一定如此实现，但是很多编译器是这样做的。</p>
+<p>​    当我们使用一个<code>delete</code>的时候，我们必须让<code>delete</code>知道指针指向的内存空间中是否存在一个“数组大小记录”的办法就是我们告诉它。当我们使用<code>delete[]</code>，那么<code>delete</code>就知道是一个对象数组，从而清楚应该调用几次析构函数。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/10/c++封装4-const成员变量和函数/" rel="next" title="c++const成员变量和函数">
+                <i class="fa fa-chevron-left"></i> c++const成员变量和函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/20/c++封装6-重载/" rel="prev" title="c++重载">
+                c++重载 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对象的构造和析构"><span class="nav-number">1.</span> <span class="nav-text">对象的构造和析构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数和析构函数的定义"><span class="nav-number">1.1.</span> <span class="nav-text">构造函数和析构函数的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数的分类及调用"><span class="nav-number">1.2.</span> <span class="nav-text">构造函数的分类及调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通构造函数"><span class="nav-number">1.2.1.</span> <span class="nav-text">普通构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.2.2.</span> <span class="nav-text">拷贝构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝构造函数定义"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">拷贝构造函数定义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-为什么必须是当前类的引用呢？"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">1) 为什么必须是当前类的引用呢？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-为什么是const引用呢？"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">2) 为什么是const引用呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认拷贝构造函数"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">默认拷贝构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝构造函数的调用时机"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">拷贝构造函数的调用时机</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化对象"><span class="nav-number">1.2.2.3.1.</span> <span class="nav-text">初始化对象</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#初始化和赋值的区别"><span class="nav-number">1.2.2.3.1.1.</span> <span class="nav-text">初始化和赋值的区别</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#以拷贝的方式初始化对象"><span class="nav-number">1.2.2.3.2.</span> <span class="nav-text">以拷贝的方式初始化对象</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-将其它对象作为实参"><span class="nav-number">1.2.2.3.2.1.</span> <span class="nav-text">(1) 将其它对象作为实参</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-在创建对象的同时赋值"><span class="nav-number">1.2.2.3.2.2.</span> <span class="nav-text">(2) 在创建对象的同时赋值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-函数的形参为类类型"><span class="nav-number">1.2.2.3.2.3.</span> <span class="nav-text">(3) 函数的形参为类类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-函数返回值为类类型"><span class="nav-number">1.2.2.3.2.4.</span> <span class="nav-text">(4) 函数返回值为类类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深拷贝和浅拷贝"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">深拷贝和浅拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#到底是浅拷贝还是深拷贝"><span class="nav-number">1.2.2.4.1.</span> <span class="nav-text">到底是浅拷贝还是深拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载赋值运算符"><span class="nav-number">1.2.3.</span> <span class="nav-text">重载赋值运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个对象构造和析构"><span class="nav-number">1.3.</span> <span class="nav-text">多个对象构造和析构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化列表"><span class="nav-number">1.3.1.</span> <span class="nav-text">初始化列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类对象作为成员"><span class="nav-number">1.3.2.</span> <span class="nav-text">类对象作为成员</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类对象作为成员-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">类对象作为成员</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态对象创建"><span class="nav-number">1.4.</span> <span class="nav-text">动态对象创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象创建"><span class="nav-number">1.4.1.</span> <span class="nav-text">对象创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#new-operator"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">new operator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete-operator"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">delete operator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete-void-可能会出错"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">delete void*可能会出错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用于数组的new和delete"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">用于数组的new和delete</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用new和delete采用相同形式"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">使用new和delete采用相同形式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

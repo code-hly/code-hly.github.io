@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="c++_language,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="类模板类模板的显式具体化​    下面的函数模板，它用来获取两个变量中较大的一个： 123template&amp;lt;class T&amp;gt; const T&amp;amp; Max(const T&amp;amp; a, const T&amp;amp; b)&amp;#123;    return a &amp;gt; b ? a : b;&amp;#125; ​    请读者注意a &amp;gt; b这条语句，&amp;gt;能够用来比较 int、floa">
+<meta name="keywords" content="c++_language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++类模板">
+<meta property="og:url" content="http://yoursite.com/2018/08/15/c++模板3-类模板/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="类模板类模板的显式具体化​    下面的函数模板，它用来获取两个变量中较大的一个： 123template&amp;lt;class T&amp;gt; const T&amp;amp; Max(const T&amp;amp; a, const T&amp;amp; b)&amp;#123;    return a &amp;gt; b ? a : b;&amp;#125; ​    请读者注意a &amp;gt; b这条语句，&amp;gt;能够用来比较 int、floa">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-01T09:41:06.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++类模板">
+<meta name="twitter:description" content="类模板类模板的显式具体化​    下面的函数模板，它用来获取两个变量中较大的一个： 123template&amp;lt;class T&amp;gt; const T&amp;amp; Max(const T&amp;amp; a, const T&amp;amp; b)&amp;#123;    return a &amp;gt; b ? a : b;&amp;#125; ​    请读者注意a &amp;gt; b这条语句，&amp;gt;能够用来比较 int、floa">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/15/c++模板3-类模板/">
+
+
+
+
+
+  <title>c++类模板 | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/c++模板3-类模板/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c++类模板</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/15/c++模板3-类模板/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/15/c++模板3-类模板/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/15/c++模板3-类模板/" class="leancloud_visitors" data-flag-title="c++类模板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  31
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h2><h3 id="类模板的显式具体化"><a href="#类模板的显式具体化" class="headerlink" title="类模板的显式具体化"></a>类模板的显式具体化</h3><p>​    下面的函数模板，它用来获取两个变量中较大的一个：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">Max</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">b</span>)&#123;</span></span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    请读者注意<code>a &gt; b</code>这条语句，<code>&gt;</code>能够用来比较 <code>int</code>、<code>float</code>、<code>char</code>等基本类型数据的大小，但是却不能用来比较结构体变量、对象以及数组的大小，因为我们并没有针对结构体、类和数组重载<code>&gt;</code>。另外，该函数模板虽然可以用于指针，但比较的是地址大小，而不是指针指向的数据，所以也没有现实的意义。</p>
+<a id="more"></a>
+<p>​    模板是一种泛型技术，它能接受的类型是宽泛的、没有限制的，并且对这些类型使用的算法都是一样的（函数体或类体一样）。但是现在我们希望改变这种“游戏规则”，让模板能够针对某种具体的类型使用不同的算法（函数体或类体不同），这在<code>C++</code>中是可以做到的，这种技术称为模板的<strong>显示具体化（<code>Explicit Specialization</code>）</strong>。</p>
+<p>​    函数模板和类模板都可以显示具体化。除了函数模板，类模板也可以显示具体化，并且它们的语法是类似的。</p>
+<p>​        在<code>C++</code>类模板一节中我们定义了一个<code>Point</code>类，用来输出不同类型的坐标。在输出结果中，横坐标<code>x</code>和纵坐标<code>y</code>是以逗号<code>,</code>为分隔的，但是由于个人审美的不同，我希望当<code>x</code>和<code>y</code>都是字符串时以<code>|</code>为分隔，是数字或者其中一个是数字时才以逗号<code>,</code>为分隔。为了满足我这种奇葩的要求，可以使用显示具体化技术对字符串类型的坐标做特殊处理。</p>
+<p> 下面的例子演示了如何对<code>Point</code>类进行显示具体化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类模板</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt; <span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;</span><br><span class="line">    T2 m_y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;  //这里要带上模板头</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">", y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类模板的显示具体化（针对字符串类型的显示具体化）</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, char*&gt;&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(<span class="keyword">char</span> *x, <span class="keyword">char</span> *y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">char</span> *<span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(<span class="keyword">char</span> *x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">char</span> *<span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(<span class="keyword">char</span> *y)</span></span>&#123; m_y = y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span> *m_x;  <span class="comment">//x坐标</span></span><br><span class="line">    <span class="keyword">char</span> *m_y;  <span class="comment">//y坐标</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这里不能带模板头template&lt;&gt;</span></span><br><span class="line"><span class="keyword">void</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;::display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">" | y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">10</span>, <span class="number">20</span>) ) -&gt; display();</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">int</span>, <span class="keyword">char</span>*&gt;(<span class="number">10</span>, <span class="string">"东京180度"</span>) ) -&gt; display();</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>) ) -&gt; display();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>x=10, y=20</code><br><code>x=10, y=东京180度</code><br><code>x=东京180度 | y=北纬210度</code></p>
+<p>​    请读者注意第<code>25</code>行代码，<code>Point</code>表明了要将类型参数<code>T1</code>、<code>T2</code>都具体化为<code>char*</code>类型，原来使用<code>T1</code>、<code>T2</code>的位置都应该使用<code>char*</code>替换。<code>Point</code>类有两个类型参数<code>T1</code>、<code>T2</code>，并且都已经被具体化了，所以整个类模板就不再有类型参数了，模板头应该写作<code>template&lt;&gt;</code>。</p>
+<p>​    再来对比第<code>19</code>、<code>40</code>行代码，可以发现，<strong>当在类的外部定义成员函数时，普通类模板的成员函数前面要带上模板头，而具体化的类模板的成员函数前面不能带模板头。</strong></p>
+<h4 id="部分显式具体化"><a href="#部分显式具体化" class="headerlink" title="部分显式具体化"></a>部分显式具体化</h4><p>​    在上面的显式具体化例子中，我们为所有的类型参数都提供了实参，所以最后的模板头为空，也即<code>template&lt;&gt;</code>。另外<code>C++</code>还允许只为一部分类型参数提供实参，这称为部分显式具体化。</p>
+<p>​    部分显式具体化只能用于类模板，不能用于函数模板。</p>
+<p>​    仍然以<code>Point</code>为例，假设我现在希望“只要横坐标<code>x</code>是字符串类型”就以<code>|</code>来分隔输出结果，而不管纵坐标 <code>y</code>是什么类型，这种要求就可以使用部分显式具体化技术来满足。请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类模板</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt; <span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;</span><br><span class="line">    T2 m_y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;  //这里需要带上模板头</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">", y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//类模板的部分显示具体化</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T2&gt; <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, T2&gt;&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(<span class="keyword">char</span> *x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">char</span> *<span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(<span class="keyword">char</span> *x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span> *m_x;  <span class="comment">//x坐标</span></span><br><span class="line">    T2 m_y;  <span class="comment">//y坐标</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T2&gt;  <span class="comment">//这里需要带上模板头</span></span><br><span class="line"><span class="keyword">void</span> Point&lt;<span class="keyword">char</span>*, T2&gt;::display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">" | y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;(<span class="number">10</span>, <span class="number">20</span>) ) -&gt; display();</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">int</span>&gt;(<span class="string">"东京180度"</span>, <span class="number">10</span>) ) -&gt; display();</span><br><span class="line">    ( <span class="keyword">new</span> Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt;(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>) ) -&gt; display();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>x=10, y=20</code><br><code>x=东京180度 | y=10</code><br><code>x=东京180度 | y=北纬210度</code></p>
+<p>​    本例中，<code>T1</code>对应横坐标<code>x</code>的类型，我们将<code>T1</code>具体化为<code>char*</code>，第<code>25</code>行代码就是类模板的部分显示具体化。</p>
+<p>​    模板头<code>template</code>中声明的是没有被具体化的类型参数；类名<code>Point</code>列出了所有类型参数，包括未被具体化的和已经被具体化的。</p>
+<p>​    类名后面之所以要列出所有的类型参数，是为了让编译器确认“到底是第几个类型参数被具体化了”，如果写作<code>template class Point</code>，编译器就不知道<code>char*</code>代表的是第一个类型参数，还是第二个类型参数。</p>
+<h3 id="类模板中使用非类型参数"><a href="#类模板中使用非类型参数" class="headerlink" title="类模板中使用非类型参数"></a>类模板中使用非类型参数</h3><p>​    模板是一种泛型技术，目的是将数据的类型参数化，以增强<code>C++</code>语言（强类型语言）的灵活性。<code>C++</code>对模板的支持非常自由，模板中除了可以包含类型参数，还可以包含非类型参数，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt; <span class="class"><span class="keyword">class</span> <span class="title">Demo</span>&#123;</span> &#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">int</span> <span class="title">N</span>&gt; <span class="title">void</span> <span class="title">func</span>(<span class="title">T</span> (&amp;<span class="title">arr</span>)[<span class="title">N</span>]);</span></span><br></pre></td></tr></table></figure>
+<p>​    <code>T</code>是一个类型参数，它通过<code>class</code>或<code>typename</code>关键字指定。<code>N</code>是一个非类型参数，用来传递数据的值，而不是类型，它和普通函数的形参一样，都需要指明具体的类型。类型参数和非类型参数都可以用在函数体或者类体中。</p>
+<p>​    当调用一个函数模板或者通过一个类模板创建对象时，非类型参数会被用户提供的、或者编译器推断出的值所取代。</p>
+<p>​    <strong><code>C/C++</code>规定，数组一旦定义后，它的长度就不能改变了；换句话说，数组容量不能动态地增大或者减小。这样的数组称为静态数组（<code>Static array</code>）。静态数组有时候会给编码代码不便，我们可以通过自定义的<code>Array</code>类来实现动态数组（<code>Dynamic array</code>）。所谓动态数组，是指数组容量能够在使用的过程中随时增大或减小。</strong></p>
+<p> 动态数组的完整实现代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Array();</span><br><span class="line">    ~Array();</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    T &amp; <span class="keyword">operator</span>[](<span class="keyword">int</span> i);  <span class="comment">//重载下标运算符[]</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> m_length; &#125;  <span class="comment">//获取数组长度</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">capacity</span><span class="params">(<span class="keyword">int</span> n)</span></span>;  <span class="comment">//改变数组容量</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_length;  <span class="comment">//数组的当前长度</span></span><br><span class="line">    <span class="keyword">int</span> m_capacity;  <span class="comment">//当前内存的容量（能容乃的元素的个数）</span></span><br><span class="line">    T *m_p;  <span class="comment">//指向数组内存的指针</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span><br><span class="line">Array&lt;T, N&gt;::Array()&#123;</span><br><span class="line">    m_p = <span class="keyword">new</span> T[N];</span><br><span class="line">    m_capacity = m_length = N;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span><br><span class="line">Array&lt;T, N&gt;::~Array()&#123;</span><br><span class="line">    <span class="keyword">delete</span>[] m_p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span><br><span class="line">T &amp; Array&lt;T, N&gt;::<span class="keyword">operator</span>[](<span class="keyword">int</span> i)&#123;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">0</span> || i&gt;=m_length)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Exception: Array index out of bounds!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> m_p[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span><br><span class="line"><span class="keyword">bool</span> Array&lt;T, N&gt;::capacity(<span class="keyword">int</span> n)&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">0</span>)&#123;  <span class="comment">//增大数组</span></span><br><span class="line">        <span class="keyword">int</span> len = m_length + n;  <span class="comment">//增大后的数组长度</span></span><br><span class="line">        <span class="keyword">if</span>(len &lt;= m_capacity)&#123;  <span class="comment">//现有内存足以容纳增大后的数组</span></span><br><span class="line">            m_length = len;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;  <span class="comment">//现有内存不能容纳增大后的数组</span></span><br><span class="line">            T *pTemp = <span class="keyword">new</span> T[m_length + <span class="number">2</span> * n * <span class="keyword">sizeof</span>(T)];  <span class="comment">//增加的内存足以容纳 2*n 个元素</span></span><br><span class="line">            <span class="keyword">if</span>(pTemp == <span class="literal">NULL</span>)&#123;  <span class="comment">//内存分配失败</span></span><br><span class="line">                <span class="built_in">cout</span>&lt;&lt;<span class="string">"Exception: Failed to allocate memory!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;  <span class="comment">//内存分配成功</span></span><br><span class="line">                <span class="built_in">memcpy</span>( pTemp, m_p, m_length*<span class="keyword">sizeof</span>(T) );</span><br><span class="line">                <span class="keyword">delete</span>[] m_p;</span><br><span class="line">                m_p = pTemp;</span><br><span class="line">                m_capacity = m_length = len;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;  <span class="comment">//收缩数组</span></span><br><span class="line">        <span class="keyword">int</span> len = m_length - <span class="built_in">abs</span>(n);  <span class="comment">//收缩后的数组长度</span></span><br><span class="line">        <span class="keyword">if</span>(len &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"Exception: Array length is too small!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            m_length = len;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Array&lt;<span class="keyword">int</span>, <span class="number">5</span>&gt; arr;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为数组元素赋值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>, len=arr.length(); i&lt;len; i++)&#123;</span><br><span class="line">        arr[i] = <span class="number">2</span>*i;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//第一次打印数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>, len=arr.length(); i&lt;len; i++)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="comment">//扩大容量并为增加的元素赋值</span></span><br><span class="line">    arr.capacity(<span class="number">8</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">5</span>, len=arr.length(); i&lt;len; i++)&#123;</span><br><span class="line">        arr[i] = <span class="number">2</span>*i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二次打印数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>, len=arr.length(); i&lt;len; i++)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//收缩容量</span></span><br><span class="line">    arr.capacity(<span class="number">-4</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第三次打印数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>, len=arr.length(); i&lt;len; i++)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;arr[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>0 2 4 6 8</code><br><code>0 2 4 6 8 10 12 14 16 18 20 22 24</code><br><code>0 2 4 6 8 10 12 14 16</code></p>
+<p>​    <code>Array</code>是一个类模板，它有一个类型参数<code>T</code>和一个非类型参数<code>N</code>，<code>T</code>指明了数组元素的类型，<code>N</code>指明了数组长度。</p>
+<p>​    <code>capacity()</code>成员函数是<code>Array</code>类的关键，它使得数组容量可以动态地增加或者减小。传递给它一个正数时，数组容量增大；传递给它一个负数时，数组容量减小。</p>
+<p>​    之所以能通过<code>[ ]</code>来访问数组元素，是因为在<code>Array</code>类中以成员函数的形式重载了<code>[ ]</code>运算符，并且返回值是数组元素的引用。如果直接返回数组元素的值，那么将无法给数组元素赋值。</p>
+<h4 id="非类型参数的限制"><a href="#非类型参数的限制" class="headerlink" title="非类型参数的限制"></a>非类型参数的限制</h4><p>​    非类型参数的类型不能随意指定，它受到了严格的限制，只能是一个整数，或者是一个指向对象或函数的指针（也可以是引用）。</p>
+<p> 1) 当非类型参数是一个整数时，传递给它的实参，或者由编译器推导出的实参必须是一个常量表达式，例如<code>10</code>、<code>2 * 30</code>、<code>18 + 23 - 4</code>等，但不能是<code>n</code>、<code>n + 10</code>、<code>n + m</code>等（<code>n</code>和<code>m</code>都是变量）。</p>
+<p>对上面的 Array 类，以下创建对象的方式是错误的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;len;</span><br><span class="line">Array&lt;<span class="keyword">int</span>, len&gt; arr;</span><br></pre></td></tr></table></figure>
+<p>这种情况，编译器推导出来的实参是<code>len</code>，是一个变量，而不是常量。</p>
+<p> 2) 当非类型参数是一个指针（引用）时，绑定到该指针的实参必须具有静态的生存期；换句话说，实参必须存储在虚拟地址空间中的静态数据区。局部变量位于栈区，动态创建的对象位于堆区，它们都不能用作实参。</p>
+<h3 id="类模板实例化"><a href="#类模板实例化" class="headerlink" title="类模板实例化"></a>类模板实例化</h3><p>​    <strong>模板（<code>Templet</code>）并不是真正的函数或类，它仅仅是编译器用来生成函数或类的一张“图纸”。模板不会占用内存，最终生成的函数或者类才会占用内存。由模板生成函数或类的过程叫做模板的实例化（<code>Instantiate</code>），相应地，针对某个类型生成的特定版本的函数或类叫做模板的一个实例（<code>Instantiation</code>）。</strong></p>
+<p>​    模板也可以看做是编译器的一组指令，它命令编译器生成我们想要的代码。</p>
+<p>​    <strong>模板的实例化是按需进行的，用到哪个类型就生成针对哪个类型的函数或类，不会提前生成过多的代码。也就是说，编译器会根据传递给类型参数的实参（也可以是编译器自己推演出来的实参）来生成一个特定版本的函数或类，并且相同的类型只生成一次。实例化的过程也很简单，就是将所有的类型参数用实参代替。</strong></p>
+<p>​    <strong>类模板的实例化，通过类模板创建对象时并不会实例化所有的成员函数，只有等到真正调用它们时才会被实例化；如果一个成员函数永远不会被调用，那它就永远不会被实例化。<code>这说明类的实例化是延迟的、局部的，编译器并不着急生成所有的代码</code>。</strong></p>
+<p>​    通过类模板创建对象时，一般只需要实例化成员变量和构造函数。成员变量被实例化后就能够知道对象的大小了（占用的字节数），构造函数被实例化后就能够知道如何初始化了；对象的创建过程就是分配一块大小已知的内存，并对这块内存进行初始化。</p>
+<p>​    请看下面的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;</span><br><span class="line">    T2 m_y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">", y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    p1.setX(<span class="number">40</span>);</span><br><span class="line">    p1.setY(<span class="number">50</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p1.getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p1.getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; p2(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>);</span><br><span class="line">    p2.display();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><code>x=40, y=50</code><br><code>x=东京180度, y=北纬210度</code></p>
+<p>​    <code>p1</code>调用了所有的成员函数，整个类会被完整地实例化。<code>p2</code>只调用了构造函数和<code>display()</code>函数，剩下的 <code>get</code>函数和<code>set</code>函数不会被实例化。</p>
+<p>​    值得提醒的是，<code>Point</code>和<code>Point</code>是两个相互独立的类，它们的类型是不同的，不能相互兼容，也不能自动地转换类型，所以诸如<code>p1 = p2;</code>这样的语句是错误的，除非重载了<code>=</code>运算符。</p>
+<h3 id="将类模板的声明和实现分散到不同的文件"><a href="#将类模板的声明和实现分散到不同的文件" class="headerlink" title="将类模板的声明和实现分散到不同的文件"></a>将类模板的声明和实现分散到不同的文件</h3><p>​    <strong>总起来说，不管是函数还是类，声明和定义（实现）的分离其实是一回事，都是将函数定义放到其他文件中，最终要解决的问题也只有一个，就是把函数调用和函数定义对应起来（找到函数定义的地址，并填充到函数调用处），而保证完成这项工作的就是链接器。</strong></p>
+<p>​    基于传统的编程思维，初学者往往也会将模板（函数模板和类模板）的声明和定义分散到不同的文件中，以期达到「模块化编程」的目的。但事实证明这种做法是不对的，**程序员惯用的做法是将模板的声明和定义都放到头文件中。</p>
+<p>​    我们看一个类模板的反面教材，它将类模板的声明和实现分别放到了头文件和源文件。</p>
+<p><code>point.h</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _POINT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _POINT_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;</span><br><span class="line">    T2 m_y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><code>point.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"point.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">", y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>main.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"point.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    p1.setX(<span class="number">40</span>);</span><br><span class="line">    p1.setY(<span class="number">50</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p1.getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p1.getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; p2(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>);</span><br><span class="line">    p2.display();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    该工程包含了两个源文件和一个头文件，<code>point.h</code>中声明了类模板，<code>point.cpp</code>中对类模板进行了实现，<code>main.cpp</code>中通过类模板创建了对象，并调用了成员函数，这是典型的将类的声明和实现分离的编程模式。</p>
+<p>​    运行上面的程序，会产生一个链接错误，意思是无法通过<code>p2</code>调用<code>Point::display() const</code>这个函数。</p>
+<p>​    类模板声明位于<code>point.h</code>中，它包含了所有成员变量的定义以及构造函数、<code>get</code>函数、<code>set</code>函数的定义，这些信息足够创建出一个完整的对象了，并且可以通过对象调用<code>get</code>函数和<code>set</code>函数，所以<code>main.cpp</code>的前<code>11</code> 行代码都不会报错。而第<code>12</code>行代码调用了<code>display()</code>函数，该函数的定义位于<code>point.cpp</code>文件中，并且<code>point.cpp</code>中也没有生成对应的实例，所以会在链接期间抛出错误。</p>
+<h3 id="类模板的显式实例化"><a href="#类模板的显式实例化" class="headerlink" title="类模板的显式实例化"></a>类模板的显式实例化</h3><p>​    前面讲到的模板的实例化是在调用函数或者创建对象时由编译器自动完成的，不需要程序员引导，因此称为<strong>隐式实例化</strong>。相对应的，我们也可以通过代码明确地告诉编译器需要针对哪个类型进行实例化，这称为<strong>显式实例化。</strong></p>
+<p>​    编译器在实例化的过程中需要知道模板的所有细节：<strong>对于函数模板，也就是函数定义；对于类模板，需要同时知道类声明和类定义。我们必须将显式实例化的代码放在包含了模板定义的源文件中，而不是仅仅包含了模板声明的头文件中。</strong></p>
+<p>​    <strong>显式实例化的一个好处是，可以将模板的声明和定义（实现）分散到不同的文件中了。</strong></p>
+<p>​    类模板的显式实例化和函数模板类似。以上节的<code>Point</code>类为例，针对<code>char*</code>类型的显式实例化（定义形式）代码为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, char*&gt;;</span></span><br></pre></td></tr></table></figure></p>
+<p>相应地，它的声明形式为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, char*&gt;;</span></span><br></pre></td></tr></table></figure></p>
+<p>​    不管是声明还是定义，都要带上<code>class</code>关键字，以表明这是针对类模板的。</p>
+<p>​    另外需要注意的是，显式实例化一个类模板时，会一次性实例化该类的所有成员，包括成员变量和成员函数。</p>
+<p>​    有了类模板的显式实例化，就可以将类模板的声明和定义分散到不同的文件中了，下面我们就来修复上节的代码。</p>
+<p>​     <code>point.cpp</code>源文件：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"point.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Point</span>&lt;T1, T2&gt;:</span>:display() <span class="keyword">const</span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;m_x&lt;&lt;<span class="string">", y="</span>&lt;&lt;m_y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//显式实例化定义</span></span><br><span class="line"><span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, char*&gt;;</span></span><br><span class="line"><span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;int, int&gt;;</span></span><br></pre></td></tr></table></figure>
+<p><code>point.h</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _POINT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _POINT_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Point</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point(T1 x, T2 y): m_x(x), m_y(y)&#123; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">T1 <span class="title">getX</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setX</span><span class="params">(T1 x)</span></span>&#123; m_x = x; &#125;</span><br><span class="line">    <span class="function">T2 <span class="title">getY</span><span class="params">()</span> <span class="keyword">const</span></span>&#123; <span class="keyword">return</span> m_y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setY</span><span class="params">(T2 y)</span></span>&#123; m_y = y; &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 m_x;</span><br><span class="line">    T2 m_y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p><code>main.cpp</code>源码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"point.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//显式实例化声明（也可以不写）</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;char*, char*&gt;;</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">template</span> <span class="class"><span class="keyword">class</span> <span class="title">Point</span>&lt;int, int&gt;;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Point&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; p1(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    p1.setX(<span class="number">40</span>);</span><br><span class="line">    p1.setY(<span class="number">50</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"x="</span>&lt;&lt;p1.getX()&lt;&lt;<span class="string">", y="</span>&lt;&lt;p1.getY()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    Point&lt;<span class="keyword">char</span>*, <span class="keyword">char</span>*&gt; p2(<span class="string">"东京180度"</span>, <span class="string">"北纬210度"</span>);</span><br><span class="line">    p2.display();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>​    函数模板和类模板的实例化语法是类似的，我们不妨对它们做一下总结：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">template</span> declaration;  <span class="comment">//实例化声明</span></span><br><span class="line"><span class="keyword">template</span> declaration;  <span class="comment">//实例化定义</span></span><br></pre></td></tr></table></figure></p>
+<p>​    对于函数模板来说，<code>declaration</code>就是一个函数原型；对于类模板来说，<code>declaration</code>就是一个类声明。</p>
+<h4 id="显式实例化的缺陷"><a href="#显式实例化的缺陷" class="headerlink" title="显式实例化的缺陷"></a>显式实例化的缺陷</h4><p>​    <code>C++</code>支持显式实例化的目的是为「模块化编程」提供一种解决方案，这种方案虽然有效，但是也有明显的缺陷：程序员必须要在模板的定义文件（实现文件）中对所有使用到的类型进行实例化。这就意味着，每次更改了模板使用文件（调用函数模板的文件，或者通过类模板创建对象的文件），也要相应地更改模板定义文件，以增加对新类型的实例化，或者删除无用类型的实例化。</p>
+<p>​     一个模板可能会在多个文件中使用到，要保持这些文件的同步更新是非常困难的。而对于库的开发者来说，他不能提前假设用户会使用哪些类型，所以根本就无法使用显式实例化，只能将模板的声明和定义（实现）全部放到头文件中；<code>C++</code>标准库几乎都是用模板来实现的，这些模板的代码也都位于头文件中。</p>
+<p>​    总起来说，如果我们开发的模板只有我们自己使用，那也可以勉强使用显式实例化；如果希望让其他人使用（例如库、组件等），那只能将模板的声明和定义都放到头文件中了。</p>
+<h3 id="类模板与继承详解"><a href="#类模板与继承详解" class="headerlink" title="类模板与继承详解"></a>类模板与继承详解</h3><p>​    类模板和类模板之间、类模板和类之间可以互相继承。它们之间的派生关系有以下四种情况。</p>
+<h4 id="类模板从类模板派生"><a href="#类模板从类模板派生" class="headerlink" title="类模板从类模板派生"></a>类模板从类模板派生</h4><p>​    示例程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Tl v1; T2 v2;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &lt;T2, T1&gt;</span><br><span class="line">&#123;</span><br><span class="line">    T1 v3; T2 v4;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">C</span> :</span> <span class="keyword">public</span> B &lt;T, T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    T v5;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B&lt;<span class="keyword">int</span>, <span class="keyword">double</span>&gt; obj1;</span><br><span class="line">    C&lt;<span class="keyword">int</span>&gt; obj2;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    编译到第<code>18</code>行，编译器用<code>int</code>替换类模板<code>B</code>中的<code>T1</code>，用<code>double</code> 替换<code>T2</code>，生成<code>B&lt;int, double&gt;</code>类如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> &lt;int, double&gt;:</span> <span class="keyword">public</span> A &lt;<span class="keyword">double</span>, <span class="keyword">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> v3; <span class="keyword">double</span> v4;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​    <code>B &lt;int, double&gt;</code>的基类是<code>A &lt;double, int&gt;</code>。于是编译器就要用<code>double</code>替换类模板<code>A</code>中的<code>T1</code>，用<code>int</code>替换<code>T2</code>，生成<code>A&lt;double, int&gt;</code>类如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &lt;double, int&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">double</span> v1; <span class="keyword">int</span> v2;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>​    编译到第<code>19</code>行，编译器生成类<code>C&lt;int&gt;</code>，还有<code>C&lt;int&gt;</code>的直接基类<code>B&lt;int, int&gt;</code>，以及<code>B&lt;int, int&gt;</code>的基类<code>A&lt;int, int&gt;</code>。</p>
+<h4 id="类模板从模板类派生"><a href="#类模板从模板类派生" class="headerlink" title="类模板从模板类派生"></a>类模板从模板类派生</h4><p>​    示例程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    T1 v1; T2 v2; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">B</span>:</span> <span class="keyword">public</span> A &lt;<span class="keyword">int</span>, <span class="keyword">double</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    T v;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    B &lt;<span class="keyword">char</span>&gt; obj1; </span><br><span class="line"> 	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    第<code>4</code>行，<code>A&lt;int, double&gt;</code>是一个具体的类的名字，而且它是一个模板类，因此说类模板<code>B</code>是从模板类派生而来的。</p>
+<p>​    编译器编译到第<code>5</code>行<code>Bobj1;</code>时会自动生成两个模板类：<code>A&lt;int, double&gt;</code>和<code>B&lt;char&gt;</code>。</p>
+<h4 id="类模板从普通类派生"><a href="#类模板从普通类派生" class="headerlink" title="类模板从普通类派生"></a>类模板从普通类派生</h4><p>​    示例程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="keyword">int</span> v1; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">B</span>:</span> <span class="keyword">public</span> A</span><br><span class="line">&#123; </span><br><span class="line">    T v; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    B &lt;<span class="keyword">char</span>&gt; obj1; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="普通类从模板类派生"><a href="#普通类从模板类派生" class="headerlink" title="普通类从模板类派生"></a>普通类从模板类派生</h4><p>​    示例程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    T v1; </span><br><span class="line">    <span class="keyword">int</span> n; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span> <span class="keyword">public</span> A &lt;<span class="keyword">int</span>&gt; </span><br><span class="line">&#123; </span><br><span class="line">    <span class="keyword">double</span> v; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    B obj1; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="类模板与友元详解"><a href="#类模板与友元详解" class="headerlink" title="类模板与友元详解"></a>类模板与友元详解</h3><p>​    下面我们分四种情况分别讨论。</p>
+<h4 id="函数、类、类的成员函数作为类模板的友元"><a href="#函数、类、类的成员函数作为类模板的友元" class="headerlink" title="函数、类、类的成员函数作为类模板的友元"></a>函数、类、类的成员函数作为类模板的友元</h4><p>​    函数、类、类的成员函数都可以作为类模板的友元。程序示例如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func1</span><span class="params">()</span> </span>&#123;  &#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span>  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Tmpl</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">Func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span>;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">void</span> B::Func();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Tmpl&lt;<span class="keyword">int</span>&gt; i;</span><br><span class="line">    Tmpl&lt;<span class="keyword">double</span>&gt; f;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    类模板实例化时，除了类型参数被替换外，其他所有内容都原样保留，因此任何从<code>Tmp1</code>实例化得到的类都包含上面三条友元声明，因而也都会把<code>Func1</code>、类<code>A</code>和<code>B::Func</code>当作友元。</p>
+<h4 id="函数模板作为类模板的友元"><a href="#函数模板作为类模板的友元" class="headerlink" title="函数模板作为类模板的友元"></a>函数模板作为类模板的友元</h4><p>​    之前我们定义了<code>Pair</code>模板，将<code>&lt;&lt;</code>运算符重载为一个函数模板，并将该函数模板作为<code>Pair</code>模板的友元，这样，任何从<code>Pair</code>模板实例化得到的对象都能用<code>&lt;&lt;</code>运算符通过<code>cout</code>输出。</p>
+<pre><code>程序代码如下（函数模板作为类模板的友元）：
+</code></pre><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Pair</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T1 key;  <span class="comment">//关键字</span></span><br><span class="line">    T2 value;  <span class="comment">//值</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Pair(T1 k, T2 v) : key(k), value(v) &#123; &#125;;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Pair&lt;T1, T2&gt; &amp; p) <span class="keyword">const</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T3</span>, <span class="title">class</span> <span class="title">T4</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">friend</span> <span class="title">ostream</span> &amp; <span class="title">operator</span> &lt;&lt; (ostream &amp; o, const Pair&lt;T3, T4&gt; &amp; p);</span></span><br><span class="line"><span class="class">&#125;;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">template &lt;class T1, class T2&gt;</span></span><br><span class="line"><span class="class">bool Pair &lt;T1, T2&gt;::operator&lt; (const Pair&lt;T1, T2&gt; &amp; p) const</span></span><br><span class="line"><span class="class">&#123;  //“小”的意思就是关键字小</span></span><br><span class="line"><span class="class">    return key &lt; p.key;</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">template &lt;class Tl, class T2&gt;</span></span><br><span class="line"><span class="class">ostream &amp; operator &lt;&lt; (ostream &amp; o, const Pair&lt;T1, T2&gt; &amp; p)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="class">    o &lt;&lt; "(" &lt;&lt; p.key &lt;&lt; "," &lt;&lt; p.value &lt;&lt; ")";</span></span><br><span class="line"><span class="class">    return o;</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">int main()</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="class">    Pair&lt;string, int&gt; student("Tom", 29);</span></span><br><span class="line"><span class="class">    Pair&lt;int, double&gt; obj(12, 3.14);</span></span><br><span class="line"><span class="class">    cout &lt;&lt; student &lt;&lt; " " &lt;&lt; obj;</span></span><br><span class="line"><span class="class">    return 0;</span></span><br><span class="line"><span class="class">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>(Torn, 29) (12, 3.14)</code></p>
+<p>​    第<code>13</code>、<code>14</code>行将函数模板<code>operator&lt;&lt;</code>声明为类模板<code>Pair</code> 的友元。在<code>Visual Studio</code>中，这两行也可以用下面的写法替代：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">friend</span> ostream &amp; <span class="keyword">operator</span>&lt;&lt; &lt;T1, T2&gt;(ostream &amp; o, <span class="keyword">const</span> Pair&lt;T1, T2&gt; &amp; p);</span><br></pre></td></tr></table></figure></p>
+<p>​    但在<code>Dev C ++</code>中，替代后编译就无法通过了。</p>
+<p>​    编译本程序时，编译器自动生成了两个<code>operator &lt;&lt;</code>函数，它们的原型分别是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ostream &amp; <span class="keyword">operator</span> &lt;&lt; (ostream &amp; o, <span class="keyword">const</span> Pair&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; &amp; p);</span><br><span class="line">ostream &amp; <span class="keyword">operator</span> &lt;&lt; (ostream &amp; o, <span class="keyword">const</span> Pair&lt;<span class="keyword">int</span>, <span class="keyword">double</span>&gt; &amp; p);</span><br></pre></td></tr></table></figure></p>
+<p>​    前者是<code>Pair &lt;string, int&gt;</code> 类的友元，但不是<code>Pair&lt;int, double&gt;</code>类的友元；后者是<code>Pair&lt;int, double&gt;</code>类的友元，但不是<code>Pair&lt;string, int&gt;</code>类的友元。</p>
+<h5 id="函数模板作为类的友元"><a href="#函数模板作为类的友元" class="headerlink" title="函数模板作为类的友元"></a>函数模板作为类的友元</h5><p>​    实际上，类也可以将函数模板声明为友元。程序示例如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> v;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> n) :v(n) &#123; &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">friend</span> <span class="title">void</span> <span class="title">Print</span>(<span class="title">const</span> <span class="title">T</span> &amp; <span class="title">p</span>);</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">Print</span>(<span class="title">const</span> <span class="title">T</span> &amp; <span class="title">p</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; p.v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">A <span class="title">a</span><span class="params">(<span class="number">4</span>)</span></span>;</span><br><span class="line">    Print(a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>4</code></p>
+<p>​    编译器编译到第<code>19</code>行<code>Print(a);</code>时，就从<code>Print</code>模板实例化出一个<code>Print</code>函数，原型如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(<span class="keyword">const</span> A &amp; p)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    这个函数本来不能访问<code>p</code>的私有成员。但是编译器发现，如果将类<code>A</code>的友元声明中的<code>T</code>换成<code>A</code>，就能起到将该<code>Print</code>函数声明为友元的作用，因此编译器就认为该<code>Print</code>函数是类<code>A</code>的友元。</p>
+<h4 id="类模板作为类模板的友元"><a href="#类模板作为类模板的友元" class="headerlink" title="类模板作为类模板的友元"></a>类模板作为类模板的友元</h4><p>一个类模板还可以将另一个类模板声明为友元。程序示例如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">const</span> T &amp; p)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; p.v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T v;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    B(T n) : v(n) &#123; &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">friend</span> <span class="title">class</span> <span class="title">A</span>;</span>  <span class="comment">//把类模板A声明为友元</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B&lt;<span class="keyword">int</span>&gt; b(<span class="number">5</span>);</span><br><span class="line">    A&lt; B&lt;<span class="keyword">int</span>&gt; &gt; a;  <span class="comment">//用B&lt;int&gt;替换A模板中的 T</span></span><br><span class="line">    a.Func(b);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>5</code></p>
+<p>​    在本程序中，<code>A&lt; B&lt;int&gt; &gt;</code>类成为<code>B&lt;int&gt;</code>类的友元。</p>
+<h3 id="类模板中的静态成员"><a href="#类模板中的静态成员" class="headerlink" title="类模板中的静态成员"></a>类模板中的静态成员</h3><p>​    类模板中可以定义静态成员，从该类模板实例化得到的所有类都包含同样的静态成员。</p>
+<p>​    程序示例如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    A() &#123; count ++; &#125;</span><br><span class="line">    ~A() &#123; count -- ; &#125;;</span><br><span class="line">    A(A &amp;) &#123; count ++ ; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PrintCount</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; count &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="keyword">int</span> A&lt;<span class="keyword">int</span>&gt;::count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">template</span>&lt;&gt; <span class="keyword">int</span> A&lt;<span class="keyword">double</span>&gt;::count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A&lt;<span class="keyword">int</span>&gt; ia;</span><br><span class="line">    A&lt;<span class="keyword">double</span>&gt; da;</span><br><span class="line">    ia.PrintCount();</span><br><span class="line">    da.PrintCount();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序的输出结果是：<br><code>1</code><br><code>1</code></p>
+<p>​    第<code>14</code> 行和第<code>15</code>行，对静态成员变量在类外部加以声明是必需的。在<code>Visual Studio 2008</code> 中，这两行也可以简单地写成：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> A&lt;<span class="keyword">int</span>&gt;::count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> A&lt;<span class="keyword">double</span>&gt;::count = <span class="number">0</span>;</span><br></pre></td></tr></table></figure></p>
+<p>​    <code>A&lt;int&gt;</code>和<code>A&lt;double&gt;</code>是两个不同的类。虽然它们都有静态成员变量<code>count</code>，但是显然，<code>A&lt;int&gt;</code>的对象<code>ia</code>和<code>A&lt;double&gt;</code> 的对象 <code>da</code>不会共享一份<code>count</code>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"><i class="fa fa-tag"></i> c++_language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/15/c++-STL函数对象/" rel="next" title="c++STL函数对象">
+                <i class="fa fa-chevron-left"></i> c++STL函数对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/16/c++-STL库函数概述/" rel="prev" title="c++STL库函数概述">
+                c++STL库函数概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类模板"><span class="nav-number">1.</span> <span class="nav-text">类模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板的显式具体化"><span class="nav-number">1.1.</span> <span class="nav-text">类模板的显式具体化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部分显式具体化"><span class="nav-number">1.1.1.</span> <span class="nav-text">部分显式具体化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板中使用非类型参数"><span class="nav-number">1.2.</span> <span class="nav-text">类模板中使用非类型参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非类型参数的限制"><span class="nav-number">1.2.1.</span> <span class="nav-text">非类型参数的限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板实例化"><span class="nav-number">1.3.</span> <span class="nav-text">类模板实例化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将类模板的声明和实现分散到不同的文件"><span class="nav-number">1.4.</span> <span class="nav-text">将类模板的声明和实现分散到不同的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板的显式实例化"><span class="nav-number">1.5.</span> <span class="nav-text">类模板的显式实例化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.5.1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显式实例化的缺陷"><span class="nav-number">1.5.2.</span> <span class="nav-text">显式实例化的缺陷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板与继承详解"><span class="nav-number">1.6.</span> <span class="nav-text">类模板与继承详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板从类模板派生"><span class="nav-number">1.6.1.</span> <span class="nav-text">类模板从类模板派生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板从模板类派生"><span class="nav-number">1.6.2.</span> <span class="nav-text">类模板从模板类派生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板从普通类派生"><span class="nav-number">1.6.3.</span> <span class="nav-text">类模板从普通类派生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#普通类从模板类派生"><span class="nav-number">1.6.4.</span> <span class="nav-text">普通类从模板类派生</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板与友元详解"><span class="nav-number">1.7.</span> <span class="nav-text">类模板与友元详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数、类、类的成员函数作为类模板的友元"><span class="nav-number">1.7.1.</span> <span class="nav-text">函数、类、类的成员函数作为类模板的友元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数模板作为类模板的友元"><span class="nav-number">1.7.2.</span> <span class="nav-text">函数模板作为类模板的友元</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数模板作为类的友元"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">函数模板作为类的友元</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板作为类模板的友元"><span class="nav-number">1.7.3.</span> <span class="nav-text">类模板作为类模板的友元</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板中的静态成员"><span class="nav-number">1.8.</span> <span class="nav-text">类模板中的静态成员</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
