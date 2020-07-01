@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。 编译内核和模块​    依次执行“make”、“make modules”、“make modules_install”、“make install”，如果前面的配置没有问题的话，耐心等待一段时间就可以得到编译好的内核和模块了">
+<meta name="description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。">
 <meta name="keywords" content="Linux-kernel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux-ubuntu下编译内核deb包">
 <meta property="og:url" content="http://yoursite.com/2019/06/03/linux-内核编译deb/index.html">
 <meta property="og:site_name" content="龙场驿站">
-<meta property="og:description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。 编译内核和模块​    依次执行“make”、“make modules”、“make modules_install”、“make install”，如果前面的配置没有问题的话，耐心等待一段时间就可以得到编译好的内核和模块了">
+<meta property="og:description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-01T10:54:53.776Z">
+<meta property="og:updated_time" content="2020-07-01T10:57:43.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux-ubuntu下编译内核deb包">
-<meta name="twitter:description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。 编译内核和模块​    依次执行“make”、“make modules”、“make modules_install”、“make install”，如果前面的配置没有问题的话，耐心等待一段时间就可以得到编译好的内核和模块了">
+<meta name="twitter:description" content="传统编译方式​    通常，如果我们需要在线编译安装Linux内核，大概要经历以下几个步骤： 配置内核​    最常用的配置内核的方法是“make menuconfig”。">
 
 
 
@@ -448,6 +448,7 @@
       
         <h2 id="传统编译方式"><a href="#传统编译方式" class="headerlink" title="传统编译方式"></a>传统编译方式</h2><p>​    通常，如果我们需要在线编译安装<code>Linux</code>内核，大概要经历以下几个步骤：</p>
 <h3 id="配置内核"><a href="#配置内核" class="headerlink" title="配置内核"></a>配置内核</h3><p>​    最常用的配置内核的方法是<code>“make menuconfig”</code>。</p>
+<a id="more"></a>
 <h3 id="编译内核和模块"><a href="#编译内核和模块" class="headerlink" title="编译内核和模块"></a>编译内核和模块</h3><p>​    依次执行<code>“make”</code>、<code>“make modules”</code>、<code>“make modules_install”</code>、<code>“make install”</code>，如果前面的配置没有问题的话，耐心等待一段时间就可以得到编译好的内核和模块了。</p>
 <h3 id="生成initramfs并配置Grub"><a href="#生成initramfs并配置Grub" class="headerlink" title="生成initramfs并配置Grub"></a>生成<code>initramfs</code>并配置<code>Grub</code></h3><p>​    经过第二个步骤的<code>“make  install”</code>，<code>kbuild</code>系统会把生成的内核镜像拷贝到<code>INSTALL_PATH</code>路径下（默认这个路径是<code>/boot</code>），但这时并不能使用，我们必须配置手动<code>Grub</code>才可以。另外，很多发行版会使用<code>initramfs</code>来做引导之用（还有部分发行版采用<code>initrd</code>），我们还需要为我们的新内核手动生成<code>initramfs</code>镜像。</p>
 <h2 id="编译内核deb安装包"><a href="#编译内核deb安装包" class="headerlink" title="编译内核deb安装包"></a>编译内核<code>deb</code>安装包</h2><p>​    在线编译安装有时不是很方便，可以在性能很好的编译机上编译<code>linux</code>代码为<code>deb</code>安装包，以便在新机器上安装。</p>

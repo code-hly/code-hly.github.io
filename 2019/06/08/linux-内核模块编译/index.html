@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译 具体编译过程分析​    注：本次编译是外部编译，使用的内核源码是Ubuntu的源代码，而非开发板所用linux 3.14内核">
+<meta name="description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译">
 <meta name="keywords" content="Linux-kernel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux-内核模块编译安装">
 <meta property="og:url" content="http://yoursite.com/2019/06/08/linux-内核模块编译/index.html">
 <meta property="og:site_name" content="龙场驿站">
-<meta property="og:description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译 具体编译过程分析​    注：本次编译是外部编译，使用的内核源码是Ubuntu的源代码，而非开发板所用linux 3.14内核">
+<meta property="og:description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-01T10:55:48.182Z">
+<meta property="og:updated_time" content="2020-07-01T10:57:57.873Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux-内核模块编译安装">
-<meta name="twitter:description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译 具体编译过程分析​    注：本次编译是外部编译，使用的内核源码是Ubuntu的源代码，而非开发板所用linux 3.14内核">
+<meta name="twitter:description" content="模块的编译​    我们在前面内核编译中驱动移植那块，讲到驱动编译分为静态编译和动态编译；静态编译即为将驱动直接编译进内核，动态编译即为将驱动编译成模块。 ​    而动态编译又分为以下两种 内部编译​    在内核源码目录内编译 外部编译​    在内核源码的目录外编译">
 
 
 
@@ -450,6 +450,7 @@
 <p>​    而动态编译又分为以下两种</p>
 <h3 id="内部编译"><a href="#内部编译" class="headerlink" title="内部编译"></a>内部编译</h3><p>​    在内核源码目录内编译</p>
 <h3 id="外部编译"><a href="#外部编译" class="headerlink" title="外部编译"></a>外部编译</h3><p>​    在内核源码的目录外编译</p>
+<a id="more"></a>
 <h2 id="具体编译过程分析"><a href="#具体编译过程分析" class="headerlink" title="具体编译过程分析"></a>具体编译过程分析</h2><p>​    注：本次编译是外部编译，使用的内核源码是<code>Ubuntu</code>的源代码，而非开发板所用<code>linux 3.14</code>内核源码，运行平台为<code>X86</code>。</p>
 <p>​    对于一个普通的<code>linux</code>设备驱动模块，以下是一个经典的<code>makefile</code>代码，使用下面这个<code>makefile</code>可以完成大部分驱动的编译，使用时只需要修改一下要编译生成的驱动名称即可。只需修改<code>obj-m</code>的值。</p>
  <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ifneq</span>  (<span class="variable">$(KERNELRELEASE)</span>,)</span><br><span class="line"><span class="section">obj-m:=hello.o</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">KDIR := /lib/modules/<span class="variable">$(<span class="built_in">shell</span> uname -r)</span>/build</span><br><span class="line">PWD:=<span class="variable">$(<span class="built_in">shell</span> pwd)</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    make -C <span class="variable">$(KDIR)</span> M=<span class="variable">$(PWD)</span> modules</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -f *.ko *.o *.symvers *.cmd *.cmd.o</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>

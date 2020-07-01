@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包 准备工作添加deb源​    网上搜索ubuntu的国内源，并写入/etc/apt/sources.list文件当中，并执行  apt-get update更新。 保证上网通畅​    执行    ping www.baidu.com查看上网是否通畅 安装编译依赖1234567891011121314apt-get ins">
+<meta name="description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包">
 <meta name="keywords" content="ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph-ubuntu下制作deb安装包">
 <meta property="og:url" content="http://yoursite.com/2019/04/03/ceph制作DEB包/index.html">
 <meta property="og:site_name" content="龙场驿站">
-<meta property="og:description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包 准备工作添加deb源​    网上搜索ubuntu的国内源，并写入/etc/apt/sources.list文件当中，并执行  apt-get update更新。 保证上网通畅​    执行    ping www.baidu.com查看上网是否通畅 安装编译依赖1234567891011121314apt-get ins">
+<meta property="og:description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-01T10:51:34.804Z">
+<meta property="og:updated_time" content="2020-07-01T10:57:31.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph-ubuntu下制作deb安装包">
-<meta name="twitter:description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包 准备工作添加deb源​    网上搜索ubuntu的国内源，并写入/etc/apt/sources.list文件当中，并执行  apt-get update更新。 保证上网通畅​    执行    ping www.baidu.com查看上网是否通畅 安装编译依赖1234567891011121314apt-get ins">
+<meta name="twitter:description" content="源码版本​    本次使用   12.2.12的ceph源码，制作DEB包">
 
 
 
@@ -447,6 +447,7 @@
 
       
         <h3 id="源码版本"><a href="#源码版本" class="headerlink" title="源码版本"></a>源码版本</h3><p>​    本次使用   <strong><code>12.2.12</code></strong>的<code>ceph</code>源码，制作<code>DEB</code>包</p>
+<a id="more"></a>
 <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><h4 id="添加deb源"><a href="#添加deb源" class="headerlink" title="添加deb源"></a>添加deb源</h4><p>​    网上搜索<code>ubuntu</code>的国内源，并写入<code>/etc/apt/sources.list</code>文件当中，并执行  <code>apt-get update</code>更新。</p>
 <h4 id="保证上网通畅"><a href="#保证上网通畅" class="headerlink" title="保证上网通畅"></a>保证上网通畅</h4><p>​    执行    <code>ping www.baidu.com</code>查看上网是否通畅</p>
 <h3 id="安装编译依赖"><a href="#安装编译依赖" class="headerlink" title="安装编译依赖"></a>安装编译依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apt-get install -y aptitude libtool automake pkg-config python-dev cython</span><br><span class="line">apt-get install -y g++ libsnappy-dev libleveldb-dev uuid-dev libblkid-dev libudev-dev</span><br><span class="line">apt-get install -y libkeyutils-dev libcrypto++-dev libfcgi-dev </span><br><span class="line">apt-get install -y libexpat1-dev libcurl4-openssl-dev libfuse-dev </span><br><span class="line">apt-get install -y libgoogle-perftools-dev libldap-dev libedit-dev</span><br><span class="line">apt-get install -y libaio-dev libatomic-ops-dev xfslibs-dev  </span><br><span class="line">apt-get install -y libboost-dev libbabeltrace-ctf-dev libbabeltrace-dev</span><br><span class="line">apt-get install -y libboost-iostreams1.58-dev  libboost-thread1.58-dev libboost-random1.58-dev libboost-program-options1.58-dev</span><br><span class="line">apt-get install -y python-pip python-virtualenv python-wheel libssl-dev</span><br><span class="line">apt-get install -y liblttng-ust-dev dpkg-checkbuilddeps cython3 dh-exec dh-systemd gperf</span><br><span class="line">apt-get install -y javahelper jq libibverbs-dev libldap2-dev libnss3-dev libxml2-dev xmlstarlet</span><br><span class="line">apt-get install -y python-all-dev python-coverage python-cherrypy3 python-nose python-pecan python-prettytable </span><br><span class="line">apt-get install -y python-setuptools python-sphinx python-werkzeug python3-all-dev python3-setuptools</span><br><span class="line">apt-get install -y btrfs-tools cryptsetup default-jdk gdisk git socat valgrind xfslibs-dev</span><br></pre></td></tr></table></figure>
