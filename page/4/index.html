@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/c++模板3-类模板/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/14/c++-STL库函数set和multiset/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -322,7 +322,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/15/c++模板3-类模板/" itemprop="url">c++类模板</a></h1>
+                <a class="post-title-link" href="/2018/09/14/c++-STL库函数set和multiset/" itemprop="url">c++STL库函数set</a></h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
-                2018-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T00:00:00+08:00">
+                2018-09-14
               </time>
             
 
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/15/c++模板3-类模板/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/15/c++模板3-类模板/" itemprop="commentCount"></span>
+                <a href="/2018/09/14/c++-STL库函数set和multiset/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/14/c++-STL库函数set和multiset/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,7 @@
 
           
           
-             <span id="/2018/08/15/c++模板3-类模板/" class="leancloud_visitors" data-flag-title="c++类模板">
+             <span id="/2018/09/14/c++-STL库函数set和multiset/" class="leancloud_visitors" data-flag-title="c++STL库函数set">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  7.4k
+                  3.3k
                 </span>
               
 
@@ -426,7 +426,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  31
+                  14
                 </span>
               
             </div>
@@ -448,12 +448,11 @@
 
       
         
-          <h2 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h2><h3 id="类模板的显式具体化"><a href="#类模板的显式具体化" class="headerlink" title="类模板的显式具体化"></a>类模板的显式具体化</h3><p>​    下面的函数模板，它用来获取两个变量中较大的一个：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">Max</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">b</span>)&#123;</span></span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​    请读者注意<code>a &gt; b</code>这条语句，<code>&gt;</code>能够用来比较 <code>int</code>、<code>float</code>、<code>char</code>等基本类型数据的大小，但是却不能用来比较结构体变量、对象以及数组的大小，因为我们并没有针对结构体、类和数组重载<code>&gt;</code>。另外，该函数模板虽然可以用于指针，但比较的是地址大小，而不是指针指向的数据，所以也没有现实的意义。</p>
+          <h2 id="set-multiset容器"><a href="#set-multiset容器" class="headerlink" title="set/multiset容器"></a><code>set/multiset</code>容器</h2><h3 id="set-multiset容器基本概念"><a href="#set-multiset容器基本概念" class="headerlink" title="set/multiset容器基本概念"></a><code>set/multiset</code>容器基本概念</h3><h4 id="set容器基本概念"><a href="#set容器基本概念" class="headerlink" title="set容器基本概念"></a><code>set</code>容器基本概念</h4><p>​    <code>Set</code>的特性是：所有元素都会根据元素的键值自动被排序。<code>Set</code>的元素不像<code>map</code>那样可以同时拥有实值和键值，<code>set</code>的元素即是键值又是实值。<code>Set</code>不允许两个元素有相同的键值。</p>
+<p>​    我们可以通过<code>set</code>的迭代器改变<code>set</code>元素的值吗？不行，因为<code>set</code>元素值就是其键值，关系到<code>set</code>元素的排序规则。如果任意改变<code>set</code>元素值，会严重破坏<code>set</code>组织。换句话说，<code>set</code>的<code>iterator</code>是一种<code>const_iterator</code>。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/15/c++模板3-类模板/" rel="contents">
+            <a class="btn" href="/2018/09/14/c++-STL库函数set和multiset/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -504,7 +503,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/15/c++-STL函数对象/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/11/c++-STL库函数map和multimap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -523,7 +522,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/15/c++-STL函数对象/" itemprop="url">c++STL函数对象</a></h1>
+                <a class="post-title-link" href="/2018/09/11/c++-STL库函数map和multimap/" itemprop="url">c++STL库函数map</a></h1>
         
 
         <div class="post-meta">
@@ -535,8 +534,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+08:00">
-                2018-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-11T00:00:00+08:00">
+                2018-09-11
               </time>
             
 
@@ -576,8 +575,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/15/c++-STL函数对象/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/15/c++-STL函数对象/" itemprop="commentCount"></span>
+                <a href="/2018/09/11/c++-STL库函数map和multimap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/11/c++-STL库函数map和multimap/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -585,7 +584,7 @@
 
           
           
-             <span id="/2018/08/15/c++-STL函数对象/" class="leancloud_visitors" data-flag-title="c++STL函数对象">
+             <span id="/2018/09/11/c++-STL库函数map和multimap/" class="leancloud_visitors" data-flag-title="c++STL库函数map">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -611,7 +610,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.9k
+                  4k
                 </span>
               
 
@@ -627,7 +626,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  12
+                  17
                 </span>
               
             </div>
@@ -649,10 +648,11 @@
 
       
         
-          <p>如果一个类将<code>()</code>运算符重载为成员函数，这个类就称为<strong>函数对象类</strong>，这个类的对象就是<strong>函数对象</strong>。函数对象是一个对象，但是使用的形式看起来像函数调用，实际上也执行了函数调用，因而得名。</p>
+          <h2 id="map-multimap容器"><a href="#map-multimap容器" class="headerlink" title="map/multimap容器"></a><code>map/multimap</code>容器</h2><h3 id="map-multimap基本概念"><a href="#map-multimap基本概念" class="headerlink" title="map/multimap基本概念"></a><code>map/multimap</code>基本概念</h3><p>​    <code>map</code>的特性是，所有元素都会根据元素的键值自动排序。<code>map</code>所有的元素都是<code>pair</code>，同时拥有实值和键值，<code>pair</code>的第一元素被视为键值，第二元素被视为实值，<code>map</code>不允许两个元素有相同的键值。</p>
+<p>​    我们可以通过<code>map</code>的迭代器改变<code>map</code>的键值吗？答案是不行，因为<code>map</code>的键值关系到<code>map</code>元素的排列规则，任意改变<code>map</code>键值将会严重破坏<code>map</code>组织。如果想要修改元素的实值，那么是可以的。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/15/c++-STL函数对象/" rel="contents">
+            <a class="btn" href="/2018/09/11/c++-STL库函数map和multimap/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -703,7 +703,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/10/c++模板2-函数模板/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/c++-STL-pair类模板/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -722,7 +722,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/10/c++模板2-函数模板/" itemprop="url">c++函数模板</a></h1>
+                <a class="post-title-link" href="/2018/09/10/c++-STL-pair类模板/" itemprop="url">c++STL-pair类模板</a></h1>
         
 
         <div class="post-meta">
@@ -734,8 +734,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
-                2018-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T00:00:00+08:00">
+                2018-09-10
               </time>
             
 
@@ -775,8 +775,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/10/c++模板2-函数模板/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/c++模板2-函数模板/" itemprop="commentCount"></span>
+                <a href="/2018/09/10/c++-STL-pair类模板/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/10/c++-STL-pair类模板/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -784,7 +784,7 @@
 
           
           
-             <span id="/2018/08/10/c++模板2-函数模板/" class="leancloud_visitors" data-flag-title="c++函数模板">
+             <span id="/2018/09/10/c++-STL-pair类模板/" class="leancloud_visitors" data-flag-title="c++STL-pair类模板">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -810,7 +810,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  8k
+                  399
                 </span>
               
 
@@ -826,7 +826,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  32
+                  1
                 </span>
               
             </div>
@@ -848,10 +848,10 @@
 
       
         
-          <h2 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h2><h3 id="函数模板的重载"><a href="#函数模板的重载" class="headerlink" title="函数模板的重载"></a>函数模板的重载</h3><p>​    当需要对不同的类型使用同一种算法（同一个函数体）时，为了避免定义多个功能重复的函数，可以使用模板。然而，并非所有的类型都使用同一种算法，有些特定的类型需要单独处理，为了满足这种需求，<strong><code>C++</code>允许对函数模板进行重载</strong>，程序员可以像重载常规函数那样重载模板定义。</p>
+          <p>在学习关联容器之前，首先要了解<code>STL</code>中的<code>pair</code> 类模板，因为关联容器的一些成员函数的返回值是<code>pair</code>对象，而且<code>map</code>和<code>multimap</code>容器中的元素都是<code>pair</code>对象。<code>pair</code>的定义如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/10/c++模板2-函数模板/" rel="contents">
+            <a class="btn" href="/2018/09/10/c++-STL-pair类模板/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -902,7 +902,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/07/c++模板1-模板定义/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/c++-STL库函数bitset/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -921,7 +921,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/07/c++模板1-模板定义/" itemprop="url">c++模板定义</a></h1>
+                <a class="post-title-link" href="/2018/09/01/c++-STL库函数bitset/" itemprop="url">c++STL库函数bitset</a></h1>
         
 
         <div class="post-meta">
@@ -933,8 +933,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T00:00:00+08:00">
-                2018-08-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T00:00:00+08:00">
+                2018-09-01
               </time>
             
 
@@ -974,8 +974,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/07/c++模板1-模板定义/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/07/c++模板1-模板定义/" itemprop="commentCount"></span>
+                <a href="/2018/09/01/c++-STL库函数bitset/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/01/c++-STL库函数bitset/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -983,7 +983,7 @@
 
           
           
-             <span id="/2018/08/07/c++模板1-模板定义/" class="leancloud_visitors" data-flag-title="c++模板定义">
+             <span id="/2018/09/01/c++-STL库函数bitset/" class="leancloud_visitors" data-flag-title="c++STL库函数bitset">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1009,7 +1009,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5.1k
+                  931
                 </span>
               
 
@@ -1025,7 +1025,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  20
+                  4
                 </span>
               
             </div>
@@ -1047,10 +1047,11 @@
 
       
         
-          <p>为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：</p>
+          <p><code>bitset</code>模板类由若干个位（<code>bit</code>）组成，它提供一些成员函数，使程序员不必通过位运算就能很方便地访问、修改其中的任意一位。<code>bitset</code> 模板类在头文件<code>&lt;bitset&gt;</code>中定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">size_t</span> N&gt;</span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">bitset</span></span></span><br><span class="line"><span class="class"> &#123;</span></span><br><span class="line">   ...</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/07/c++模板1-模板定义/" rel="contents">
+            <a class="btn" href="/2018/09/01/c++-STL库函数bitset/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1101,7 +1102,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/03/c++多态3-运行时类型识别(RTTI)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/28/c++-STL库函数string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1120,7 +1121,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" itemprop="url">c++运行时类型识别(RTTI)</a></h1>
+                <a class="post-title-link" href="/2018/08/28/c++-STL库函数string/" itemprop="url">c++STL库函数string</a></h1>
         
 
         <div class="post-meta">
@@ -1132,8 +1133,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T00:00:00+08:00">
-                2018-08-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T00:00:00+08:00">
+                2018-08-28
               </time>
             
 
@@ -1173,8 +1174,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/03/c++多态3-运行时类型识别(RTTI)/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" itemprop="commentCount"></span>
+                <a href="/2018/08/28/c++-STL库函数string/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/28/c++-STL库函数string/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1182,7 +1183,7 @@
 
           
           
-             <span id="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" class="leancloud_visitors" data-flag-title="c++运行时类型识别(RTTI)">
+             <span id="/2018/08/28/c++-STL库函数string/" class="leancloud_visitors" data-flag-title="c++STL库函数string">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1208,7 +1209,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.7k
+                  1.7k
                 </span>
               
 
@@ -1224,7 +1225,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  13
+                  7
                 </span>
               
             </div>
@@ -1246,10 +1247,11 @@
 
       
         
-          <h2 id="运行时类型识别-RTTI-机制精讲"><a href="#运行时类型识别-RTTI-机制精讲" class="headerlink" title="运行时类型识别(RTTI)机制精讲"></a>运行时类型识别(<code>RTTI</code>)机制精讲</h2><p>​    一般情况下，在编译期间就能确定一个表达式的类型，但是当存在多态时，有些表达式的类型在编译期间就无法确定了，必须等到程序运行后根据实际的环境来确定。下面的例子演示了这种情况：</p>
+          <h2 id="string容器"><a href="#string容器" class="headerlink" title="string容器"></a><code>string</code>容器</h2><h3 id="string容器基本概念"><a href="#string容器基本概念" class="headerlink" title="string容器基本概念"></a><code>string</code>容器基本概念</h3><p>​    <code>C</code>风格字符串(以空字符结尾的字符数组)太过复杂难于掌握，不适合大程序的开发，所以<code>C++</code>标准库定义了一种<code>string</code>类，定义在头文件<code>&lt;string&gt;</code>。</p>
+<p>​    <code>string</code>类是 <code>STL</code>中<code>basic_string</code>模板实例化得到的模板类。其定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> basic_string &lt;<span class="keyword">char</span>&gt; <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/08/03/c++多态3-运行时类型识别(RTTI)/" rel="contents">
+            <a class="btn" href="/2018/08/28/c++-STL库函数string/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1300,7 +1302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/28/c++多态2-typeid运算符：获取类型信息/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/26/c++-STL库函数stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1319,7 +1321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" itemprop="url">c++typpeid运算符：获取类型信息</a></h1>
+                <a class="post-title-link" href="/2018/08/26/c++-STL库函数stack/" itemprop="url">c++STL库函数stack</a></h1>
         
 
         <div class="post-meta">
@@ -1331,8 +1333,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T00:00:00+08:00">
-                2018-07-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T00:00:00+08:00">
+                2018-08-26
               </time>
             
 
@@ -1372,8 +1374,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/28/c++多态2-typeid运算符：获取类型信息/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" itemprop="commentCount"></span>
+                <a href="/2018/08/26/c++-STL库函数stack/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/26/c++-STL库函数stack/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1381,7 +1383,7 @@
 
           
           
-             <span id="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" class="leancloud_visitors" data-flag-title="c++typpeid运算符：获取类型信息">
+             <span id="/2018/08/26/c++-STL库函数stack/" class="leancloud_visitors" data-flag-title="c++STL库函数stack">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1407,7 +1409,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.9k
+                  582
                 </span>
               
 
@@ -1423,7 +1425,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  2
                 </span>
               
             </div>
@@ -1445,14 +1447,10 @@
 
       
         
-          <h2 id="typeid运算符：获取类型信息"><a href="#typeid运算符：获取类型信息" class="headerlink" title="typeid运算符：获取类型信息"></a><code>typeid</code>运算符：获取类型信息</h2><p>​    <code>typeid</code>运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：</p>
-<ul>
-<li>对于基本类型（<code>int</code>、<code>float</code> 等<code>C++</code>内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。</li>
-<li>对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。</li>
-</ul>
+          <h2 id="stack容器"><a href="#stack容器" class="headerlink" title="stack容器"></a><code>stack</code>容器</h2><h3 id="stack容器基本概念"><a href="#stack容器基本概念" class="headerlink" title="stack容器基本概念"></a><code>stack</code>容器基本概念</h3><p>​    <code>stack</code>是一种先进后出(<code>First In Last Out</code>，<code>FILO</code>)的数据结构，它只有一个出口，形式如图所示。stack容器允许新增元素，移除元素，取得栈顶元素，但是除了最顶端外，没有任何其他方法可以存取<code>stack</code>的其他元素。换言之，<code>stack</code>不允许有遍历行为。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/28/c++多态2-typeid运算符：获取类型信息/" rel="contents">
+            <a class="btn" href="/2018/08/26/c++-STL库函数stack/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1503,7 +1501,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/25/c++多态1-虚函数和纯虚函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/c++-STL库函数queue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1522,7 +1520,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/25/c++多态1-虚函数和纯虚函数/" itemprop="url">c++虚函数和纯虚函数</a></h1>
+                <a class="post-title-link" href="/2018/08/25/c++-STL库函数queue/" itemprop="url">c++STL库函数queue</a></h1>
         
 
         <div class="post-meta">
@@ -1534,8 +1532,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-25T00:00:00+08:00">
-                2018-07-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T00:00:00+08:00">
+                2018-08-25
               </time>
             
 
@@ -1575,8 +1573,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/25/c++多态1-虚函数和纯虚函数/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/25/c++多态1-虚函数和纯虚函数/" itemprop="commentCount"></span>
+                <a href="/2018/08/25/c++-STL库函数queue/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/25/c++-STL库函数queue/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1584,7 +1582,7 @@
 
           
           
-             <span id="/2018/07/25/c++多态1-虚函数和纯虚函数/" class="leancloud_visitors" data-flag-title="c++虚函数和纯虚函数">
+             <span id="/2018/08/25/c++-STL库函数queue/" class="leancloud_visitors" data-flag-title="c++STL库函数queue">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1610,7 +1608,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6.9k
+                  840
                 </span>
               
 
@@ -1626,7 +1624,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  28
+                  3
                 </span>
               
             </div>
@@ -1648,10 +1646,10 @@
 
       
         
-          <p>  有了虚函数，基类指针指向基类对象时就使用基类的成员（包括成员函数和成员变量），指向派生类对象时就使用派生类的成员。换句话说，基类指针可以按照基类的方式来做事，也可以按照派生类的方式来做事，它有多种形态，或者说有多种表现方式，我们将这种现象称为<strong>多态（<code>Polymorphism</code>）</strong>。</p>
+          <h2 id="queue-priority-queue容器"><a href="#queue-priority-queue容器" class="headerlink" title="queue/priority_queue容器"></a><code>queue/priority_queue</code>容器</h2><h3 id="queue容器基本概念"><a href="#queue容器基本概念" class="headerlink" title="queue容器基本概念"></a><code>queue</code>容器基本概念</h3><p>​    <code>queue</code>就是“队列”。队列是先进先出的，和排队类似。队头的访问和删除操作只能在队头进行，添加操作只能在队尾进行。不能访问队列中间的元素。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/25/c++多态1-虚函数和纯虚函数/" rel="contents">
+            <a class="btn" href="/2018/08/25/c++-STL库函数queue/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1702,7 +1700,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/c++封装7-拷贝控制操作/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/c++-STL库函数list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1721,7 +1719,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/23/c++封装7-拷贝控制操作/" itemprop="url">c++拷贝控制操作</a></h1>
+                <a class="post-title-link" href="/2018/08/22/c++-STL库函数list/" itemprop="url">c++STL库函数list</a></h1>
         
 
         <div class="post-meta">
@@ -1733,8 +1731,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T00:00:00+08:00">
-                2018-07-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T00:00:00+08:00">
+                2018-08-22
               </time>
             
 
@@ -1774,8 +1772,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/23/c++封装7-拷贝控制操作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/23/c++封装7-拷贝控制操作/" itemprop="commentCount"></span>
+                <a href="/2018/08/22/c++-STL库函数list/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/22/c++-STL库函数list/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1783,7 +1781,7 @@
 
           
           
-             <span id="/2018/07/23/c++封装7-拷贝控制操作/" class="leancloud_visitors" data-flag-title="c++拷贝控制操作">
+             <span id="/2018/08/22/c++-STL库函数list/" class="leancloud_visitors" data-flag-title="c++STL库函数list">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1809,7 +1807,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  9.3k
+                  2.5k
                 </span>
               
 
@@ -1825,7 +1823,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  36
+                  10
                 </span>
               
             </div>
@@ -1847,10 +1845,11 @@
 
       
         
-          <p>  当定义一个类时，我们显式地或隐式地指定了此类型的对象在拷贝、赋值和销毁时做什么。一个类通过定义三种特殊的成员函数来控制这些操作，分别是拷贝构造函数、赋值运算符和析构函数。<br>  拷贝构造函数定义了当用同类型的另一个对象初始化新对象时做什么，赋值运算符定义了将一个对象赋予同类型的另一个对象时做什么，析构函数定义了此类型的对象销毁时做什么。我们将这些操作称为拷贝控制操作。 </p>
+          <h2 id="list容器"><a href="#list容器" class="headerlink" title="list容器"></a><code>list</code>容器</h2><h3 id="list容器基本概念"><a href="#list容器基本概念" class="headerlink" title="list容器基本概念"></a><code>list</code>容器基本概念</h3><p>​    链表是一种物理存储单元上非连续、非顺序的存储结构，数据元素的逻辑顺序是通过链表中的指针链接次序实现的。链表由一系列结点（链表中每一个元素称为结点）组成，结点可以在运行时动态生成。每个结点包括两个部分：一个是存储数据元素的数据域，另一个是存储下一个结点地址的指针域。</p>
+<p>​    相较于<code>vector</code>的连续线性空间，<code>list</code>就显得负责许多，它的好处是每次插入或者删除一个元素，就是配置或者释放一个元素的空间。因此，<code>list</code>对于空间的运用有绝对的精准，一点也不浪费。而且，对于任何位置的元素插入或元素的移除，<code>list</code>永远是常数时间。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/23/c++封装7-拷贝控制操作/" rel="contents">
+            <a class="btn" href="/2018/08/22/c++-STL库函数list/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1901,7 +1900,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/20/c++封装6-重载/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/20/c++-STL库函数deque/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1920,7 +1919,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/20/c++封装6-重载/" itemprop="url">c++重载</a></h1>
+                <a class="post-title-link" href="/2018/08/20/c++-STL库函数deque/" itemprop="url">c++STL库函数deque</a></h1>
         
 
         <div class="post-meta">
@@ -1932,8 +1931,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T00:00:00+08:00">
-                2018-07-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
+                2018-08-20
               </time>
             
 
@@ -1973,8 +1972,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/20/c++封装6-重载/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/20/c++封装6-重载/" itemprop="commentCount"></span>
+                <a href="/2018/08/20/c++-STL库函数deque/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/20/c++-STL库函数deque/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1982,7 +1981,7 @@
 
           
           
-             <span id="/2018/07/20/c++封装6-重载/" class="leancloud_visitors" data-flag-title="c++重载">
+             <span id="/2018/08/20/c++-STL库函数deque/" class="leancloud_visitors" data-flag-title="c++STL库函数deque">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2008,7 +2007,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  7.4k
+                  1.4k
                 </span>
               
 
@@ -2024,7 +2023,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  32
+                  5
                 </span>
               
             </div>
@@ -2046,10 +2045,10 @@
 
       
         
-          <p>  所谓重载，就是赋予新的含义。<strong>函数重载（<code>Function Overloading</code>）</strong>可以让一个函数名有多种功能，在不同情况下进行不同的操作。<strong>运算符重载（<code>Operator Overloading</code>）</strong>也是一个道理，同一个运算符可以有不同的功能。函数重载的目的就是为了方便的使用函数名。</p>
+          <h2 id="deque容器"><a href="#deque容器" class="headerlink" title="deque容器"></a><code>deque</code>容器</h2><h3 id="deque容器基本概念"><a href="#deque容器基本概念" class="headerlink" title="deque容器基本概念"></a><code>deque</code>容器基本概念</h3><p>​    <code>vector</code>容器是单向开口的连续内存空间，<code>deque</code>则是一种双向开口的连续线性空间。所谓的双向开口，意思是可以在头尾两端分别做元素的插入和删除操作，当然，<code>vector</code>容器也可以在头尾两端插入元素，但是在其头部操作效率奇差，无法被接受。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/20/c++封装6-重载/" rel="contents">
+            <a class="btn" href="/2018/08/20/c++-STL库函数deque/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2100,7 +2099,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/15/c++封装5-构造和析构/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/18/c++-STL库函数vector/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -2119,7 +2118,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/15/c++封装5-构造和析构/" itemprop="url">c++构造和析构</a></h1>
+                <a class="post-title-link" href="/2018/08/18/c++-STL库函数vector/" itemprop="url">c++STL库函数vector</a></h1>
         
 
         <div class="post-meta">
@@ -2131,8 +2130,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T00:00:00+08:00">
-                2018-07-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-18T00:00:00+08:00">
+                2018-08-18
               </time>
             
 
@@ -2172,8 +2171,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/15/c++封装5-构造和析构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/15/c++封装5-构造和析构/" itemprop="commentCount"></span>
+                <a href="/2018/08/18/c++-STL库函数vector/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/18/c++-STL库函数vector/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2181,7 +2180,7 @@
 
           
           
-             <span id="/2018/07/15/c++封装5-构造和析构/" class="leancloud_visitors" data-flag-title="c++构造和析构">
+             <span id="/2018/08/18/c++-STL库函数vector/" class="leancloud_visitors" data-flag-title="c++STL库函数vector">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2207,7 +2206,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  9.2k
+                  2.3k
                 </span>
               
 
@@ -2223,7 +2222,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  36
+                  9
                 </span>
               
             </div>
@@ -2245,11 +2244,12 @@
 
       
         
-          <p>  对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。<code>c++</code>为了给我们提供这种问题的解决方案，<strong>构造函数</strong>和<strong>析构函数</strong>，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。</p>
-<p>​    <strong>无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也会给你增加默认的操作，只是这个默认初始化操作不会做任何事，所以编写类就应该顺便提供初始化函数。</strong></p>
+          <h2 id="vector容器"><a href="#vector容器" class="headerlink" title="vector容器"></a><code>vector</code>容器</h2><h3 id="2-1-vector容器基本概念"><a href="#2-1-vector容器基本概念" class="headerlink" title="2.1 vector容器基本概念"></a>2.1 <code>vector</code>容器基本概念</h3><p>​    <code>vector</code>的数据安排以及操作方式，与<code>array</code>非常相似，两者的唯一差别在于空间的运用的灵活性。</p>
+<p>​    <code>Array</code>是静态空间，一旦配置了就不能改变，要换大一点或者小一点的空间，可以，一切琐碎得由自己来，首先配置一块新的空间，然后将旧空间的数据搬往新空间，再释放原来的空间。</p>
+<p>​    <code>Vector</code>是动态空间，随着元素的加入，它的内部机制会自动扩充空间以容纳新元素。因此<code>vector</code>的运用对于内存的合理利用与运用的灵活性有很大的帮助，我们再也不必害怕空间不足而一开始就要求一个大块头的<code>array</code>了。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/07/15/c++封装5-构造和析构/" rel="contents">
+            <a class="btn" href="/2018/08/18/c++-STL库函数vector/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2291,7 +2291,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2339,7 +2339,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2350,7 +2350,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2361,7 +2361,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

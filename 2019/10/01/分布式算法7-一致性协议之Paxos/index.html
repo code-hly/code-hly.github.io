@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式算法,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Paxos是什么 ​    Paxos算法是基于消息传递且具有高度容错特性的一致性算法，是目前公认的解决分布式一致性问题最有效的算法之一。  ​    Google Chubby的作者Mike Burrows说过这个世界上只有一种一致性算法，那就是Paxos，其它的算法都是残次品。虽然Mike  Burrows说得有点夸张，但是至少说明了Paxos算法的地位。然而，Paxos算法也因为晦涩难懂而臭">
+<meta name="keywords" content="分布式算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式算法7-一致性协议之Paxos">
+<meta property="og:url" content="http://yoursite.com/2019/10/01/分布式算法7-一致性协议之Paxos/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="Paxos是什么 ​    Paxos算法是基于消息传递且具有高度容错特性的一致性算法，是目前公认的解决分布式一致性问题最有效的算法之一。  ​    Google Chubby的作者Mike Burrows说过这个世界上只有一种一致性算法，那就是Paxos，其它的算法都是残次品。虽然Mike  Burrows说得有点夸张，但是至少说明了Paxos算法的地位。然而，Paxos算法也因为晦涩难懂而臭">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185850.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185851.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185852.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185853.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185854.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185855.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185856.jpg">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185857.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185858.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185859.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185900.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185901.png">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185902.png">
+<meta property="og:updated_time" content="2020-11-16T04:52:49.298Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式算法7-一致性协议之Paxos">
+<meta name="twitter:description" content="Paxos是什么 ​    Paxos算法是基于消息传递且具有高度容错特性的一致性算法，是目前公认的解决分布式一致性问题最有效的算法之一。  ​    Google Chubby的作者Mike Burrows说过这个世界上只有一种一致性算法，那就是Paxos，其它的算法都是残次品。虽然Mike  Burrows说得有点夸张，但是至少说明了Paxos算法的地位。然而，Paxos算法也因为晦涩难懂而臭">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185850.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/01/分布式算法7-一致性协议之Paxos/">
+
+
+
+
+
+  <title>分布式算法7-一致性协议之Paxos | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/01/分布式算法7-一致性协议之Paxos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式算法7-一致性协议之Paxos</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-01T17:11:02+08:00">
+                2019-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式算法/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/01/分布式算法7-一致性协议之Paxos/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/01/分布式算法7-一致性协议之Paxos/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/01/分布式算法7-一致性协议之Paxos/" class="leancloud_visitors" data-flag-title="分布式算法7-一致性协议之Paxos">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.5k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Paxos是什么"><a href="#Paxos是什么" class="headerlink" title="Paxos是什么"></a><code>Paxos</code>是什么</h2><blockquote>
+<p>​    <code>Paxos</code>算法是基于<strong>消息传递</strong>且具有<strong>高度容错特性</strong>的<strong>一致性算法</strong>，是目前公认的解决<strong>分布式一致性</strong>问题最有效的算法之一。</p>
+</blockquote>
+<p>​    <code>Google Chubby</code>的作者<code>Mike Burrows</code>说过这个世界上只有一种一致性算法，那就是<strong><code>Paxos</code></strong>，其它的算法都是<strong>残次品</strong>。虽然<code>Mike  Burrows</code>说得有点夸张，但是至少说明了<code>Paxos</code>算法的地位。然而，<code>Paxos</code>算法也因为晦涩难懂而臭名昭著。</p>
+<a id="more"></a>
+<h2 id="问题产生的背景"><a href="#问题产生的背景" class="headerlink" title="问题产生的背景"></a>问题产生的背景</h2><p>​    在常见的分布式系统中，总会发生诸如<strong>机器宕机</strong>或<strong>网络异常</strong>（包括消息的延迟、丢失、重复、乱序，还有网络分区）等情况。<code>Paxos</code>算法需要解决的问题就是如何在一个可能发生上述异常的分布式系统中，快速且正确地在集群内部对<strong>某个数据的值</strong>达成<strong>一致</strong>，并且保证不论发生以上任何异常，都不会破坏整个系统的一致性。</p>
+<blockquote>
+<p>注：这里<strong>某个数据的值</strong>并不只是狭义上的某个数，它可以是一条日志，也可以是一条命令（<code>command</code>）。。。根据应用场景不同，<strong>某个数据的值</strong>有不同的含义。</p>
+</blockquote>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185850.png" alt="问题产生的背景"></p>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p>在<code>Paxos</code>算法中，有三种角色：</p>
+<ul>
+<li><strong><code>Client</code></strong>：客户端，发起请求并等待返回。</li>
+</ul>
+<ul>
+<li><strong><code>Proposer</code>（提案者）</strong>：处理客户端请求，将客户端的请求发送到集群中，以便决定这个值是否可以被批准。</li>
+<li><strong><code>Acceptor</code>（接受者）</strong>：负责处理接收到的提议，他们的回复就是一次投票。会存储一些状态来决定是否接收一个值。</li>
+<li><strong><code>Learners</code>（学习者）</strong>：当有同一个<code>value</code>的协议被超过一半的<code>Acceptor</code>采纳并发送消息给<code>Learners</code>时，<code>Learners</code>采纳该协议值。</li>
+<li><strong><code>Leader</code></strong>：一个特殊的<code>Proposer</code>。</li>
+</ul>
+<p>在具体的实现中，一个进程可能<strong>同时充当多种角色</strong>。比如一个进程可能<strong>既是<code>Proposer</code>又是<code>Acceptor</code>又是<code>Learner</code></strong>。还有一个很重要的概念叫<strong>提案（<code>Proposal</code>）</strong>。最终要达成一致的<code>value</code>就在提案里。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<ul>
+<li><strong>暂且</strong>认为『<strong>提案=value</strong>』，即提案只包含<code>value</code>。在我们接下来的推导过程中会发现如果提案只包含<code>value</code>，会有问题，于是我们再对提案<strong>重新设计</strong>。</li>
+<li><strong>暂且</strong>认为『<strong><code>Proposer</code>可以直接提出提案</strong>』。在我们接下来的推导过程中会发现如果<code>Proposer</code>直接提出提案会有问题，需要增加一个学习提案的过程。</li>
+</ul>
+</blockquote>
+<p>​    <code>Proposer</code>可以提出（<code>propose</code>）提案；<code>Acceptor</code>可以接受（<code>accept</code>）提案；如果某个提案被选定（<code>chosen</code>），那么该提案里的<code>value</code>就被选定了。</p>
+<p>​    回到刚刚说的『对某个数据的值达成一致』，指的是<code>Proposer</code>、<code>Acceptor</code>、<code>Learner</code>都认为同一个<code>value</code>被选定（<code>chosen</code>）。那么，<code>Proposer</code>、<code>Acceptor</code>、<code>Learner</code>分别在什么情况下才能认为某个<code>value</code>被选定呢？</p>
+<ul>
+<li><code>Proposer</code>：只要<code>Proposer</code>发的提案被<code>Acceptor</code>接受（刚开始先认为只需要一个<code>Acceptor</code>接受即可，在推导过程中会发现需要半数以上的<code>Acceptor</code>同意才行），<code>Proposer</code>就认为该提案里的<code>value</code>被选定了。</li>
+<li><code>Acceptor</code>：只要<code>Acceptor</code>接受了某个提案，<code>Acceptor</code>就任务该提案里的<code>value</code>被选定了。</li>
+<li><code>Learner</code>：<code>Acceptor</code>告诉<code>Learner</code>哪个<code>value</code>被选定，<code>Learner</code>就认为那个<code>value</code>被选定。</li>
+</ul>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185851.png" alt="相关概念"></p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>​    假设有一组可以<strong>提出（<code>propose</code>）<code>value</code></strong>（<code>value</code>在提案<code>Proposal</code>里）的<strong>进程集合</strong>。一个一致性算法需要保证提出的这么多<code>value</code>中，<strong>只有一个</strong><code>value</code>被选定（<code>chosen</code>）。如果没有<code>value</code>被提出，就不应该有<code>value</code>被选定。如果一个<code>value</code>被选定，那么所有进程都应该能<strong>学习（<code>learn</code>）</strong>到这个被选定的<code>value</code>。对于一致性算法，<strong>安全性（<code>safaty</code>）</strong>要求如下：</p>
+<ul>
+<li>只有被提出的<code>value</code>才能被选定。</li>
+<li>只有一个<code>value</code>被选定。</li>
+<li>如果某个进程认为某个<code>value</code>被选定了，那么这个<code>value</code>必须是真的被选定的那个。</li>
+</ul>
+<p>我们不去精确地定义其<strong>活性（<code>liveness</code>）</strong>要求。我们的目标是保证<strong>最终有一个提出的<code>value</code>被选定</strong>。当一个<code>value</code>被选定后，进程最终也能学习到这个<code>value</code>。</p>
+<blockquote>
+<p><code>Paxos</code>的目标：保证最终有一个<code>value</code>会被选定，当<code>value</code>被选定后，进程最终也能获取到被选定的<code>value</code>。</p>
+</blockquote>
+<p>假设不同角色之间可以通过发送消息来进行通信，那么：</p>
+<ul>
+<li>每个角色以任意的速度执行，可能因出错而停止，也可能会重启。一个<code>value</code>被选定后，所有的角色可能失败然后重启，除非那些失败后重启的角色能记录某些信息，否则等他们重启后无法确定被选定的值。</li>
+<li>消息在传递过程中可能出现任意时长的延迟，可能会重复，也可能丢失。但是消息不会被损坏，即消息内容不会被篡改（拜占庭将军问题）。</li>
+</ul>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><h3 id="最简单的方案—只有一个Acceptor"><a href="#最简单的方案—只有一个Acceptor" class="headerlink" title="最简单的方案—只有一个Acceptor"></a>最简单的方案—只有一个<code>Acceptor</code></h3><p>​    假设只有一个<code>Acceptor</code>（可以有多个<code>Proposer</code>），只要<code>Acceptor</code>接受它收到的第一个提案，则该提案被选定，该提案里的<code>value</code>就是被选定的<code>value</code>。这样就保证只有一个<code>value</code>会被选定。</p>
+<p>​    但是，如果这个唯一的<code>Acceptor</code>宕机了，那么整个系统就<strong>无法工作</strong>了！</p>
+<p>​    因此，必须要有<strong>多个<code>Acceptor</code></strong>！</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185852.png" alt="只有一个Acceptor"></p>
+<h3 id="多个Acceptor"><a href="#多个Acceptor" class="headerlink" title="多个Acceptor"></a>多个<code>Acceptor</code></h3><p>多个<code>Acceptor</code>的情况如下图。那么，如何保证在多个<code>Proposer</code>和多个<code>Acceptor</code>的情况下选定一个<code>value</code>呢？</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185853.png" alt="多个Acceptor"></p>
+<p>下面开始寻找解决方案。</p>
+<p>​    如果我们希望即使只有一个<code>Proposer</code>提出了一个<code>value</code>，该<code>value</code>也最终被选定。</p>
+<p>​    那么，就得到下面的约束：</p>
+<blockquote>
+<p><code>P1</code>：一个<code>Acceptor</code>必须接受它收到的第一个提案。</p>
+</blockquote>
+<p>​    但是，这又会引出另一个问题：如果每个<code>Proposer</code>分别提出不同的<code>value</code>，发给不同的<code>Acceptor</code>。根据<code>P1</code>，<code>Acceptor</code>分别接受自己收到的<code>value</code>，就导致不同的<code>value</code>被选定。出现了不一致。如下图：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185854.png" alt="幻灯片08.png"></p>
+<p>​    刚刚是因为『一个提案只要被一个<code>Acceptor</code>接受，则该提案的<code>value</code>就被选定了』才导致了出现上面不一致的问题。因此，我们需要加一个规定：</p>
+<blockquote>
+<p>规定：一个提案被选定需要被<strong>半数以上</strong>的<code>Acceptor</code>接受</p>
+</blockquote>
+<p>​    这个规定又暗示了：『一个<code>Acceptor</code>必须能够接受不止一个提案！』不然可能导致最终没有<code>value</code>被选定。比如上图的情况。<code>v1</code>、<code>v2</code>、<code>v3</code>都没有被选定，因为它们都只被一个<code>Acceptor</code>的接受。</p>
+<p>​    最开始讲的『<strong>提案=<code>value</code></strong>』已经不能满足需求了，于是重新设计提案，给每个提案加上一个提案编号，表示提案被提出的顺序。令『<strong>提案=提案编号+<code>value</code></strong>』。</p>
+<p>​    虽然允许多个提案被选定，但必须保证所有被选定的提案都具有相同的<code>value</code>值。否则又会出现不一致。</p>
+<p>于是有了下面的约束：</p>
+<blockquote>
+<p><code>P2</code>：如果某个<code>value</code>为<code>v</code>的提案被选定了，那么每个编号更高的被选定提案的<code>value</code>必须也是<code>v</code>。</p>
+</blockquote>
+<p>​    一个提案只有被<code>Acceptor</code>接受才可能被选定，因此我们可以把<code>P2</code>约束改写成对<code>Acceptor</code>接受的提案的约束<code>P2a</code>。</p>
+<blockquote>
+<p><code>P2a</code>：如果某个<code>value</code>为<code>v</code>的提案被选定了，那么每个编号更高的被<code>Acceptor</code>接受的提案的<code>value</code>必须也是<code>v</code>。</p>
+</blockquote>
+<p>​    只要满足了<code>P2a</code>，就能满足<code>P2</code>。</p>
+<p>​    但是，考虑如下的情况：假设总的有<code>5</code>个<code>Acceptor</code>。<code>Proposer2</code>提出<code>[M1,V1]</code>的提案，<code>Acceptor2~5</code>（半数以上）均接受了该提案，于是对于<code>Acceptor2~5</code>和<code>Proposer2</code>来讲，它们都认为<code>V1</code>被选定。<code>Acceptor1</code>刚刚从宕机状态恢复过来（之前<code>Acceptor1</code>没有收到过任何提案），此时<code>Proposer1</code>向<code>Acceptor1</code>发送了<code>[M2,V2]</code>的提案（<code>V2≠V1</code>且<code>M2&gt;M1</code>），对于<code>Acceptor1</code>来讲，这是它收到的第一个提案。根据<code>P1</code>（一个<code>Acceptor</code>必须接受它收到的第一个提案。），<code>Acceptor1</code>必须接受该提案！同时<code>Acceptor1</code>认为<code>V2</code>被选定。这就出现了两个问题：</p>
+<ol>
+<li><code>Acceptor1</code>认为<code>V2</code>被选定，<code>Acceptor2~5</code>和<code>Proposer2</code>认为<code>V1</code>被选定。出现了不一致。</li>
+<li><code>V1</code>被选定了，但是编号更高的被<code>Acceptor1</code>接受的提案<code>[M2,V2]</code>的<code>value</code>为<code>V2</code>，且<code>V2≠V1</code>。这就跟<code>P2a</code>（如果某个<code>value</code>为<code>v</code>的提案被选定了，那么每个编号更高的被<code>Acceptor</code>接受的提案的<code>value</code>必须也是<code>v</code>）矛盾了。</li>
+</ol>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185855.png" alt="幻灯片10.png"></p>
+<p>​    所以我们要对<code>P2a</code>约束进行强化！</p>
+<p>​    <code>P2a</code>是对<code>Acceptor</code>接受的提案约束，但其实提案是<code>Proposer</code>提出来的，所有我们可以对<code>Proposer</code>提出的提案进行约束。得到<code>P2b</code>：</p>
+<blockquote>
+<p><code>P2b</code>：如果某个<code>value</code>为<code>v</code>的提案被选定了，那么之后任何<code>Proposer</code>提出的编号更高的提案的<code>value</code>必须也是<code>v</code>。</p>
+</blockquote>
+<p>​    由<code>P2b</code>可以推出<code>P2a</code>进而推出<code>P2</code>。</p>
+<p>​    那么，如何确保在某个<code>value</code>为<code>v</code>的提案被选定后，<code>Proposer</code>提出的编号更高的提案的<code>value</code>都是<code>v</code>呢？</p>
+<p>​    只要满足<code>P2c</code>即可：</p>
+<blockquote>
+<p><code>P2c</code>：对于任意的<code>N</code>和<code>V</code>，如果提案<code>[N, V]</code>被提出，那么存在一个半数以上的<code>Acceptor</code>组成的集合<code>S</code>，满足以下两个条件中的任意一个：</p>
+<ul>
+<li><code>S</code>中每个<code>Acceptor</code>都没有接受过编号小于<code>N</code>的提案。</li>
+<li><code>S</code>中<code>Acceptor</code>接受过的最大编号的提案的<code>value</code>为<code>V</code>。</li>
+</ul>
+</blockquote>
+<h3 id="Proposer生成提案"><a href="#Proposer生成提案" class="headerlink" title="Proposer生成提案"></a><code>Proposer</code>生成提案</h3><p>​    为了满足<code>P2b</code>，这里有个比较重要的思想：<code>Proposer</code>生成提案之前，应该先去<strong>『学习』</strong>已经被选定或者可能被选定的<code>value</code>，然后以该<code>value</code>作为自己提出的提案的<code>value</code>。如果没有<code>value</code>被选定，<code>Proposer</code>才可以自己决定<code>value</code>的值。这样才能达成一致。这个学习的阶段是通过一个<strong>『<code>Prepare</code>请求』</strong>实现的。</p>
+<p>于是我们得到了如下的<strong>提案生成算法</strong>：</p>
+<ol>
+<li><p><code>Proposer</code>选择一个<strong>新的提案编号<code>N</code></strong>，然后向<strong>某个<code>Acceptor</code>集合</strong>（半数以上）发送请求，要求该集合中的每个<code>Acceptor</code>做出如下响应（<code>response</code>）。<br> (a) 向<code>Proposer</code>承诺保证<strong>不再接受</strong>任何编号<strong>小于<code>N</code>的提案</strong>。<br> (b) 如果<code>Acceptor</code>已经接受过提案，那么就向<code>Proposer</code>响应<strong>已经接受过</strong>的编号小于<code>N</code>的<strong>最大编号的提案</strong>。</p>
+<p>我们将该请求称为<strong>编号为<code>N</code></strong>的<strong><code>Prepare</code>请求</strong>。</p>
+</li>
+<li><p>如果<code>Proposer</code>收到了<strong>半数以上</strong>的<code>Acceptor</code>的<strong>响应</strong>，那么它就可以生成编号为<code>N</code>，<code>Value</code>为<code>V</code>的<strong>提案<code>[N,V]</code></strong>。这里的<code>V</code>是所有的响应中<strong>编号最大的提案的<code>Value</code></strong>。如果所有的响应中<strong>都没有提案</strong>，那 么此时<code>V</code>就可以由<code>Proposer</code><strong>自己选择</strong>。<br> 生成提案后，<code>Proposer</code>将该<strong>提案</strong>发送给<strong>半数以上</strong>的<code>Acceptor</code>集合，并期望这些<code>Acceptor</code>能接受该提案。我们称该请求为<strong><code>Accept</code>请求</strong>。（注意：此时接受<code>Accept</code>请求的<code>Acceptor</code>集合<strong>不一定</strong>是之前响应<code>Prepare</code>请求的<code>Acceptor</code>集合）</p>
+</li>
+</ol>
+<h3 id="Acceptor接受提案"><a href="#Acceptor接受提案" class="headerlink" title="Acceptor接受提案"></a><code>Acceptor</code>接受提案</h3><p>​    <code>Acceptor</code><strong>可以忽略任何请求</strong>（包括<code>Prepare</code>请求和<code>Accept</code>请求）而不用担心破坏算法的<strong>安全性</strong>。因此，我们这里要讨论的是什么时候<code>Acceptor</code>可以响应一个请求。</p>
+<p>​    我们对<code>Acceptor</code>接受提案给出如下约束：</p>
+<blockquote>
+<p><code>P1a</code>：一个<code>Acceptor</code>只要尚<strong>未响应过</strong>任何<strong>编号大于<code>N</code></strong>的<strong><code>Prepare</code>请求</strong>，那么他就可以<strong>接受</strong>这个<strong>编号为<code>N</code>的提案</strong>。</p>
+</blockquote>
+<p>​    如果<code>Acceptor</code>收到一个编号为<code>N</code>的<code>Prepare</code>请求，在此之前它已经响应过编号大于<code>N</code>的<code>Prepare</code>请求。根据<code>P1a</code>，该<code>Acceptor</code>不可能接受编号为<code>N</code>的提案。因此，该<code>Acceptor</code>可以忽略编号为<code>N</code>的<code>Prepare</code>请求。当然，也可以回复一个<code>error</code>，让<code>Proposer</code>尽早知道自己的提案不会被接受。</p>
+<p>​    因此，一个<code>Acceptor</code><strong>只需记住</strong>：1. 已接受的编号最大的提案；2. 已响应的请求的最大编号。</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185856.jpg" alt="小优化"></p>
+<h3 id="Paxos算法描述"><a href="#Paxos算法描述" class="headerlink" title="Paxos算法描述"></a><code>Paxos</code>算法描述</h3><p>​    经过上面的推导，我们总结下<code>Paxos</code>算法的流程。<code>Paxos</code>算法分为<strong>两个阶段</strong>，是一个个经典<strong>两阶段提交（<code>2PC</code>）</strong>。会经历<code>Prepare-&gt;Promise-&gt;Propose-&gt;Accept</code>四个阶段信息的交互。具体如下：</p>
+<h4 id="阶段一"><a href="#阶段一" class="headerlink" title="阶段一"></a>阶段一</h4><p>​    (a) <code>Proposer</code>选择一个<strong>提案编号<code>N</code></strong>，然后向<strong>半数以上</strong>的<code>Acceptor</code>发送编号为<code>N</code>的<strong><code>Prepare</code>请求</strong>。</p>
+<p>​    (b) 如果一个<code>Acceptor</code>收到一个编号为<code>N</code>的<code>Prepare</code>请求，且<code>N</code><strong>大于</strong>该<code>Acceptor</code>已经<strong>响应过的</strong>所有<strong><code>Prepare</code>请求</strong>的编号，那么它就会将它已经<strong>接受过的编号最大的提案（如果有的话）</strong>作为响应反馈给<code>Proposer</code>，同时该<code>Acceptor</code>承诺<strong>不再接受</strong>任何<strong>编号小于<code>N</code>的提案</strong>。</p>
+<h4 id="阶段二"><a href="#阶段二" class="headerlink" title="阶段二"></a>阶段二</h4><p>​    (a) 如果<code>Proposer</code>收到<strong>半数以上</strong><code>Acceptor</code>对其发出的编号为<code>N</code>的<code>Prepare</code>请求的<strong>响应</strong>，那么它就会发送一个针对<strong><code>[N,V]</code>提案</strong>的<strong><code>Accept</code>请求</strong>给<strong>半数以上</strong>的<code>Acceptor</code>。注意：<code>V</code>就是收到的<strong>响应</strong>中<strong>编号最大的提案的<code>value</code></strong>，如果响应中<strong>不包含任何提案</strong>，那么<code>V</code>就由<code>Proposer</code><strong>自己决定</strong>。</p>
+<p>​        (b) 如果<code>Acceptor</code>收到一个针对编号为<code>N</code>的提案的<code>Accept</code>请求，只要该<code>Acceptor</code><strong>没有</strong>对编号<strong>大于<code>N</code></strong>的<strong><code>Prepare</code>请求</strong>做出过<strong>响应</strong>，它就<strong>接受该提案</strong>。</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185857.png" alt="Paxos算法流程"></p>
+<p>例如，以下五个节点的提案过程变化如下</p>
+<ul>
+<li><code>S1</code>首先发起<code>accept(1,red)</code>，并在<code>S1</code>,<code>S2</code>和<code>S3</code>达成多数派，<code>red</code>在<code>S1</code>，<code>S2</code>和<code>S3</code>上持久化</li>
+<li>随后<code>S5</code>发起提案<code>(5,blue)</code>，在<code>S3</code>，<code>S4</code>和<code>S5</code>达成多数派，但是<code>S5</code>在第二阶段时会受到<code>S3</code>发送的<code>response</code>信息，其中包含提案信息<code>(1,red)</code>，则<code>S5</code>最终会<code>accept(5,red)</code>的提案信息给<code>accepter</code>。最终<code>red</code>在<code>S3</code>，<code>S4</code>和<code>S5</code>持久化。</li>
+</ul>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185858.png" alt="img"></p>
+<h2 id="Learner学习被选定的value"><a href="#Learner学习被选定的value" class="headerlink" title="Learner学习被选定的value"></a><code>Learner</code>学习被选定的<code>value</code></h2><p><code>Learner</code>学习（获取）被选定的<code>value</code>有如下三种方案：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185859.png" alt="幻灯片17.png"></p>
+<h2 id="如何保证Paxos算法的活性"><a href="#如何保证Paxos算法的活性" class="headerlink" title="如何保证Paxos算法的活性"></a>如何保证<code>Paxos</code>算法的活性</h2><p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185900.png" alt="幻灯片18.png"></p>
+<p>​    通过选取<strong>主<code>Proposer</code></strong>，就可以保证<code>Paxos</code>算法的活性。<code>Paxos</code>中<code>leader Proposer</code>用于避免活锁(例如<code>4</code>个<code>Proposer</code>，<code>2</code>个提议<code>A</code>，<code>2</code>个提议<code>B</code>不能达成一致，导致活锁)，如果<code>leader Proposer</code>稳定，不需要阶段一的<code>prepare</code>步骤，如下图（图中<code>Proposer</code>就是一个<code>Leader</code>）：</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185901.png" alt="img"></p>
+<p>​    但<code>leader</code>的存在会带来其他问题，一是如何选举和保持唯一<code>leader</code>(虽然无<code>leader</code>或多<code>leader</code>不影响一致性，但影响决议进程<code>progress</code>)；二是充当<code>leader</code>的节点会承担更多压力，如何均衡节点的负载。租约(<code>lease</code>)可以帮助实现唯一<code>leader</code>，但<code>leader</code>故障情况下可导致服务短期不可用。</p>
+<p>​    至此，我们得到一个<strong>既能保证安全性，又能保证活性</strong>的<strong>分布式一致性算法</strong>——<strong><code>Paxos</code>算法</strong>。</p>
+<h2 id="Muti-Paxos在google-chubby中的应用"><a href="#Muti-Paxos在google-chubby中的应用" class="headerlink" title="Muti-Paxos在google chubby中的应用"></a><code>Muti-Paxos</code>在<code>google chubby</code>中的应用</h2><p>​    <code>Muti-Paxos</code>即是带有<code>leader preposer</code>的集群，其内只有<code>leader</code>才能提出提案。</p>
+<p>​    <code>Google Chubby</code>是一个高可用分布式锁服务，被设计成一个需要访问中心化节点的分布式锁服务。本文只分析<code>chubby</code>服务端的实现。</p>
+<p> <code>Chubby</code>服务端的基本架构大致分为三层</p>
+<p>　　① 最底层是容错日志系统（<code>Fault-Tolerant Log</code>），通过<code>Paxos</code>算法能够保证集群所有机器上的日志完全一致，同时具备较好的容错性。</p>
+<p>　　② 日志层之上是<code>Key-Value</code>类型的容错数据库（<code>Fault-Tolerant DB</code>），其通过下层的日志来保证一致性和容错性。</p>
+<p>　　③ 存储层之上的就是<code>Chubby</code>对外提供的分布式锁服务和小文件存储服务。</p>
+<p> <img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185902.png" alt="img"></p>
+<p>​    <code>Paxos</code>算法用于保证集群内各个副本节点的日志能够保持一致，<code>Chubby</code>事务日志（<code>Transaction  Log</code>）中的每一个<code>Value</code>对应<code>Paxos</code>算法中的一个<code>Instance</code>（对应<code>Proposer</code>），由于<code>Chubby</code>需要对外提供不断的服务，因此事务日志会无限增长，于是在整个<code>Chubby</code>运行过程中，会存在多个<code>Paxos Instance</code>，同时，<code>Chubby</code>会为每个<code>Paxos  Instance</code>都按序分配一个全局唯一的<code>Instance</code>编号，并将其顺序写入到事务日志中去。</p>
+<p>​    在<code>Paxos</code>中，每一个<code>Paxos  Instance</code>都需要进行一轮或多轮的<code>Prepare-&gt;Promise-&gt;Propose-&gt;Accept</code>这样完整的二阶段请求过程来完成对一个提议值的选定，为了保证正确性的前提下尽可能地提高算法运行性能，可以让多个<code>Instance</code>共用一套序号分配机制，并将<code>Prepare-&gt;Promise</code>合并为一个阶段。具体做法如下：</p>
+<ul>
+<li>当某个副本节点通过选举成为<code>Master</code>后，就会使用新分配的编号<code>N</code>来广播一个<code>Prepare</code>消息，该<code>Prepare</code>消息会被所有未达成一致的<code>Instance</code>和目前还未开始的<code>Instance</code>共用。</li>
+<li><p>当<code>Acceptor</code>接收到<code>Prepare</code>消息后，必须对多个<code>Instance</code>同时做出回应，这通常可以通过将反馈信息封装在一个数据包中来实现，假设最多允许<code>K</code>个<code>Instance</code>同时进行提议值的选定，那么：</p>
+<ul>
+<li>当前之多存在<code>K</code>个未达成一致的<code>Instance</code>，将这些未决的<code>Instance</code>各自最后接受的提议值封装进一个数据包，并作为<code>Promise</code>消息返回。</li>
+<li>同时，判断<code>N</code>是否大于当前<code>Acceptor</code>的<code>highestPromisedNum</code>值（当前已经接受的最大的提议编号值），如果大于，那么就标记这些未决<code>Instance</code>和所有未开始的<code>Instance</code>的<code>highestPromisedNum</code>的值为<code>N</code>，这样，这些未决<code>Instance</code>和所有未开始<code>Instance</code>都不能再接受任何编号小于<code>N</code>的提议。</li>
+</ul>
+</li>
+<li><p><code>Master</code>对所有未决<code>Instance</code>和所有未开始<code>Instance</code>分别执行<code>Propose-&gt;Accept</code>阶段的处理，如果<code>Master</code>能够一直稳定运行的话，那么在接下来的算法运行过程中，就不再需要进行<code>Prepare-&gt;Promise</code>处理了。但是，一旦<code>Master</code>发现<code>Acceptor</code>返回了一个<code>Reject</code>消息，说明集群中存在另一个<code>Master</code>并且试图使用更大的提议编号发送了<code>Prepare</code>消息，此时，当前<code>Master</code>就需要重新分配新的提议编号并再次进行<code>Prepare-&gt;Promise</code>阶段的处理。</p>
+</li>
+</ul>
+<p>可见<code>chubby</code>就是一个典型的<code>Muti-Paxos</code>算法应用，在<code>Master</code>稳定运行的情况下，只需要使用同一个编号来依次执行每一个<code>Instance</code>的<code>Promise-&gt;Accept</code>阶段处理。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式算法/" rel="tag"><i class="fa fa-tag"></i> 分布式算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/01/分布式算法4-一致性协议之2PC/" rel="next" title="分布式算法4-一致性协议之2PC">
+                <i class="fa fa-chevron-left"></i> 分布式算法4-一致性协议之2PC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/01/分布式算法10-一致性哈希算法/" rel="prev" title="分布式算法10-一致性协议之一致性hash算法">
+                分布式算法10-一致性协议之一致性hash算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos是什么"><span class="nav-number">1.</span> <span class="nav-text">Paxos是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题产生的背景"><span class="nav-number">2.</span> <span class="nav-text">问题产生的背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关概念"><span class="nav-number">3.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">4.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推导过程"><span class="nav-number">5.</span> <span class="nav-text">推导过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最简单的方案—只有一个Acceptor"><span class="nav-number">5.1.</span> <span class="nav-text">最简单的方案—只有一个Acceptor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个Acceptor"><span class="nav-number">5.2.</span> <span class="nav-text">多个Acceptor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proposer生成提案"><span class="nav-number">5.3.</span> <span class="nav-text">Proposer生成提案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Acceptor接受提案"><span class="nav-number">5.4.</span> <span class="nav-text">Acceptor接受提案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Paxos算法描述"><span class="nav-number">5.5.</span> <span class="nav-text">Paxos算法描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阶段一"><span class="nav-number">5.5.1.</span> <span class="nav-text">阶段一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阶段二"><span class="nav-number">5.5.2.</span> <span class="nav-text">阶段二</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Learner学习被选定的value"><span class="nav-number">6.</span> <span class="nav-text">Learner学习被选定的value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何保证Paxos算法的活性"><span class="nav-number">7.</span> <span class="nav-text">如何保证Paxos算法的活性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Muti-Paxos在google-chubby中的应用"><span class="nav-number">8.</span> <span class="nav-text">Muti-Paxos在google chubby中的应用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

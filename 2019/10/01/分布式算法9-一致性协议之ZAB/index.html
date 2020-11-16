@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式算法,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙场驿站" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="一、Zookeeper ​    Zookeeper 致力于提供一个高性能、高可用，且具有严格的顺序访问控制能力(主要是写操作的严格顺序性)的分布式协调服务。高性能使得  Zookeeper  能够应用于那些对系统吞吐有明确要求的大型分布式系统中，高可用使得分布式的单点问题得到了很好的解决，而严格的顺序访问控制使得客户端能够基于  Zookeeper 实现一些复杂的同步原语(Zxid)。">
+<meta name="keywords" content="分布式算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式算法9-一致性协议之ZAB">
+<meta property="og:url" content="http://yoursite.com/2019/10/01/分布式算法9-一致性协议之ZAB/index.html">
+<meta property="og:site_name" content="龙场驿站">
+<meta property="og:description" content="一、Zookeeper ​    Zookeeper 致力于提供一个高性能、高可用，且具有严格的顺序访问控制能力(主要是写操作的严格顺序性)的分布式协调服务。高性能使得  Zookeeper  能够应用于那些对系统吞吐有明确要求的大型分布式系统中，高可用使得分布式的单点问题得到了很好的解决，而严格的顺序访问控制使得客户端能够基于  Zookeeper 实现一些复杂的同步原语(Zxid)。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185950.png">
+<meta property="og:updated_time" content="2020-11-16T04:53:09.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式算法9-一致性协议之ZAB">
+<meta name="twitter:description" content="一、Zookeeper ​    Zookeeper 致力于提供一个高性能、高可用，且具有严格的顺序访问控制能力(主要是写操作的严格顺序性)的分布式协调服务。高性能使得  Zookeeper  能够应用于那些对系统吞吐有明确要求的大型分布式系统中，高可用使得分布式的单点问题得到了很好的解决，而严格的顺序访问控制使得客户端能够基于  Zookeeper 实现一些复杂的同步原语(Zxid)。">
+<meta name="twitter:image" content="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185950.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/01/分布式算法9-一致性协议之ZAB/">
+
+
+
+
+
+  <title>分布式算法9-一致性协议之ZAB | 龙场驿站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙场驿站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">无善无恶心之体，有善有恶意之动；知善知恶是良知，为善去恶是格物。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                   //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive   //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th    //分类"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags              //标签"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user            //关于"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/01/分布式算法9-一致性协议之ZAB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式算法9-一致性协议之ZAB</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-01T17:11:02+08:00">
+                2019-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式算法/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/01/分布式算法9-一致性协议之ZAB/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/01/分布式算法9-一致性协议之ZAB/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/01/分布式算法9-一致性协议之ZAB/" class="leancloud_visitors" data-flag-title="分布式算法9-一致性协议之ZAB">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、Zookeeper"><a href="#一、Zookeeper" class="headerlink" title="一、Zookeeper"></a>一、<code>Zookeeper</code></h2><blockquote>
+<p>​    <code>Zookeeper</code> 致力于提供一个高性能、高可用，且具有严格的顺序访问控制能力(主要是写操作的严格顺序性)的分布式协调服务。高性能使得  <code>Zookeeper</code>  能够应用于那些对系统吞吐有明确要求的大型分布式系统中，高可用使得分布式的单点问题得到了很好的解决，而严格的顺序访问控制使得客户端能够基于  <code>Zookeeper</code> 实现一些复杂的同步原语(<code>Zxid</code>)。</p>
+</blockquote>
+<a id="more"></a>
+<ol>
+<li><strong>简单的数据模型</strong><br> <code>Zookeeper</code> 使得分布式程序能够通过一个共享的树形结构的名字空间来进行相互协调，即 <code>Zookeeper</code>  服务器内存中的数据模型由一系列被称为 <code>ZNode</code> 的数据节点组成，<code>Zookeeper</code>  将全量的数据存储在内存中，以此来提高服务器吞吐、减少延迟的目的。</li>
+<li><strong>可构建集群</strong><br> 一个 <code>Zookeeper</code> 集群通常由一组机器构成，组成 <code>Zookeeper</code> 集群的而每台机器都会在内存中维护当前服务器状态，并且每台机器之间都相互通信。</li>
+<li><strong>顺序访问</strong><br> 对于来自客户端的每个更新请求，<code>Zookeeper</code> 都会分配一个全局唯一的递增编号，这个编号反映了所有事务操作的先后顺序。</li>
+<li><strong>高性能</strong><br> <code>Zookeeper</code> 将全量数据存储在内存中，并直接服务于客户端的所有非事务请求，因此它尤其适用于以读操作为主的应用场景。</li>
+</ol>
+<h2 id="二、ZAB-原子消息广播协议"><a href="#二、ZAB-原子消息广播协议" class="headerlink" title="二、ZAB (原子消息广播协议)"></a>二、<code>ZAB</code> (原子消息广播协议)</h2><blockquote>
+<p>​    <code>ZAB</code> (<code>ZooKeeper Atomic Broadcast</code>) 是 <code>Zookeeper</code> 数据一致性的核心算法，是 <code>Zookeeper</code> 实现分布式系统数据一致性。<code>ZAB</code> 协议专门为 <code>Zookeeper</code> 设计了一种支持崩溃恢复的原子广播协议。</p>
+</blockquote>
+<p>​    <code>ZAB</code> 协议的核心：<strong>所有事务请求(写请求)必须由一个全局唯一的 <code>Leader</code> 服务器来协调处理</strong>  ，而余下的其他服务器则成为 <code>Follower</code> 服务器。 <code>Leader</code> 服务器负责将一个客户端事务请求转换成一个事务  <code>proposal</code>(提议)，并将该 Proposal 分发给集群中所有的 <code>Follower</code> 服务器。之后 <code>Leader</code> 服务器需要等待所有  <code>Follower</code> 服务器的反馈，一旦超过半数的 <code>Follower</code> 服务器进行了正确的反馈后，那么 <code>Leader</code> 就会再次向所有的  <code>Follower</code> 服务器分 发 <code>Commit</code> 消息，要求其将前一个 <code>proposal</code> 进行提交。</p>
+<p>​    <code>ZAB</code> 协议包括两种基本的模式，分别是 <strong>崩溃恢复</strong>和<strong>消息广播</strong>。</p>
+<p>​    当整个服务框架在启动过程中，或是当 <code>Leader</code> 服务器出现网络中断、崩溃退出与重启等异常情况时， <code>ZAB</code>  协议就会进入恢复模式并选举产生新的 <code>Leader</code> 服务器。当选举产生了新的 <code>Leader</code> 服务器同时集群中已经有过半的机器与该 <code>Leader</code>  服务器完成了状态同步之后，<code>ZAB</code> 协议就会退出恢复模式。</p>
+<p>​    当集群中已经有过半的 <code>Follower</code> 服务器完成了和 <code>Leader</code>  服务器的状态同步，那么整个服务框架就可以进入消息广播模式了。当一台同样遵守 <code>ZAB</code> 协议的服务器启动后加入到集群中时，如果此时集群中已经存在一个 <code>Leader</code> 服务器在负责进行消息广播， 那么新加入的服务器就会自觉地进入数据恢复模式：找到 <code>Leader</code>  所在的服务器，并与其进行数据同步，然后一起参与到消息广播流程中去。</p>
+<p>​    下面重点讲解崩溃回复和消息广播的过程。</p>
+<h3 id="2-1-消息广播"><a href="#2-1-消息广播" class="headerlink" title="2.1 消息广播"></a>2.1 消息广播</h3><p>​    <code>ZAB</code> 协议的消息广播过程使用的是一个原子广播协议，类似于一个二阶段提交过程。针对客户端的事务请求， <code>Leader</code> 服务器会为其生成对应的事务 <code>Proposal</code> ，并将其发送给集群中其余所有的机器，然后再分別收集各自的选票，最后进行事务提交。</p>
+<p><img src="https://blog-picture-1259089570.cos.ap-guangzhou.myqcloud.com/20201111185950.png" alt="消息广播"><br> 　在 <code>ZAB</code> 协议的二阶段提交过程中，移除了中断逻辑，所有的 Foll<code>o</code>wer 服务器要么正常反馈 <code>Leader</code> 提出的事务 <code>Proposal</code>  ,要么就抛弃 <code>Leader</code> 服务器。同时， <code>ZAB</code> 协议将二阶段提交中的中断逻辑移除意味着我们可以在过半的 <code>Follower</code> 服务器已经反馈  <code>Ack</code> 之后就开始提交事务 <code>Proposal</code> 了，而不需要等待集群中所有的 <code>Follower</code>  服务器都反馈响应。这种简化了的二阶段提交模型无法处理 <code>Leader</code> 服务器崩溃退出而带来的数据不一致问题，此时采用崩溃恢复模式来解决这个问题。</p>
+<p>​    在整个消息广播过程中， <code>Leader</code> 服务器会为每个事务请求生成对应的 <code>Proposal</code> 来进行广播，并且在广播事务 <code>Proposal</code> 之前， <code>Leader</code> 服务器会首先为这个事务 <code>Proposal</code> 分配一个全局单调递增的唯一事务<code>ID</code> (即 <code>ZXID</code>)。</p>
+<p><code>Leader</code> 服务器会为每一个 <code>Follower</code> 服务器都各自分配一个单独的队列，然后将需要广播的事务 <code>Proposal</code>  依次放入这些队列中去，并且根据 <code>FIFO</code> 策略进行消息发送。每一个 <code>Follower</code> 服务器在接收到这个事务 <code>Proposal</code>  之后，都会首先将其以事务日志的形式写入到本地磁盘中去，并且在成功写入后反馈给 <code>Leader</code> 服务器一个 <code>Ack</code> 响应。当 <code>Leader</code>  服务器接收到超过半数 <code>Follower</code> 的 <code>Ack</code> 响应后，就会广播一个 <code>Commit</code> 消息给所有的 <code>Follower</code>  服务器以通知其进行事务提交，同时 <code>Leader</code> 自身也会完成对事务的提交。</p>
+<h3 id="2-2-崩溃恢复"><a href="#2-2-崩溃恢复" class="headerlink" title="2.2 崩溃恢复"></a>2.2 崩溃恢复</h3><p>​    <code>Leader</code> 服务器出现崩溃，或者说由于网络原因导致 <code>Leader</code> 服务器失去了与过半 <code>Follower</code>  的联系，那么就会进入崩溃恢复模式。<code>Leader</code> 选举算法不仅仅需要让 <code>Leader</code> 自己知道其自身已经被选举为 <code>Leader</code>  ，同时还需要让集群中的所有其他机器也能够快速地感知到选举产生的新的 <code>Leader</code> 服务器。</p>
+<p>​    <code>ZAB</code> 协议规定了如果一个事务 <code>Proposal</code> 在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。</p>
+<p>​    下面介绍两种崩溃恢复中的场景和 <code>ZAB</code> 协议需要保证的特性：</p>
+<ol>
+<li><p><code>ZAB</code> 协议需要确保那些已经在 <code>Leader</code> 服务器上提交的事务最终被所有服务器都提交</p>
+<p>假设一个事务在 <code>Leader</code> 服务器上被提交了，并且已经得到过半 <code>Follower</code> 服务器的 <code>Ack</code> 反馈，但是在它将 <code>Commit</code>  消息发送给所有 <code>Follower</code> 机器之前， <code>Leader</code> 服务器挂了，针对这种情况， <code>ZAB</code>  协议就需要确保该事务最终能够在所有的服务器上都被提交成功，否则将出现不一致。</p>
+</li>
+<li><p><code>ZAB</code> 协议需要确保丢弃那些只在 <code>Leader</code> 服务器上被提出的事务</p>
+<p>假设初始的 <code>Leader</code> 服务器 在提出了一个事务之后就崩溃退出了，导致集群中的其他服务器都没有收到这个事务，当该服务器恢复过来再次加入到集群中的时候 ，<code>ZAB</code>协议需要确保丢弃这个事务。</p>
+</li>
+</ol>
+<p>针对以上两点需求，<code>ZAB</code> 协议需要设计的选举算法应该满足：确保提交已经被 <code>Leader</code> 提交的事务 <code>Proposal</code>，同时丢弃已经被跳过的事务 <code>Proposal</code> 。</p>
+<p>​    如果让 <code>Leader</code> 选举算法能够保证新选举出来的 <code>Leader</code> 服务器拥有集群中所有机器最高编号（即 <code>ZXID</code> 最大）的事务  <code>Proposal</code>,那么就可以保证这个新选举出来的 <code>Leader</code> 一定具有所有已经提交的提案。同时，如果让具有最高编号事务 <code>Proposal</code>  的机器来成为 <code>Leader</code>，就可以省去 <code>Leader</code> 服务器检查 <code>Proposal</code> 的提交和丢弃工作的这一步操作。</p>
+<h3 id="2-3-数据同步"><a href="#2-3-数据同步" class="headerlink" title="2.3 数据同步"></a>2.3 数据同步</h3><p>​    <code>Leader</code> 服务器会为每一个 <code>Follower</code> 服务器都准备一个队列，并将那些没有被各 <code>Follower</code> 服务器同步的事务以  <code>Proposal</code> 消息的形式逐个发送给 <code>Follower</code> 服务器，并在每一个 <code>Proposal</code> 消息后面紧接着再发送一个 <code>Commit</code>  消息，以表示该事务已经被提交。等到 <code>Follower</code> 服务器将所有其尚未同步的事务 <code>Proposal</code> 都从 <code>Leader</code>  服务器上同步过来并成功应用到本地数据库中后， <code>Leader</code> 服务器就会将该 <code>Follower</code> 服务器加入到真正的可用 <code>Follower</code>  列表中，并开始之后的其他流程。</p>
+<p>​    下面来看 <code>ZAB</code> 协议是如何处理那些需要被丢弃的事务 <code>Proposal</code> 的。在 <code>ZAB</code> 协议的事务编号 <code>ZXID</code> 设计中， <code>ZXID</code>  是一个 <code>64</code> 位的数字，低 <code>32</code> 位可以看作是一个简单的单调递增的计数器，针对客户端的每一个事务请求， <code>Leader</code> 服务器在产生一个新的事务  <code>Proposal</code> 的时候，都会对该计数器进行加 <code>1</code> 操作；高 <code>32</code> 位代表了 <code>Leader</code> 周期 <code>epoch</code> 的编号，每当选举产生一个新的  <code>Leader</code> 服务器，就会从这个 <code>Leader</code> 服务器上取出其本地日志中最大事务 <code>Proposal</code> 的 <code>ZXID</code> ，并从该 <code>ZXID</code>  中解析出对应的 <code>epoch</code> 值，然后再对其进行加 <code>1</code> 操作，之后就会以此编号作为新的 <code>epoch</code>， 并将低 <code>32</code> 位置 <code>0</code> 来开始生成新的  <code>ZXID</code> 。</p>
+<p>​    基于这样的策略，当一个包含了上一个 <code>Leader</code> 周期中尚未提交过的事务 <code>Proposal</code>  的服务器启动加入到集群中，发现此时集群中已经存在 <code>Leader</code>，将自身以 <code>Follower</code> 角色连接上 <code>Leader</code> 服务器之后，<code>Leader</code>  服务器会根据自己服务器上最后被提交的 <code>Proposal</code> 来和 <code>Follower</code> 服务器的 <code>Proposal</code> 进行比对，发现 <code>Follower</code>  中有上一个 <code>Leader</code> 周期的事务 <code>Proposal</code> 时，<code>Leader</code> 会要求 <code>Follower</code>  进行一个回退操作-回退到一个确实已经被集群中过半机器提交的最新的事务 <code>Proposal</code> 。</p>
+<h3 id="2-4-ZAB-协议原理"><a href="#2-4-ZAB-协议原理" class="headerlink" title="2.4 ZAB 协议原理"></a>2.4 <code>ZAB</code> 协议原理</h3><p><code>ZAB</code> 主要包括消息广播和崩溃恢复两个过程，进一步可以分为三个阶段，分别是<strong>发现（<code>Discovery</code>）</strong>、<strong>同步（<code>Synchronization</code>）</strong>、<strong>广播（<code>Broadcast</code>）阶段</strong>。<code>ZAB</code> 的每一个分布式进程会循环执行这三个阶段，称为主进程周期。</p>
+<ol>
+<li>发现<br> 即要求 <code>zookeeper</code> 集群必须选择出一个 <code>Leader</code> 进程，同时 <code>Leader</code> 会维护一个 <code>Follower</code> 可用列表。</li>
+<li>同步<br> <code>Leader</code> 要负责将本身的数据与 <code>Follower</code> 完成同步，做到多副本存储。这样也是体现了 <code>CAP</code> 中高可用和分区容错。<code>Follower</code> 将队列中未处理完的请求消费完成后，写入本地事物日志中。</li>
+<li>广播<br> <code>Leader</code> 可以接受客户端新的 <code>proposal</code> 请求，将新的 <code>proposal</code> 请求广播给所有的 <code>Follower</code>。</li>
+</ol>
+<p>在正常运行过程中，<code>ZAB</code> 协议会一直运行于阶段三来反复进行消息广播流程，如果出现崩溃或其他原因导致 <code>Leader</code> 缺失，那么此时 <code>ZAB</code> 协议会再次进入发现阶段，选举新的 <code>Leader</code>。</p>
+<p>每个进程都有可能处于如下三种状态之一：</p>
+<ul>
+<li><code>LOOKING</code>：<code>Leader</code> 选举阶段。</li>
+<li><code>FOLLOWING</code>：<code>Follower</code> 服务器和 <code>Leader</code> 服务器保持同步状态。</li>
+<li><code>LEADING</code>：<code>Leader</code> 服务器作为主进程领导状态。</li>
+</ul>
+<p>所有进程初始状态都是 <code>LOOKING</code> 状态，此时不存在 <code>Leader</code>，此时，进程会试图选举出一个新的  <code>Leader</code>，之后，如果进程发现已经选举出新的 <code>Leader</code> 了，那么它就会切换到 <code>FOLLOWING</code> 状态，并开始和 <code>Leader</code>  保持同步，处于 <code>FOLLOWING</code> 状态的进程称为 <code>Follower</code>，<code>LEADING</code> 状态的进程称为 <code>Leader</code>，当 <code>Leader</code>  崩溃或放弃领导地位时，其余的 <code>Follower</code> 进程就会转换到 <code>LOOKING</code> 状态开始新一轮的 <code>Leader</code> 选举。</p>
+<p>​    一个 <code>Follower</code> 只能和一个 <code>Leader</code> 保持同步，<code>Leader</code> 进程和所有与所有的 <code>Follower</code>  进程之间都通过心跳检测机制来感知彼此的情况。若 <code>Leader</code> 能够在超时时间内正常收到心跳检测，那么 <code>Follower</code> 就会一直与该  <code>Leader</code> 保持连接，而如果在指定时间内 <code>Leader</code> 无法从过半的 <code>Follower</code> 进程那里接收到心跳检测，或者 <code>TCP</code> 连接断开，那么  <code>Leader</code> 会放弃当前周期的领导，比你转换到 <code>LOOKING</code> 状态，其他的 <code>Follower</code> 也会选择放弃这个 <code>Leader</code>，同时转换到  <code>LOOKING</code> 状态，之后会进行新一轮的 <code>Leader</code> 选举，并在选举产生新的 <code>Leader</code> 之后开始新的一轮主进程周期。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式算法/" rel="tag"><i class="fa fa-tag"></i> 分布式算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/01/分布式算法1-ACID理论/" rel="next" title="分布式算法1-ACID理论">
+                <i class="fa fa-chevron-left"></i> 分布式算法1-ACID理论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/01/分布式算法2-CAP理论/" rel="prev" title="分布式算法2-CAP理论">
+                分布式算法2-CAP理论 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.png" alt="建木">
+            
+              <p class="site-author-name" itemprop="name">建木</p>
+              <p class="site-description motion-element" itemprop="description">心即理、知行合一、致良知</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">一、Zookeeper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、ZAB-原子消息广播协议"><span class="nav-number">2.</span> <span class="nav-text">二、ZAB (原子消息广播协议)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-消息广播"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 消息广播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-崩溃恢复"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 崩溃恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-数据同步"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 数据同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-ZAB-协议原理"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 ZAB 协议原理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">建木</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">星火燎原</a> 整理所得</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz',
+        appKey: 'dtj1GDUT6YuosmpJ9dgM8yvM',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("DkyrEPjAiv44oOxOyvSOYgYB-gzGzoHsz", "dtj1GDUT6YuosmpJ9dgM8yvM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/c++基础9-函数的默认参数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/15/c++封装5-构造和析构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -322,7 +322,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/10/c++基础9-函数的默认参数/" itemprop="url">c++函数的默认参数</a></h1>
+                <a class="post-title-link" href="/2018/07/15/c++封装5-构造和析构/" itemprop="url">c++构造和析构</a></h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-10T00:00:00+08:00">
-                2018-06-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T00:00:00+08:00">
+                2018-07-15
               </time>
             
 
@@ -375,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/10/c++基础9-函数的默认参数/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/10/c++基础9-函数的默认参数/" itemprop="commentCount"></span>
+                <a href="/2018/07/15/c++封装5-构造和析构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/15/c++封装5-构造和析构/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -384,7 +384,7 @@
 
           
           
-             <span id="/2018/06/10/c++基础9-函数的默认参数/" class="leancloud_visitors" data-flag-title="c++函数的默认参数">
+             <span id="/2018/07/15/c++封装5-构造和析构/" class="leancloud_visitors" data-flag-title="c++构造和析构">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.7k
+                  9.2k
                 </span>
               
 
@@ -426,7 +426,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  36
                 </span>
               
             </div>
@@ -448,10 +448,11 @@
 
       
         
-          <p>在<code>C++</code>中，定义函数时可以给形参指定一个默认的值，这样调用函数时如果没有给这个形参赋值（没有对应的实参），那么就使用这个默认的值。也就是说，调用函数时可以省略有默认值的参数。如果用户指定了参数的值，那么就使用用户指定的值，否则使用参数的默认值。</p>
+          <p>  对象的初始化和清理也是两个非常重要的安全问题，一个对象或者变量没有初始时，对其使用后果是未知，同样的使用完一个变量，没有及时清理，也会造成一定的安全问题。<code>c++</code>为了给我们提供这种问题的解决方案，<strong>构造函数</strong>和<strong>析构函数</strong>，这两个函数将会被编译器自动调用，完成对象初始化和对象清理工作。</p>
+<p>​    <strong>无论你是否喜欢，对象的初始化和清理工作是编译器强制我们要做的事情，即使你不提供初始化操作和清理操作，编译器也会给你增加默认的操作，只是这个默认初始化操作不会做任何事，所以编写类就应该顺便提供初始化函数。</strong></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/10/c++基础9-函数的默认参数/" rel="contents">
+            <a class="btn" href="/2018/07/15/c++封装5-构造和析构/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -502,7 +503,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/c++基础8-布尔类型bool/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/10/c++封装4-const成员变量和函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -521,7 +522,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/05/c++基础8-布尔类型bool/" itemprop="url">c++bool类型</a></h1>
+                <a class="post-title-link" href="/2018/07/10/c++封装4-const成员变量和函数/" itemprop="url">c++const成员变量和函数</a></h1>
         
 
         <div class="post-meta">
@@ -533,8 +534,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T00:00:00+08:00">
-                2018-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T00:00:00+08:00">
+                2018-07-10
               </time>
             
 
@@ -574,8 +575,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/05/c++基础8-布尔类型bool/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/05/c++基础8-布尔类型bool/" itemprop="commentCount"></span>
+                <a href="/2018/07/10/c++封装4-const成员变量和函数/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/10/c++封装4-const成员变量和函数/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -583,7 +584,7 @@
 
           
           
-             <span id="/2018/06/05/c++基础8-布尔类型bool/" class="leancloud_visitors" data-flag-title="c++bool类型">
+             <span id="/2018/07/10/c++封装4-const成员变量和函数/" class="leancloud_visitors" data-flag-title="c++const成员变量和函数">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -609,7 +610,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  429
+                  1.1k
                 </span>
               
 
@@ -625,7 +626,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  4
                 </span>
               
             </div>
@@ -647,10 +648,10 @@
 
       
         
-          <p>在<code>C</code>语言中，关系运算和逻辑运算的结果有两种，真和假：<code>0</code>表示假，非<code>0</code>表示真。</p>
+          <p>在类中，如果你不希望某些数据被修改，可以使用<code>const</code>关键字加以限定。<code>const</code>可以用来修饰成员变量和成员函数。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/05/c++基础8-布尔类型bool/" rel="contents">
+            <a class="btn" href="/2018/07/10/c++封装4-const成员变量和函数/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -701,7 +702,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/c++基础7-变量定义位置/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/c++封装3-静态成员变量和函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -720,7 +721,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/04/c++基础7-变量定义位置/" itemprop="url">c++变量定义位置</a></h1>
+                <a class="post-title-link" href="/2018/07/07/c++封装3-静态成员变量和函数/" itemprop="url">c++静态成员变量和函数</a></h1>
         
 
         <div class="post-meta">
@@ -732,8 +733,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T00:00:00+08:00">
-                2018-06-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T00:00:00+08:00">
+                2018-07-07
               </time>
             
 
@@ -773,8 +774,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/04/c++基础7-变量定义位置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/04/c++基础7-变量定义位置/" itemprop="commentCount"></span>
+                <a href="/2018/07/07/c++封装3-静态成员变量和函数/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/07/c++封装3-静态成员变量和函数/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -782,7 +783,7 @@
 
           
           
-             <span id="/2018/06/04/c++基础7-变量定义位置/" class="leancloud_visitors" data-flag-title="c++变量定义位置">
+             <span id="/2018/07/07/c++封装3-静态成员变量和函数/" class="leancloud_visitors" data-flag-title="c++静态成员变量和函数">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -808,7 +809,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  542
+                  2.4k
                 </span>
               
 
@@ -824,7 +825,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  9
                 </span>
               
             </div>
@@ -846,14 +847,11 @@
 
       
         
-          <p><code>C++</code>不但在<code>C</code>语言的基础上进行了很多扩展，而且也对<code>C</code>语言部分做了细节上的改进，变量的定义位置就是其中之一。</p>
-<p>​    <strong><code>C89</code>规定，所有局部变量都必须定义在函数开头，在定义好变量之前不能有其他的执行语句。<code>C99</code>标准取消这这条限制，但是<code>VC/VS</code>对<code>C99</code>的支持很不积极，仍然要求变量定义在函数开头。</strong></p>
-<blockquote>
-<p><code>C89</code>和<code>C99</code>是两套不同的<code>C</code>语言标准，<code>C99</code>是<code>C89</code>的升级版。</p>
-</blockquote>
+          <h2 id="static静态成员变量"><a href="#static静态成员变量" class="headerlink" title="static静态成员变量"></a><code>static</code>静态成员变量</h2><p>​    对象的内存中包含了成员变量，不同的对象占用不同的内存，这使得不同对象的成员变量相互独立，它们的值不受其他对象的影响。例如有两个相同类型的对象<code>a</code>、<code>b</code>，它们都有一个成员变量<code>m_name</code>，那么修改<code>a.m_name</code>的值不会影响<code>b.m_name</code>的值。</p>
+<p>​    可是有时候我们希望在多个对象之间共享数据，对象<code>a</code>改变了某份数据后对象<code>b</code>可以检测到。共享数据的典型使用场景是计数，以前面的<code>Student</code>类为例，如果我们想知道班级中共有多少名学生，就可以设置一份共享的变量，每次创建对象时让该变量加<code>1</code>。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/04/c++基础7-变量定义位置/" rel="contents">
+            <a class="btn" href="/2018/07/07/c++封装3-静态成员变量和函数/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -904,7 +902,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/03/c++基础6-new和delete运算符/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/c++封装2-对象内存分布和编译实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -923,7 +921,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/03/c++基础6-new和delete运算符/" itemprop="url">c++new和delete运算符</a></h1>
+                <a class="post-title-link" href="/2018/07/02/c++封装2-对象内存分布和编译实现/" itemprop="url">C++对象内存分布和编译实现</a></h1>
         
 
         <div class="post-meta">
@@ -935,8 +933,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T00:00:00+08:00">
-                2018-06-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T00:00:00+08:00">
+                2018-07-02
               </time>
             
 
@@ -976,8 +974,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/03/c++基础6-new和delete运算符/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/03/c++基础6-new和delete运算符/" itemprop="commentCount"></span>
+                <a href="/2018/07/02/c++封装2-对象内存分布和编译实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/02/c++封装2-对象内存分布和编译实现/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -985,7 +983,7 @@
 
           
           
-             <span id="/2018/06/03/c++基础6-new和delete运算符/" class="leancloud_visitors" data-flag-title="c++new和delete运算符">
+             <span id="/2018/07/02/c++封装2-对象内存分布和编译实现/" class="leancloud_visitors" data-flag-title="C++对象内存分布和编译实现">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1011,7 +1009,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  335
+                  2.7k
                 </span>
               
 
@@ -1027,7 +1025,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  10
                 </span>
               
             </div>
@@ -1049,12 +1047,10 @@
 
       
         
-          <p>在<code>C</code>语言中，动态分配内存用<code>malloc()</code>函数，释放内存用<code>free()</code>函数。如下所示：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = (<span class="keyword">int</span>*) <span class="built_in">malloc</span>( <span class="keyword">sizeof</span>(<span class="keyword">int</span>) * <span class="number">10</span> );  <span class="comment">//分配10个int型的内存空间</span></span><br><span class="line"><span class="built_in">free</span>(p);  <span class="comment">//释放内存</span></span><br></pre></td></tr></table></figure>
-<p>​    在<code>C++</code>中，这两个函数仍然可以使用，但是<code>C++</code>又新增了两个关键字，<strong><code>new</code>和<code>delete</code>：<code>new</code>用来动态分配内存，<code>delete</code>用来释放内存。</strong></p>
+          <p>  <strong>类</strong>是创建对象的模板，不占用内存空间，不存在于编译后的可执行文件中；而<strong>对象</strong>是实实在在的数据，需要内存来存储。对象被创建时会在栈区或者堆区分配内存。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/03/c++基础6-new和delete运算符/" rel="contents">
+            <a class="btn" href="/2018/07/02/c++封装2-对象内存分布和编译实现/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1105,7 +1101,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/c++基础5-重载、重定义、重写差异/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/c++封装1-类的封装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1124,7 +1120,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/01/c++基础5-重载、重定义、重写差异/" itemprop="url">c++重载、重定义与重载</a></h1>
+                <a class="post-title-link" href="/2018/06/25/c++封装1-类的封装/" itemprop="url">c++类的封装</a></h1>
         
 
         <div class="post-meta">
@@ -1136,8 +1132,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-01T00:00:00+08:00">
-                2018-06-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">
+                2018-06-25
               </time>
             
 
@@ -1177,8 +1173,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/01/c++基础5-重载、重定义、重写差异/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/01/c++基础5-重载、重定义、重写差异/" itemprop="commentCount"></span>
+                <a href="/2018/06/25/c++封装1-类的封装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/25/c++封装1-类的封装/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1186,7 +1182,7 @@
 
           
           
-             <span id="/2018/06/01/c++基础5-重载、重定义、重写差异/" class="leancloud_visitors" data-flag-title="c++重载、重定义与重载">
+             <span id="/2018/06/25/c++封装1-类的封装/" class="leancloud_visitors" data-flag-title="c++类的封装">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1212,7 +1208,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  221
+                  3.7k
                 </span>
               
 
@@ -1228,7 +1224,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  14
                 </span>
               
             </div>
@@ -1250,31 +1246,10 @@
 
       
         
-          <h3 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h3><ul>
-<li><p>同一个作用域</p>
-</li>
-<li><p>参数个数，参数顺序，参数类型不同</p>
-</li>
-<li><p>和函数返回值，没有关系</p>
-</li>
-<li><p><code>const</code>也可以作为重载条件 </p>
-  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>(<span class="keyword">const</span> Teacher&amp; t)&#123;&#125; </span><br><span class="line"><span class="keyword">do</span>(Teacher&amp; t)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="重定义（隐藏）"><a href="#重定义（隐藏）" class="headerlink" title="重定义（隐藏）"></a>重定义（隐藏）</h3><ul>
-<li><p>有继承</p>
-</li>
-<li><p>子类（派生类）重新定义父类（基类）的同名成员（非<code>virtual</code>函数）</p>
-</li>
-</ul>
-<h3 id="重写（覆盖）"><a href="#重写（覆盖）" class="headerlink" title="重写（覆盖）"></a>重写（覆盖）</h3><ul>
-<li>有继承</li>
-<li>子类（派生类）重写父类（基类）的virtual函数</li>
-<li>函数返回值，函数名字，函数参数，必须和基类中的虚函数一致</li>
-</ul>
+          <h2 id="类的定义和对象的创建"><a href="#类的定义和对象的创建" class="headerlink" title="类的定义和对象的创建"></a>类的定义和对象的创建</h2><p>​    <strong>类是创建对象的模板，一个类可以创建多个对象，每个对象都是类类型的一个变量；创建对象的过程也叫类的实例化。每个对象都是类的一个具体实例（<code>Instance</code>），拥有类的成员变量和成员函数</strong></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/01/c++基础5-重载、重定义、重写差异/" rel="contents">
+            <a class="btn" href="/2018/06/25/c++封装1-类的封装/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1325,7 +1300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/c++基础3-内联函数inline/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/21/c++继承4-向上转型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1344,7 +1319,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/30/c++基础3-内联函数inline/" itemprop="url">c++内联函数</a></h1>
+                <a class="post-title-link" href="/2018/06/21/c++继承4-向上转型/" itemprop="url">c++向上转型</a></h1>
         
 
         <div class="post-meta">
@@ -1356,8 +1331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T00:00:00+08:00">
-                2018-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T00:00:00+08:00">
+                2018-06-21
               </time>
             
 
@@ -1397,8 +1372,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/30/c++基础3-内联函数inline/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/30/c++基础3-内联函数inline/" itemprop="commentCount"></span>
+                <a href="/2018/06/21/c++继承4-向上转型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/21/c++继承4-向上转型/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1406,7 +1381,7 @@
 
           
           
-             <span id="/2018/05/30/c++基础3-内联函数inline/" class="leancloud_visitors" data-flag-title="c++内联函数">
+             <span id="/2018/06/21/c++继承4-向上转型/" class="leancloud_visitors" data-flag-title="c++向上转型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1432,7 +1407,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.1k
+                  3.2k
                 </span>
               
 
@@ -1470,13 +1445,10 @@
 
       
         
-          <p>函数是一个可以重复使用的代码块，<code>CPU</code>会一条一条地挨着执行其中的代码。<code>CPU</code>在执行主调函数代码时如果遇到了被调函数，主调函数就会暂停，<code>CPU</code>转而执行被调函数的代码；被调函数执行完毕后再返回到主调函数，主调函数根据刚才的状态继续往下执行。</p>
-<p>​     一个<code>C/C++</code>程序的执行过程可以认为是多个函数之间的相互调用过程，它们形成了一个或简单或复杂的调用链条，这个链条的起点是<code>main()</code>，终点也是<code>main()</code>。当<code>main()</code>调用完了所有的函数，它会返回一个值（例如<code>return 0;</code>）来结束自己的生命，从而结束整个程序。</p>
-<p>​    <strong>函数调用是有时间和空间开销的。</strong>程序在执行一个函数之前需要做一些准备工作，要将实参、局部变量、返回地址以及若干寄存器都压入栈中，然后才能执行函数体中的代码；函数体中的代码执行完毕后还要清理现场，将之前压入栈中的数据都出栈，才能接着执行函数调用位置以后的代码。</p>
-<p>​    如果函数体代码比较多，需要较长的执行时间，那么函数调用机制占用的时间可以忽略；如果函数只有一两条语句，那么大部分的时间都会花费在函数调用机制上，这种时间开销就就不容忽视。</p>
+          <p>在<code>C/C++</code>中经常会发生数据类型的转换，例如将<code>int</code>类型的数据赋值给<code>float</code>类型的变量时，编译器会先把<code>int</code>类型的数据转换为<code>float</code>类型再赋值；反过来，<code>float</code>类型的数据在经过类型转换后也可以赋值给<code>int</code>类型的变量。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/30/c++基础3-内联函数inline/" rel="contents">
+            <a class="btn" href="/2018/06/21/c++继承4-向上转型/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1527,7 +1499,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/c++基础2-引用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/20/c++继承3-虚继承和虚基类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1546,7 +1518,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/28/c++基础2-引用/" itemprop="url">c++引用</a></h1>
+                <a class="post-title-link" href="/2018/06/20/c++继承3-虚继承和虚基类/" itemprop="url">c++虚继承和虚基类</a></h1>
         
 
         <div class="post-meta">
@@ -1558,8 +1530,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T00:00:00+08:00">
-                2018-05-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T00:00:00+08:00">
+                2018-06-20
               </time>
             
 
@@ -1599,8 +1571,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/28/c++基础2-引用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/28/c++基础2-引用/" itemprop="commentCount"></span>
+                <a href="/2018/06/20/c++继承3-虚继承和虚基类/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/20/c++继承3-虚继承和虚基类/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1608,7 +1580,7 @@
 
           
           
-             <span id="/2018/05/28/c++基础2-引用/" class="leancloud_visitors" data-flag-title="c++引用">
+             <span id="/2018/06/20/c++继承3-虚继承和虚基类/" class="leancloud_visitors" data-flag-title="c++虚继承和虚基类">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1634,7 +1606,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.9k
+                  4.6k
                 </span>
               
 
@@ -1650,7 +1622,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  17
                 </span>
               
             </div>
@@ -1672,21 +1644,214 @@
 
       
         
-          <h2 id="引用-reference"><a href="#引用-reference" class="headerlink" title="引用(reference)"></a>引用(<code>reference</code>)</h2><h3 id="引用基本用法"><a href="#引用基本用法" class="headerlink" title="引用基本用法"></a>引用基本用法</h3><p>​    <strong>引用是<code>c++</code>对<code>c</code>的重要扩充。</strong></p>
-<p>​    在<code>c/c++</code>中指针的作用基本都是一样的，但是<code>c++</code>增加了另外一种给函数传递地址的途径，这就是按引用传递(<code>pass-by-reference</code>)，它也存在于其他一些编程语言中，并不是<code>c++</code>的发明。</p>
+          <p>  <strong>多继承（<code>Multiple Inheritance</code>）</strong>是指从多个直接基类中产生派生类的能力，多继承的派生类继承了所有父类的成员。尽管概念上非常简单，但是多个基类的相互交织可能会带来错综复杂的设计问题，命名冲突就是不可回避的一个。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/06/20/c++继承3-虚继承和虚基类/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/17/c++继承2-单继承和多继承/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="建木">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙场驿站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/17/c++继承2-单继承和多继承/" itemprop="url">c++单继承和多继承</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-17T00:00:00+08:00">
+                2018-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/17/c++继承2-单继承和多继承/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/17/c++继承2-单继承和多继承/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/17/c++继承2-单继承和多继承/" class="leancloud_visitors" data-flag-title="c++单继承和多继承">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			   <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="单继承"><a href="#单继承" class="headerlink" title="单继承"></a>单继承</h2><p>没有继承时对象内存的分布情况很简单，成员变量和成员函数会分开存储：</p>
 <ul>
-<li><p>变量名实质上是一段连续内存空间的别名，是一个标号(门牌号)</p>
-</li>
-<li><p>程序中通过变量来申请并命名内存空间</p>
-</li>
-<li><p>通过变量的名字可以使用存储空间</p>
-</li>
+<li>对象的内存中只包含成员变量，存储在栈区或堆区（使用<code>new</code>创建对象）；</li>
+<li>成员函数与对象内存分离，存储在代码区。</li>
 </ul>
-<p>​    <strong>思考：对一段连续的内存空间只能取一个别名吗？</strong></p>
-<p>​    <code>c++</code>中新增了引用的概念，引用可以作为一个已定义变量的别名。</p>
+<p>当存在继承关系时，内存模型会稍微复杂一些。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/28/c++基础2-引用/" rel="contents">
+            <a class="btn" href="/2018/06/17/c++继承2-单继承和多继承/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1737,7 +1902,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/25/c++基础1-const和c的异同/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/16/c++继承1-类的继承/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1756,7 +1921,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/25/c++基础1-const和c的异同/" itemprop="url">c++const和c的异同</a></h1>
+                <a class="post-title-link" href="/2018/06/16/c++继承1-类的继承/" itemprop="url">c++类的继承</a></h1>
         
 
         <div class="post-meta">
@@ -1768,8 +1933,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-25T00:00:00+08:00">
-                2018-05-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-16T00:00:00+08:00">
+                2018-06-16
               </time>
             
 
@@ -1809,8 +1974,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/25/c++基础1-const和c的异同/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/25/c++基础1-const和c的异同/" itemprop="commentCount"></span>
+                <a href="/2018/06/16/c++继承1-类的继承/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/16/c++继承1-类的继承/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1818,7 +1983,7 @@
 
           
           
-             <span id="/2018/05/25/c++基础1-const和c的异同/" class="leancloud_visitors" data-flag-title="c++const和c的异同">
+             <span id="/2018/06/16/c++继承1-类的继承/" class="leancloud_visitors" data-flag-title="c++类的继承">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1844,7 +2009,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.2k
+                  4.2k
                 </span>
               
 
@@ -1860,7 +2025,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  16
                 </span>
               
             </div>
@@ -1882,11 +2047,10 @@
 
       
         
-          <p><code>c</code>语言中，<code>const</code>修饰的变量称为伪常量，编译器会分配内存，可以通过指针修改。</p>
-<p> <code>c++</code>中，<code>const</code>修饰的变量是真正的常量，以<code>key-value</code>键值对的方式保存，不会分配内存。</p>
+          <h2 id="继承基本概念"><a href="#继承基本概念" class="headerlink" title="继承基本概念"></a>继承基本概念</h2><p>​    <code>c++</code>最重要的特征是代码重用，通过继承机制可以利用已有的数据类型来定义新的数据类型，新的类不仅拥有旧类的成员，还拥有新定义的成员。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/25/c++基础1-const和c的异同/" rel="contents">
+            <a class="btn" href="/2018/06/16/c++继承1-类的继承/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1937,7 +2101,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/15/shell12-模块化/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/c++基础11-引用和指针的异同/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="建木">
@@ -1956,7 +2120,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/15/shell12-模块化/" itemprop="url">shell模块化</a></h1>
+                <a class="post-title-link" href="/2018/06/15/c++基础11-引用和指针的异同/" itemprop="url">c++引用和指针的异同</a></h1>
         
 
         <div class="post-meta">
@@ -1968,8 +2132,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T17:50:00+08:00">
-                2018-05-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T00:00:00+08:00">
+                2018-06-15
               </time>
             
 
@@ -1991,8 +2155,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/shell/" itemprop="url" rel="index">
-                    <span itemprop="name">shell</span>
+                  <a href="/categories/c-language/" itemprop="url" rel="index">
+                    <span itemprop="name">c++_language</span>
                   </a>
                 </span>
 
@@ -2009,8 +2173,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/15/shell12-模块化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/15/shell12-模块化/" itemprop="commentCount"></span>
+                <a href="/2018/06/15/c++基础11-引用和指针的异同/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/15/c++基础11-引用和指针的异同/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2018,7 +2182,7 @@
 
           
           
-             <span id="/2018/05/15/shell12-模块化/" class="leancloud_visitors" data-flag-title="shell模块化">
+             <span id="/2018/06/15/c++基础11-引用和指针的异同/" class="leancloud_visitors" data-flag-title="c++引用和指针的异同">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2044,7 +2208,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  910
+                  1.4k
                 </span>
               
 
@@ -2060,7 +2224,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  5
                 </span>
               
             </div>
@@ -2082,211 +2246,10 @@
 
       
         
-          <p><strong>所谓模块化，就是把代码分散到多个文件或者文件夹。对于大中型项目，模块化是必须的，否则会在一个文件中堆积成千上万行代码，这简直是一种灾难。</strong></p>
+          <p>  引用只是对指针进行了简单的封装，它的底层依然是通过指针实现的，引用占用的内存和指针占用的内存长度一样。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/15/shell12-模块化/" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/12/shell11-多命令组合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="建木">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/header.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="龙场驿站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/12/shell11-多命令组合/" itemprop="url">shell多命令组合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T19:40:00+08:00">
-                2018-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/shell/" itemprop="url" rel="index">
-                    <span itemprop="name">shell</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/12/shell11-多命令组合/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/12/shell11-多命令组合/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/05/12/shell11-多命令组合/" class="leancloud_visitors" data-flag-title="shell多命令组合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">热度&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-			   <span>℃</span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  6k
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  24
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="组命令"><a href="#组命令" class="headerlink" title="组命令"></a>组命令</h2><p>​    <strong>所谓组命令，就是将多个命令划分为一组，或者看成一个整体。</strong></p>
-<p>​    <code>Shell</code>组命令的写法有两种：</p>
-<p><code>{ command1; command2; command3; ... }</code><br><code>(command1; command2; command3;... )</code></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/05/12/shell11-多命令组合/" rel="contents">
+            <a class="btn" href="/2018/06/15/c++基础11-引用和指针的异同/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2328,7 +2291,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2376,7 +2339,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2387,7 +2350,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2398,7 +2361,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
